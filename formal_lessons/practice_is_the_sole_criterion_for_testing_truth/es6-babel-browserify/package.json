@@ -1,0 +1,19 @@
+{
+  "name": "es6-babel-browserify",
+  "version": "1.0.0",
+  "description": "ES6 实现",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "djsz3y",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "browserify": "^17.0.0"
+  },
+  "dependencies": {
+    "jquery": "^1.12.4"
+  }
+}

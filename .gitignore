@@ -1,2 +1,4 @@
 _book
 .history
+node_modules
+vue2-demo

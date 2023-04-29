@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyPromise</title>
+  </head>
+
+  <body>
+    <h1>MyPromise</h1>
+
+    <script src="./hand.js"></script>
+    <script>
+      let message
+      console.log(16,message) // undefined
+      // console.log(17,age) // Uncaught ReferenceError: age is not defined
+      console.log(18,typeof undefined)
+      console.log(19,typeof Undefined)
+      console.log(20,Undefined) // Uncaught ReferenceError: Undefined is not defined
+      
+      const p1 = new MyPromise(function (resolve, reject) {
+        resolve(100)
+        // reject('错误信息...')
+        // setTimeout(() => {
+        //   resolve(100)
+        // }, 1000)
+      })
+      var obj = {
+        oo: function () {
+          console.log(this)
+          function aa() {
+            console.log(this)
+            p1.then(
+              function (data1) {
+                console.log(this)
+                console.log('data1', data1)
+                return data1 + 1
+              },
+              function (err) {
+                console.log(this)
+                console.error(err)
+              }
+            ).then(
+              function (data2) {
+                console.log(this)
+                console.log('data2', data2)
+                return data2 + 2
+              },
+              function (err) {
+                console.log(this)
+                console.error(err)
+              }
+            )
+          }
+          return aa
+        }
+      }
+      // obj.oo()()
+      console.log(obj.oo()())
+    </script>
+    <script>
+      // const p1 = new MyPromise((resolve, reject) => {
+      //     // resolve(100)
+      //     // reject('错误信息...')
+      //     setTimeout(() => {
+      //         resolve(100)
+      //     }, 1000)
+      // })
+
+      // // const p11 = p1.then(data1 => {
+      // //     console.log('data1', data1)
+      // //     return data1 + 1
+      // // })
+      // // const p12 = p11.then(data2 => {
+      // //     console.log('data2', data2)
+      // //     return data2 + 2
+      // // })
+      // // const p13 = p12.catch(err => console.error(err))
+
+      // const p2 = MyPromise.resolve(200)
+      // const p3 = MyPromise.resolve(300)
+      // const p4 = MyPromise.reject('错误信息...')
+      // const p5 = MyPromise.all([p1, p2, p3]) // 传入 promise 数组，等待所有的都 fulfilled 之后，返回新 promise ，包含前面所有的结果
+      // p5.then(result => console.log('all result', result)) // -> all result (3) [200, 300, 100]
+      //     // 等了1s出来了
+
+      // const p6 = MyPromise.race([p1, p2, p3]) // 传入 promise 数组，只要有一个 fulfilled 即可返回
+      // p6.then(result => console.log('race result', result)) // -> race result 200
+      //     // 只要有人出来了，就别忙活了
+    </script>
+  </body>
+</html>
