@@ -25,3 +25,11 @@
 - [笔记：前端面试官带你深度模拟面试](public_course/前端面试官带你深度模拟面试.md)
 
 ## 练习
+
+## 友情链接
+
+- [读书视频学习笔记](https://github.com/djsz3y/learning-notes)
+
+- [爪哇学习笔记](https://github.com/djsz3y/zhaowa-study-notes)
+
+- [bug 仓库](https://github.com/djsz3y/bug-repository)
