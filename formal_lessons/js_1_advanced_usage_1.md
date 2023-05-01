@@ -603,74 +603,204 @@ ECStack = [globalContext]
 
 #### 3.4.1 Types
 
-- ECMAScript Types 类型分为：
+- [1].ECMAScript Types 类型分为：
   - ECMAScript language types（语言类型） ①
-    - ECMAScript programmer within ECMAScript language to manipulate value directly（开发者直接使用 ECMAScript 可以操作的）
-    - Undefined, Null, Boolean, String, Number, and Object.
+    - [2].ECMAScript programmer within ECMAScript language to manipulate value directly（开发者直接使用 ECMAScript 可以操作的）
+    - [3].Undefined, Null, Boolean, String, Number, and Object.
   - ECMAScript specification types（规范类型——描述语言底层行为逻辑
     ） ②
-    - meta-values, with algorithms to describe the semantics(ECMAScript language constructs and ECMAScript language types)（相当于 meta-values，用算法描述 ECMAScript 语言结构和 ECMAScript 语言类型的。）
-    - Reference, List, Completion, Property Descriptor, Property Identifier, Lexical Environment, and Environment Record.
+    - [2].meta-values, with algorithms to describe the semantics(ECMAScript language constructs and ECMAScript language types)（相当于 meta-values，用算法描述 ECMAScript 语言结构和 ECMAScript 语言类型的。）
+    - [3].**Reference**, List, Completion, Property Descriptor, Property Identifier, Lexical Environment, and Environment Record.
 
-#### 3.4.2 Reference
+#### 3.4.2 Reference(与 this 指向密切关联)
 
 1. What？
 
    - 用来解释操作行为的（delete、typeof、赋值等）。
    - 不在实际 js 代码中，规范抽象类型，描述语言底层行为逻辑。
+   - Reference 的三个组成部分：
 
-   1. base value
-      (either undefined, Object, Boolean, String, Number, or environment record.)
-   2. referenced name
-      (String)
-   3. strict reference flag
-      (boolean).
+     1. base value  
+        (either undefined, Object, Boolean, String, Number, or environment record.)（属性所在的对象、EnvironmentRecord）
+     2. referenced name（属性的名称）  
+        (String)
+     3. strict reference flag  
+        (boolean).
 
-   ```js
-   var foo = 1
-   // 对应Reference：
-   var fooReference = {
-     base: EnvironmentRecord,
-     name: 'foo',
-     strict: false
-   } // base name strict
-   ```
+     例 1：
 
-   ```js
-   var foo = {
-     bar: function () {
-       return this
+     foo
+
+     ```js
+     var foo = 1
+     ```
+
+     **fooReference**  
+     {  
+      _base_（属性所在的对象、EnvironmentRecord）,  
+      _name_（属性的名称）,  
+      _strict_（布尔默认 false）  
      }
-   }
 
-   foo.bar() // foo
+     ```js
+     // foo 对应 Reference：
+     var fooReference = {
+       base: EnvironmentRecord,
+       name: 'foo',
+       strict: false
+     } // base name strict
+     ```
 
-   // bar对应Reference：
-   var BarReference = {
-     base: foo,
-     propertyName: 'bar',
-     strict: false
-   } // base propertyName strict
-   ```
+     例 2：
 
-2. GetBase(BarReference)：
-   返回 BarReference 的 base value 。
+     foo { bar }
 
-   ```js
-   GetValue(fooReference) // 1
-   ```
+     ```js
+     var foo = {
+       bar: function () {
+         return this
+       }
+     }
 
-3. IsPropertyReference(V)：
-   判断 base value 是对象或 HasPrimitiveBase(V) === true 。
+     foo.bar() // foo
+     ```
 
-#### 3.4.3 如何确定 this 的值
-1. 
+     **BarReference**  
+     {  
+      _base_（属性所在的对象、EnvironmentRecord）,  
+      _propertyName_（属性的名称）,  
+      _strict_（布尔默认 false）  
+     }
 
-#### 3.4.4 具体分析
+     ```js
+     // bar 对应 Reference：
+     var BarReference = {
+       base: foo,
+       propertyName: 'bar',
+       strict: false
+     } // base propertyName strict
+     ```
+
+2. **获取 Reference 组成部分**的方法：
+
+   1. _GetBase(V)_：
+      返回 Reference V 的 base value 。
+
+      ```js
+      var foo = 1
+
+      var fooReference = {
+        base: EnvironmentRecord,
+        name: 'foo',
+        strict: false
+      }
+
+      GetValue(fooReference) // 1 返回 fooReference 的 base value ，具体的值，不是 Reference 。
+      ```
+
+   2. _IsPropertyReference(V)_：
+
+      - 返回 **true** ，当 **(base value 是对象)或(HasPrimitiveBase(V) === true)** 的时候；否则返回 false。
+      - base **value** 是**对象**，返回 **true** 。
+
+#### 3.4.3 如何确定 this 的值 & 具体分析
+
+##### 规范步骤：
+
+- Let ref be the result of evaluating MemberExpression；
+- if Type(ref) is Reference, then
+  - If IsPropertyReference(ref) is true, then
+    - Let thisValue be GetBase(ref).
+  - Else, the base of ref is an Environment Record
+    - Let thisValue be the result of calling the ImplicitThisValue concrete method of GetBase(ref).
+- Else, Type(ref) is not Reference.
+  - Let thisValue be undefined.
+
+##### 例子（非严格模式下）：
 
 ```js
+var value = 1
 
+var foo = {
+  value: 2,
+  bar: function () {
+    return this.value
+  }
+}
+
+console.log(foo.bar()) //示例 1 -> 2
+
+console.log(`(foo.bar)`()) //示例 2 -> 2
+
+console.log((foo.bar = foo.bar)()) //示例 3 -> 1
+
+console.log((false || foo.bar)()) //示例 4 -> 1
+
+console.log((foo.bar, foo.bar)()) //示例 5 -> 1
 ```
+
+##### 步骤：
+
+1. 寻找**MemberExpression** ——**()左边的部分**（原始表达式、函数定义表达式、属性访问表达式、对象创建表达式） ——> **赋值给 ref**
+
+   ```js
+   foo() // MemberExpression —— foo ——> 赋值给 ref
+   foo()() // MemberExpression —— foo() ——> 赋值给 ref
+   foo.bar() // MemberExpression —— foo.bar ——> 赋值给 ref
+   ```
+
+   例子分析——第一步：
+
+   ```js
+   foo.bar() // MemberExpression —— foo.bar ——> 赋值给 ref
+   ;`(foo.bar)`() // MemberExpression —— (foo.bar) ——> 赋值给 ref
+   ;(foo.bar = foo.bar)() // MemberExpression —— (foo.bar = foo.bar) ——> 赋值给 ref
+   ;(false || foo.bar)() // MemberExpression —— (false || foo.bar) ——> 赋值给 ref
+   ;(foo.bar, foo.bar)() // MemberExpression —— (foo.bar, foo.bar) ——> 赋值给 ref
+   ```
+
+2. 判断 ref 类型**是否是 Reference** 类型—— `Type(ref) === Reference`
+
+   ```js
+   // 对于foo.bar()的 Reference 是：
+   var BarReference = { base: foo, propertyName: 'bar', strict: false }
+   ```
+
+   例子分析——第二步：
+
+   ```js
+   foo.bar() // ref = foo.bar ——> ref的base,name,strict都有吗？
+   // 都有：{ base: foo, propertyName: 'bar', strict: false }。——> 是Reference
+   ;`(foo.bar)`() // ref = (foo.bar) ——> ref的base,name,strict都有吗？
+   // 都有，同上。——> 是Reference
+   ;(foo.bar = foo.bar)() // ref = (foo.bar = foo.bar) ——> ref的base,name,strict都有吗？无name，只有base和strict。——> 不是Reference
+   ;(false || foo.bar)() // ref = (false || foo.bar) ——> ref的base,name,strict都有吗？无name，只有base和strict。——> 不是Reference
+   ;(foo.bar, foo.bar)() // ref = (foo.bar, foo.bar) ——> ref的base,name,strict都有吗？无name，只有base和strict。——> 不是Reference
+   ```
+
+3. 当 IsPropertyReference(ref) is true ，thisValue = GetBase(ref)
+
+   - [3.1] IsPropertyReference(ref) is true ——> base value 是对象
+   - [3.2] GetBase(ref) ——> 得到 Reference 的 base 也就是真实值。
+
+   **此步判断步骤**：ref 是 Reference——>有 base——>base value 是对象——>this 值是 Reference 的 base 真实值。
+
+   例子分析——第三步：
+
+   ```js
+   foo.bar() // ref是foo.bar，foo.bar是Reference，this是foo
+   ;`(foo.bar)`() // ref是(foo.bar)，(foo.bar)是Reference，this是foo
+   ;(foo.bar = foo.bar)() // ref是(foo.bar = foo.bar)，(foo.bar = foo.bar)不是Reference（无name），this是undefined（非严格模式this是undefined，undefined隐式转换为全局对象window）
+   ;(false || foo.bar)() // ref是(false || foo.bar)，(false || foo.bar)不是Reference（无name），this是undefined（非严格模式this是undefined，undefined隐式转换为全局对象window）
+   ;(foo.bar, foo.bar)() // ref是(foo.bar, foo.bar)，(foo.bar, foo.bar)不是Reference（无name），this是undefined（非严格模式this是undefined，undefined隐式转换为全局对象window）
+   ```
+
+4. 得出结论：
+   - 都在()前头，都执行了：
+     - （非严格模式）打印：2 2 1 1 1
+     - （严格模式）打印：2 2 **示例 3 报错**（undefined 取不到 value）
+
+this 总结完毕。
 
 ## 执行上下文
 
@@ -700,15 +830,15 @@ ECStack = [globalContext]
 ```js
 // 输出什么？
 for (var i = 0; i < 10; i++) {
-  setTimeout(() => {
-    console.log(i) // 10
-  }, 100)
+  setTimeout(() => {
+    console.log(i) // 10
+  }, 100)
 }
 for (var i = 0; i < 10; i++) {
-  ;(function (i) {
-    setTimeout(() => {
-      console.log(i) // i
-    }, 100)
-  })(i)
+  ;(function (i) {
+    setTimeout(() => {
+      console.log(i) // i
+    }, 100)
+  })(i)
 }
 ```
