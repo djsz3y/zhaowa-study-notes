@@ -1,4 +1,4 @@
-# PART1 - vue-router
+# vue-router 学习笔记
 
 ## ⼀、vue-router 的实现原理
 
@@ -57,7 +57,7 @@
 
    - 【3.2】解决方案 => ：
      1. 配置模块初始页
-     2. active 标签（标志子页面）：
+     2. active 标签（标志子页面 => query | local）：
         - 以 query 形式配置 detail，如：`www.xxx.com/vue-router/**?page=detail`
         - 也可以 localStorage 本地存储里保存,到了 index.html 流向当前页面。
         - router 配置。
@@ -72,38 +72,95 @@
 
 ### 1.3 如何使⽤ vue-router
 
-1. router 是以 plugin 形式加入到 vue 项目中。
+1. 引入生成
 
-2. 本质是类实体，需要实例化后方可使用 / 单例。  
+2. 导入 vue 实例插件：router 是以 plugin 形式加入到 vue 项目中。
+
+3. 实例化：本质是类实体，需要实例化后方可使用 / 单例。  
    => 单例模式：路由必须唯一，前进后退刷新，返回、刷新、之前、当前。  
-   => 路由操作的本质是栈操作。  
+   => 路由操作的本质 是 栈操作。  
    => 路由注入和延续（hybrid）。  
    => （h5 去 h5，pc 去 pc，web 去 web，可以了解 nginx 配置）
 
-   > router/index.js
+举例（使用 vue-router）：
 
-   ```js
-   import Vue from 'vue'
-   import VueRouter from 'vue-router'
+> router/index.js
 
-   // 1. router 是以 plugin 形式加入到 vue 项目中。
-   Vue.use(VueRouter)
+```js
+import Vue from 'vue'
+// 1. 引入生成
+import VueRouter from 'vue-router'
 
-   const routes = []
-   const scrollBehavior = (to, from, savedPosition) => {}
+// 2. 导入 vue 实例插件：router 是以 plugin 形式加入到 vue 项目中。
+Vue.use(VueRouter)
 
-   // 2. 本质是类实体，需要实例化后方可使用 / 单例。
-   // => 路由操作的本质 是 栈操作
-   // => 路由注入和延续 （hybrid）
-   const router = new VueRouter({
-     routes,
-     scrollBehavior
-   })
+const routes = []
+const scrollBehavior = (to, from, savedPosition) => {}
 
-   export default router
-   ```
+// 3. 实例化：本质是类实体，需要实例化后方可使用 / 单例。
+//    => 单例模式：路由必须唯一，前进后退刷新，返回、刷新、之前、当前。
+//    => 路由操作的本质 是 栈操作。
+//    => 路由注入和延续（hybrid）。
+//    => （h5 去 h5，pc 去 pc，web 去 web，可以了解 nginx 配置）
+const router = new VueRouter({
+  routes,
+  scrollBehavior
+})
 
-3. 基础配置类
+export default router
+```
+
+## ⼆、路由切换
+
+### 2.1 单页路由切换实质
+
+1. 更新视图但是不重新请求页面
+2. 路由的多种模式： hash hisory abstract
+
+### 2.2 hash 模式
+
+1. 特性区分
+2. 实现原理
+3. ⼿写实现
+
+https://www.example.com:8080/aaa/bbb?ccc=123&ddd=456#list
+https: 协议
+www.example.com: 域名
+8080: 端口号
+aaa/bbb: 虚拟路径
+ccc=123&ddd=456: 参数 or query
+`#list`: 锚
+
+核心 => hash 改变不会触发网页重载 / hash 值改变会改变浏览器的历史记录 / hash 改变会出发 window.onhashchange()
+
+问：如何改变 hash？
+
+1. a 标签形式
+
+```js
+<a href="#/list"></a>
+```
+
+2. window.location.hash
+3. history.forward()/back()
+
+### 2.3 history 模式
+
+1. 特性区分
+2. ⼿写实现
+3. 对⽐ hash 模式区别
+
+核心 => pushState() replaceState() / history 会改变浏览器的历史记录 / state、title、URL / window.onpopstate()
+
+## 三、VUE 的⾼级组件使⽤
+
+### 3.1 动态组件
+
+### 3.2 异步组件
+
+### 3.3 vue-router 实现路由懒加载
+
+4. 基础配置类
 
    1. 同步使用
    2. 按需异步加载
@@ -149,7 +206,13 @@
    // ...
    ```
 
-4. 动态加载——滚动行为触发操作——`scrollBehavior`的三种方式：
+## 四、vue-router 进阶
+
+### 4.1 vue-router 的完整导航解析流程
+
+### 4.2 vue-router 滚动⾏为进阶处理
+
+5. 动态加载——滚动行为触发操作——`scrollBehavior`的三种方式：
 
    1. 设置滚动到开头，做路由的 resolve
    2. 滚动到指定位置
@@ -187,30 +250,35 @@
    // ...
    ```
 
-## ⼆、路由的两种模式
+### 4.3 手写 vue-router
 
-### 2.1 hash 模式
+## Learn More
 
-1. 特性区分
-2. 实现原理
-3. ⼿写实现
+Essential
 
-### 2.2 history 模式
+- [Core Docs : vuejs](https://vuejs.org)
+- [Forum](https://forum.vuejs.org)
+- [Community Chat](https://chat.vuejs.org)
+- [Twitter](https://twitter.com/vuejs)
+- [Docs for This Template](http://vuejs-templates.github.io/webpack/)
 
-1. 特性区分
-2. ⼿写实现
-3. 对⽐ hash 模式区别
+Ecosystem
 
-## 三、VUE 的⾼级组件使⽤
+- [vue-router](http://router.vuejs.org/)
+- [vuex](http://vuex.vuejs.org/)
+- [vue-loader](http://vue-loader.vuejs.org/)
+- [awesome-vue](https://github.com/vuejs/awesome-vue)
 
-### 3.1 动态组件
+[Certified Vue.js Developer Preparation Guide](https://certification.vuejs.org/dashboard/guides/detail)
 
-### 3.2 异步组件
+## 友情链接
 
-### 3.3 vue-router 实现路由懒加载
+- [我的掘金主页](https://juejin.cn/user/1042768423037150)
 
-## 四、vue-router 进阶
+- [我的 github 主页](https://github.com/djsz3y)
 
-### 4.1 vue-router 的完整导航解析流程
+- [读书视频学习笔记](https://github.com/djsz3y/learning-notes)
 
-### 4.2 vue-router 滚动⾏为进阶处理
+- [爪哇学习笔记](https://github.com/djsz3y/zhaowa-study-notes)
+
+- [bug 仓库](https://github.com/djsz3y/bug-repository)
