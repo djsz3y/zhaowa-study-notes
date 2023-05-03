@@ -72,6 +72,8 @@
 
 ### 1.3 如何使⽤ vue-router
 
+#### 1.3.1.使用步骤
+
 1. 引入生成
 
 2. 导入 vue 实例插件：router 是以 plugin 形式加入到 vue 项目中。
@@ -82,7 +84,7 @@
    => 路由注入和延续（hybrid）。  
    => （h5 去 h5，pc 去 pc，web 去 web，可以了解 nginx 配置）
 
-举例（使用 vue-router）：
+##### 举例
 
 > router/index.js
 
@@ -110,7 +112,117 @@ const router = new VueRouter({
 export default router
 ```
 
+#### 1.3.2.导航守卫
+
+##### 1.全局
+
+1. 全局前置守卫：`router.beforeEach((to, from, next) => { next() })`
+2. 全局解析守卫：`router.beforeResolve((to, from, next) => { next() })`
+3. 全局后置守卫：`router.afterEach((to, from) => {})`
+
+> router/index.js
+
+```js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+const routes = []
+const scrollBehavior = (to, from, savedPosition) => {}
+const router = new VueRouter({
+  routes,
+  scrollBehavior
+})
+
+// 全局守卫 - 全控制、整体进度条、行为记录
+router.beforeEach((to, from, next) => {
+  // 做前置处理
+  next()
+})
+router.beforeResolve((to, from, next) => {
+  next()
+})
+router.afterEach((to, from) => {})
+
+export default router
+```
+
+##### 2.局部（组件内的守卫）
+
+1. 路由进入前：beforeRouteEnter
+2. 路由更新前：beforeRouteUpdate
+3. 路由离开前：beforeRouteLeave
+
+> xxx.vue
+
+```vue
+<script>
+export default {
+  data() {
+    return {}
+  },
+  beforeRouteEnter(to, from, next) {
+    // called before the route that renders this component is confirmed.
+    // does NOT have access to `this` component instance,
+    // because it has not been created yet when this guard is called!
+
+    next((vm) => {
+      // access to component instance via `vm`
+    })
+  },
+  beforeRouteUpdate(to, from, next) {
+    // called when the route that renders this component has changed.
+    // This component being reused (by using an explicit `key`) in the new route or not doesn't change anything.
+    // For example, for a route with dynamic params `/foo/:id`, when we
+    // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
+    // will be reused (unless you provided a `key` to `<router-view>`), and this hook will be called when that happens.
+    // has access to `this` component instance.
+
+    // just use `this`
+    this.name = to.params.name
+    next()
+  },
+  beforeRouteLeave(to, from, next) {
+    // called when the route that renders this component is about to be navigated away from.
+    // has access to `this` component instance.
+
+    const answer = window.confirm(
+      '尚未保存，是否离开？' +
+        'Do you really want to leave? you have unsaved changes!'
+    )
+    if (answer) {
+      next()
+    } else {
+      next(false)
+    }
+  }
+}
+</script>
+```
+
+##### 3.路由独享的守卫（自己补充）
+
+1. 路由配置对象里直接定义路由独享的守卫：beforeEnter；
+2. 和全局前置守卫特点一样；
+
+> router/index.js
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      beforeEnter: (to, from, next) => {
+        // ...
+      }
+    }
+  ]
+})
+```
+
 ## ⼆、路由切换
+
+软跳、硬跳，小跳、大跳，为什么软跳浏览器不加载？和路由切换有关系。
 
 ### 2.1 单页路由切换实质
 
@@ -121,44 +233,231 @@ export default router
 
 1. 特性区分
 2. 实现原理
-3. ⼿写实现
+3. 手写实现
 
-https://www.example.com:8080/aaa/bbb?ccc=123&ddd=456#list
-https: 协议
-www.example.com: 域名
-8080: 端口号
-aaa/bbb: 虚拟路径
-ccc=123&ddd=456: 参数 or query
-`#list`: 锚
+#### 1.特性区分
 
-核心 => hash 改变不会触发网页重载 / hash 值改变会改变浏览器的历史记录 / hash 改变会出发 window.onhashchange()
+举例`https://www.example.com:8080/aaa/bbb?ccc=123&ddd=456#list`：
 
-问：如何改变 hash？
+- `https`：协议
+- `www.example.com`：域名
+- `8080`：端口号
+- `aaa/bbb`：虚拟路径
+- `ccc=123&ddd=456`：参数 or query
+- `#list`：锚
 
-1. a 标签形式
+#### 2.实现原理
+
+**核心** => hash 改变不会触发网页重载 / hash 值改变会改变浏览器的历史记录 / hash 改变会出发 window.onhashchange()
+
+**问：如何改变 hash？**
+
+1. a 标签形式入口`<a href="#/list"></a>`
+2. window.location.hash 赋值
+3. history.forward()/back() 浏览器前进/后退按钮
+
+#### 3.手写实现：手写一个 hash router
+
+> myRouter.js
 
 ```js
-<a href="#/list"></a>
+class MyRouter {
+  constructor(config) {
+    // 参数组织 / 路由表配置
+    this._routes = config.routes
+
+    // 路由历史栈
+    this.routeHistory = [] // 路由栈
+    this.currentUrl = ''
+    this.currentIndex = -1 // 指针 索引
+
+    // 跳转中间变量
+    this.changeFlag = false
+
+    // 流程调用
+    this.init()
+  }
+  init() {
+    // hashchange：监听hash变化
+    window.addEventListener('hashchange', this.refresh.bind(this), false)
+
+    // load：监听页面加载完成
+    window.addEventListener('load', this.refresh.bind(this), false)
+  }
+  // 单页更新
+  refresh() {
+    // 1. 路由参数处理
+    if (this.changeFlag) {
+      this.changeFlag = false
+    } else {
+      this.currentUrl = location.hash.slice(1) || '/'
+      // 去除分叉路径
+      this.routeHistory = this.routeHistory.slice(0, this.currentIndex + 1)
+      this.routeHistory.push(this.currentUrl)
+      this.currentIndex++
+    }
+
+    // 2. 切换模块
+    let path = MyRouter.getPath() // 获取路径
+    let currentComponentName = '' // 当前模块名称
+    let nodeList = document.querySelectorAll('[data-component-name]') // 单页节点集合
+
+    // 查找当前路由名称对应
+    // find()
+    for (let i = 0; i < this._routes.length; i++) {
+      if (this._routes[i].path === path) {
+        currentComponentName = this._routes[i].name
+        break
+      }
+    }
+
+    // 遍历控制节点模块展示
+    nodeList.forEach((item) => {
+      if (item.dataset.componentName === currentComponentName) {
+        item.style.display = 'block'
+      } else {
+        item.style.display = 'none'
+      }
+    })
+  }
+
+  push(option) {
+    if (option.path) {
+      MyRouter.changeHash(option.path, option.query)
+    } else if (option.name) {
+      let path = ''
+
+      for (let i = 0; i < this._routes.length; i++) {
+        if (this._routes[i].name === option.name) {
+          path = this._routes[i].path
+          break
+        }
+      }
+
+      if (path) {
+        MyRouter.changeHash(path, option.query)
+      }
+    }
+  }
+
+  back() {
+    this.changeFlag = true
+    // ……
+  }
+
+  forward() {
+    this.changeFlag = true
+    // ……
+  }
+
+  // 获取路径
+  static getPath() {
+    let href = window.location.href
+    let index = href.indexOf('#') // 获取标识位
+    if (index < 0) {
+      return ''
+    }
+    href = href.slice(index + 1)
+
+    let searchIndex = href.indexOf('?')
+    if (searchIndex < 0) {
+      return href
+    } else {
+      return href.slice(0, searchIndex)
+    }
+  }
+
+  static changeHash(path, query) {
+    if (query) {
+      let str = ''
+      for (let i in query) {
+        str += '&' + i + '=' + query[i]
+      }
+
+      window.location.hash = str ? path + '?' + str.slice(1) : path
+    } else {
+      window.location.hash = path
+    }
+  }
+}
 ```
 
-2. window.location.hash
-3. history.forward()/back()
+> test-myRouter.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body>
+    <ul>
+      <li>
+        <a onclick="router.push({name: 'course'})">课程</a>
+        <a onclick="router.push({name: 'teacher'})">老师</a>
+      </li>
+    </ul>
+    <div class="main-content">
+      <div class="main-box" data-component-name="course">zhaowa训练营</div>
+      <div class="main-box" data-component-name="teacher">云隐</div>
+    </div>
+  </body>
+</html>
+<script src="./myRouter.js"></script>
+<!-- /vue-router/myRouter/page.html#/teacher -->
+<script>
+  window.router = new MyRouter({
+    routes: [
+      {
+        path: '/course',
+        name: 'course'
+      },
+      {
+        path: '/teacher',
+        name: 'teacher'
+      }
+    ]
+  })
+</script>
+<style>
+  [data-component-name] {
+    display: none;
+  }
+</style>
+```
 
 ### 2.3 history 模式
 
 1. 特性区分
-2. ⼿写实现
+2. 手写实现
 3. 对⽐ hash 模式区别
 
-核心 => pushState() replaceState() / history 会改变浏览器的历史记录 / state、title、URL / window.onpopstate()
+#### 1.特性区分
+
+**核心** => pushState() replaceState() / history 会改变浏览器的历史记录 / pushState 的三个参数：state、title、URL / 精准监听状态发生改变：window.onpopstate()
+
+#### 2.手写实现 & 3.对⽐ hash 模式区别
+
+- 实现方式一样，但 API 不一样。
+
+**手写实现**的注意点：
+
+- 锚点也会触发 window.onpopstate()：a 标签触发锚点也会触发 window.onpopstate()
+
+- window.onpopstate() 既能兼容 hash，也能兼容 history 模式。
+
+- init 监听 hashchange 改为 onpopstate 或者不改，因为可以兼容。
 
 ## 三、VUE 的⾼级组件使⽤
 
-### 3.1 动态组件
+### 概要
 
-### 3.2 异步组件
+1. 动态组件
+2. 异步组件
+3. vue-router 实现路由懒加载
 
-### 3.3 vue-router 实现路由懒加载
+### 代码举例
 
 4. 基础配置类
 
@@ -249,8 +548,6 @@ ccc=123&ddd=456: 参数 or query
    }
    // ...
    ```
-
-### 4.3 手写 vue-router
 
 ## Learn More
 
