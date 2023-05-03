@@ -349,7 +349,9 @@ obj = null // 重写置空
       let arr = [] // 一个存闭包函数 closures 的空数组
 
       function closures() {
-        let test = new Array(10000).fill('先定一个小目标：熟练掌握 JavaScript 。') // 长度 10000 的 test 数组
+        let test = new Array(10000).fill(
+          '先定一个小目标：熟练掌握 JavaScript 。'
+        ) // 长度 10000 的 test 数组
 
         return function () {
           return test
@@ -374,9 +376,10 @@ obj = null // 重写置空
   </body>
 </html>
 ```
+
 - 闭包是啥？能够访问自由变量的函数。
 - 自由变量是啥？。。。
-- [一、JavaScript 高级用法（1） 四、闭包](web0304_js_1_advanced_usage(1).md)
+- [一、JavaScript 高级用法（1） 四、闭包](./js_1_advanced_usage_1.md)
 
 原因：arr 数据有多少元素，存在多少次闭包引用——>程序点击次数越多，push 越多，内存消耗越大，页面越来越卡。
 
@@ -402,3 +405,15 @@ obj = null // 重写置空
    GC 执行频繁，频繁使用 大临时变量 -> 新生代空间被装满，速度极快；  
    每次 新生代装满 -> 触发 GC（频繁 GC） -> 页面卡顿；  
    避免：减少 太多临时变量的情况（临时变量无用就回收）
+
+## 友情链接
+
+- [我的掘金主页](https://juejin.cn/user/1042768423037150)
+
+- [我的 github 主页](https://github.com/djsz3y)
+
+- [读书视频学习笔记](https://github.com/djsz3y/learning-notes)
+
+- [爪哇学习笔记](https://github.com/djsz3y/zhaowa-study-notes)
+
+- [bug 仓库](https://github.com/djsz3y/bug-repository)

@@ -71,3 +71,15 @@
    g. ⽹络配置
 
    iv. 服务相关层
+
+## 友情链接
+
+- [我的掘金主页](https://juejin.cn/user/1042768423037150)
+
+- [我的 github 主页](https://github.com/djsz3y)
+
+- [读书视频学习笔记](https://github.com/djsz3y/learning-notes)
+
+- [爪哇学习笔记](https://github.com/djsz3y/zhaowa-study-notes)
+
+- [bug 仓库](https://github.com/djsz3y/bug-repository)
