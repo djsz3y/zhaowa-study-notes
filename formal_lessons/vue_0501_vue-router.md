@@ -114,6 +114,8 @@ export default router
 
 #### 1.3.2.导航守卫
 
+<img src="./imgs/0501_vue-router/vue-router-Navigation-Guards.png"/>
+
 ##### 1.全局
 
 1. 全局前置守卫：`router.beforeEach((to, from, next) => { next() })`
