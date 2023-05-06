@@ -2,6 +2,13 @@
 
 ## 一、目标
 
+promise 规范及应用
+
+- promise A+ 规范详解
+- 手写 promise 函数
+- 重点注意 then 的链式调用和值的穿透
+- 经典 Promise 相关面试题解析
+
 1. 掌握 Promise、async/await 及 generator 的定义及用法
 
 2. 手动实现 Promise 和 async/await
