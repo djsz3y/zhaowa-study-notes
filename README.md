@@ -16,6 +16,48 @@
 
 - [五、垃圾回收&内存泄漏](formal_lessons/js_5_gc_memoryLeak.md)
 
+- [六、JavaScript 运行机制](formal_lessons/js_6_runtime_mechanism.md)
+
+- [七、函数式编程](formal_lessons/js_7_functional_programming.md)
+
+- [八、TS](formal_lessons/js_8_ts.md)
+
+- [九、编译器](formal_lessons/js_9_compiler.md)
+
+- [十、ES6](formal_lessons/js_10_es6.md)
+
+- [Vue 基础](formal_lessons/vue_0408_vue-basic-usage.md)
+
+- [Vue 高级用法](formal_lessons/vue_0409_vue-advanced.md)
+
+- [Vue-cli](formal_lessons/vue_0415_vue-cli.md)
+
+- [Vue 状态管理&ssr(路由&状态同构)](formal_lessons/vue_0416_vuex_ssr.md)
+
+- [Vue.js 核心模块源码解析（上）](<formal_lessons/vue_0422_sourcecode(myCourseNotes).md>)
+
+- [Vue.js 核心模块源码解析（下）](formal_lessons/vue_0430_sourcecode_2.md)
+
+- [Vue-router 学习笔记（vue 前端路由及异步组件）](formal_lessons/vue_0501_vue-router.md)
+
+- [Vue 实战](formal_lessons/vue_0507_vue-in-action.md)
+
+- [React.js 基础](formal_lessons/react_0513_react-basic-usage.md)
+
+- [React 高级](formal_lessons/react_0514_react-advanced-usage.md)
+
+- [redux & mobx](formal_lessons/react_0520_redux_mobx.md)
+
+- [react.js 核心源码解析（上）](formal_lessons/react_0521_sourcecode_1.md)
+
+- [react.js 核心源码解析（下）](formal_lessons/react_0527_sourcecode_2.md)
+
+- [react.js 路由及状态同构](formal_lessons/react_0528_react-router_ssr.md)
+
+- [RN 入门与实战（上）](formal_lessons/react-native_0603_introduction_practice.md)
+
+- [RN 入门与实战（下）](formal_lessons/react-native_0604_introduction_practice.md)
+
 ## 突击课
 
 ## 公开课
