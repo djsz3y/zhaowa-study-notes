@@ -1,6 +1,6 @@
-# react.js 基础
+react.js 基础
 
-## 目标
+# 目标
 
 - react.js 简介
 - jsx 模版语法及 babel 编译配置

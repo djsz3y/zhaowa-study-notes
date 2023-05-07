@@ -1,6 +1,6 @@
-# redux & mobx
+redux & mobx
 
-## 目标
+# 目标
 
 - redux 状态管理详解
 - redux/react-redux 代码解析

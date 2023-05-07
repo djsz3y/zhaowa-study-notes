@@ -1,3 +1,3 @@
-# 六、JavaScript 运行机制
+六、JavaScript 运行机制
 
-## 目标
+# 目标

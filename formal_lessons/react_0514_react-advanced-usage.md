@@ -1,6 +1,6 @@
-# react.js 高级用法
+react.js 高级用法
 
-## 目标
+# 目标
 
 - 高阶组件用法及封装
 - react hook 用法详解

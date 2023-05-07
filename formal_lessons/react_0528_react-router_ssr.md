@@ -1,6 +1,6 @@
-# react.js 路由及状态同构
+react.js 路由及状态同构
 
-## 目标
+# 目标
 
 - Vue Router 和 React Router 实现的区别
 - React-router 详解
