@@ -1,10 +1,24 @@
-# vue-router 学习笔记
+Vue Router 前端路由及异步组件
 
-## ⼀、vue-router 的实现原理
+# 目标
 
-### 1.1 vue-router 是什么？
+Vue Router 前端路由及异步组件
 
-#### 1.1.1 路径切换和跳转发展史
+- 前端路由 router 原理及表现
+- vue.js router 使用详解
+- Vue-Router 的实现原理（⭐）
+- 异步组件
+- 手动实现一个基于 hash 的路由（⭐）
+- 手动实现一个基于 History 的路由（⭐）
+- 完整的导航解析流程
+- 滚动行为
+- 路由懒加载
+
+# ⼀、vue-router 的实现原理
+
+## 1.1 vue-router 是什么？
+
+### 1.1.1 路径切换和跳转发展史
 
 经常遇到一些面试题：浏览器输入地址回车页面显示，出现哪些东西——页面加载过程（包含路由）。
 
@@ -62,17 +76,17 @@
         - 也可以 localStorage 本地存储里保存,到了 index.html 流向当前页面。
         - router 配置。
 
-#### 1.1.2 手写？
+### 1.1.2 手写？
 
 使用路由管理工具：vue-router（和 vue 搭配使用）。
 
-### 1.2 为什么要使⽤ vue-router
+## 1.2 为什么要使⽤ vue-router
 
 单页应用。
 
-### 1.3 如何使⽤ vue-router
+## 1.3 如何使⽤ vue-router
 
-#### 1.3.1.使用步骤
+### 1.3.1.使用步骤
 
 1. 引入生成
 
@@ -84,7 +98,7 @@
    => 路由注入和延续（hybrid）。  
    => （h5 去 h5，pc 去 pc，web 去 web，可以了解 nginx 配置）
 
-##### 举例
+#### 举例
 
 > router/index.js
 
@@ -112,11 +126,11 @@ const router = new VueRouter({
 export default router
 ```
 
-#### 1.3.2.导航守卫
+### 1.3.2.导航守卫
 
 <img src="./imgs/0501_vue-router/vue-router-Navigation-Guards.png"/>
 
-##### 1.全局
+#### 1.全局
 
 1. 全局前置守卫：`router.beforeEach((to, from, next) => { next() })`
 2. 全局解析守卫：`router.beforeResolve((to, from, next) => { next() })`
@@ -148,7 +162,7 @@ router.afterEach((to, from) => {})
 export default router
 ```
 
-##### 2.局部（组件内的守卫）
+#### 2.局部（组件内的守卫）
 
 1. 路由进入前：beforeRouteEnter
 2. 路由更新前：beforeRouteUpdate
@@ -201,7 +215,7 @@ export default {
 </script>
 ```
 
-##### 3.路由独享的守卫（自己补充）
+#### 3.路由独享的守卫（自己补充）
 
 1. 路由配置对象里直接定义路由独享的守卫：beforeEnter；
 2. 和全局前置守卫特点一样；
@@ -222,22 +236,22 @@ const router = new VueRouter({
 })
 ```
 
-## ⼆、路由切换
+# ⼆、路由切换
 
 软跳、硬跳，小跳、大跳，为什么软跳浏览器不加载？和路由切换有关系。
 
-### 2.1 单页路由切换实质
+## 2.1 单页路由切换实质
 
 1. 更新视图但是不重新请求页面
 2. 路由的多种模式： hash hisory abstract
 
-### 2.2 hash 模式
+## 2.2 hash 模式
 
 1. 特性区分
 2. 实现原理
 3. 手写实现
 
-#### 1.特性区分
+### 1.特性区分
 
 举例`https://www.example.com:8080/aaa/bbb?ccc=123&ddd=456#list`：
 
@@ -248,7 +262,7 @@ const router = new VueRouter({
 - `ccc=123&ddd=456`：参数 or query
 - `#list`：锚
 
-#### 2.实现原理
+### 2.实现原理
 
 **核心** => hash 改变不会触发网页重载 / hash 值改变会改变浏览器的历史记录 / hash 改变会出发 window.onhashchange()
 
@@ -258,7 +272,7 @@ const router = new VueRouter({
 2. window.location.hash 赋值
 3. history.forward()/back() 浏览器前进/后退按钮
 
-#### 3.手写实现：手写一个 hash router
+### 3.手写实现：手写一个 hash router
 
 > myRouter.js
 
@@ -429,17 +443,17 @@ class MyRouter {
 </style>
 ```
 
-### 2.3 history 模式
+## 2.3 history 模式
 
 1. 特性区分
 2. 手写实现
 3. 对⽐ hash 模式区别
 
-#### 1.特性区分
+### 1.特性区分
 
 **核心** => pushState() replaceState() / history 会改变浏览器的历史记录 / pushState 的三个参数：state、title、URL / 精准监听状态发生改变：window.onpopstate()
 
-#### 2.手写实现 & 3.对⽐ hash 模式区别
+### 2.手写实现 & 3.对⽐ hash 模式区别
 
 - 实现方式一样，但 API 不一样。
 
@@ -451,15 +465,15 @@ class MyRouter {
 
 - init 监听 hashchange 改为 onpopstate 或者不改，因为可以兼容。
 
-## 三、VUE 的⾼级组件使⽤
+# 三、VUE 的⾼级组件使⽤
 
-### 概要
+## 概要
 
 1. 动态组件
 2. 异步组件
 3. vue-router 实现路由懒加载
 
-### 代码举例
+## 代码举例
 
 4. 基础配置类
 
@@ -507,11 +521,11 @@ class MyRouter {
    // ...
    ```
 
-## 四、vue-router 进阶
+# 四、vue-router 进阶
 
-### 4.1 vue-router 的完整导航解析流程
+## 4.1 vue-router 的完整导航解析流程
 
-### 4.2 vue-router 滚动⾏为进阶处理
+## 4.2 vue-router 滚动⾏为进阶处理
 
 5. 动态加载——滚动行为触发操作——`scrollBehavior`的三种方式：
 
@@ -551,7 +565,7 @@ class MyRouter {
    // ...
    ```
 
-## Learn More
+# Learn More
 
 Essential
 
@@ -570,7 +584,7 @@ Ecosystem
 
 [Certified Vue.js Developer Preparation Guide](https://certification.vuejs.org/dashboard/guides/detail)
 
-## 友情链接
+# 友情链接
 
 - [我的掘金主页](https://juejin.cn/user/1042768423037150)
 
