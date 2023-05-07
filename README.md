@@ -26,25 +26,25 @@
 
 - [十、ES6](formal_lessons/js_10_es6.md)
 
-- [Vue 基础](formal_lessons/vue_0408_vue-basic-usage.md)
+- [Vue 基础用法](formal_lessons/vue_0408_vue-basic-usage.md)
 
-- [Vue 高级用法](formal_lessons/vue_0409_vue-advanced.md)
+- [Vue 高级用法](formal_lessons/vue_0409_vue-advanced-usage.md)
 
-- [Vue-cli](formal_lessons/vue_0415_vue-cli.md)
+- [Vue CLI 脚手架](formal_lessons/vue_0415_vue-cli.md)
 
-- [Vue 状态管理&ssr(路由&状态同构)](formal_lessons/vue_0416_vuex_ssr.md)
+- [Vuex 状态管理 SSR 路由及状态同构](formal_lessons/vue_0416_vuex_ssr.md)
 
-- [Vue.js 核心模块源码解析（上）](<formal_lessons/vue_0422_sourcecode(myCourseNotes).md>)
+- [Vue 核心模块源码解析（上）](<formal_lessons/vue_0422_sourcecode(myCourseNotes).md>)
 
-- [Vue.js 核心模块源码解析（下）](formal_lessons/vue_0430_sourcecode_2.md)
+- [Vue 核心模块源码解析（下）](formal_lessons/vue_0430_sourcecode_2.md)
 
-- [Vue-router 学习笔记（vue 前端路由及异步组件）](formal_lessons/vue_0501_vue-router.md)
+- [Vue Router 前端路由及异步组件](formal_lessons/vue_0501_vue-router.md)
 
 - [Vue 实战](formal_lessons/vue_0507_vue-in-action.md)
 
-- [React.js 基础](formal_lessons/react_0513_react-basic-usage.md)
+- [react.js 基础用法](formal_lessons/react_0513_react-basic-usage.md)
 
-- [React 高级](formal_lessons/react_0514_react-advanced-usage.md)
+- [react.js 高级用法](formal_lessons/react_0514_react-advanced-usage.md)
 
 - [redux & mobx](formal_lessons/react_0520_redux_mobx.md)
 
