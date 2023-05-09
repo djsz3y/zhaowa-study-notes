@@ -61,7 +61,7 @@ Vue 基础用法
 
 - Model：数据结构（数据驱动页面，现在数据和页面都是设计成层级是统一的，页面有一行表格，数据设计成数组里有一个对象，这样数据和视图是对应的。）（以前使用 jQuery，数据和页面是分开的，数据和页面没有任何关系，Model 层是纯粹从后台拿到数据后，存储、解析拼装数据。）
 - View：视图、template(for Vue，layout、style)
-- Controller：解析到的数据 set 到视图上（jQuery 是$.attribute/$.value）。
+- Controller：解析到的数据 set 到视图上（jQuery 是`$.attribute/$.value`）。
 
 ##### 1.1.3.2.2.**观点 2**——jQuery 是前端框架，加上后台接口、中转层 controller 加起来才是 MVC 的东西（上升维度：整个应用、前后端加在一起的层级，应用整合、应用架构角度理解 MVC）
 
