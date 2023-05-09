@@ -96,9 +96,7 @@ Vue 基础用法
 - 所以，ViewModel 不仅有 Controller 的作用，实际在 Controller 里增加了双向的发布订阅，或者说利用发布订阅机制实现自动化的 Controller。
 - View 变化，VM 知道 hook 出去；Model 变化，触发 VM，在 View 中找 Model 相应绑定的变量。
 
-#### 1.1.4.5.TODO：
-
-- 了解 MVVM 究竟是什么，跟 MVC 究竟的差别，就在于 ViewModel。
+#### 1.1.4.5.TODO：了解 MVVM 究竟是什么，跟 MVC 究竟的差别，就在于 ViewModel。
 
 ## 1.2 Vue 简介
 
@@ -122,7 +120,7 @@ beforeCreate => created => beforeMount => mounted
 => beforeUpdate => updated  
 => beforeDestroy => destroyed
 
-#### 1.2.3.2 bC 和 c 区别<span style="color:red;">（面试题）</span>（vue2 VS vue3）：
+#### 1.2.3.2 bC 和 c 区别？<span style="color:red;">（面试题）</span>（vue2 VS vue3）
 
 ##### 1.2.3.2.1.【vue2】：bC：new Vue() - 初始化类、挂载属性（新建 vue 实例，实例挂载功能）
 
@@ -145,7 +143,7 @@ beforeCreate => created => beforeMount => mounted
 
 - bC&c 合并 => setup 阶段
 
-#### 1.2.3.3 bM 和 m 区别<span style="color:red;">（面试题）</span>（vue2 VS vue3）：
+#### 1.2.3.3 bM 和 m 区别？<span style="color:red;">（面试题）</span>（vue2 VS vue3）
 
 - bM：vDom(完整获取，虚拟 dom、虚拟 node 已经生成) - 数据操作（可以做几乎所有的） => 不可以做涉及 dom 操作
 - m: Dom - 任何操作（对 dom）
@@ -169,7 +167,7 @@ beforeCreate => created => beforeMount => mounted
 - beforeMounted 时，dom 还未生成，画 canvas，继承父级宽高，会出现什么问题？拿不到宽和高（有宽没高）。因为父级 dom 还未生成（这时加 nextTick、setTimeout 都是不合适的）。
 - 应该在 dom 生成完后，再初始化 canvas，比较合适。
 
-#### 1.2.3.4 bU 和 u 区别<span style="color:red;">（面试题）</span>（vue2 VS vue3）：
+#### 1.2.3.4 bU 和 u 区别？<span style="color:red;">（面试题）</span>（vue2 VS vue3）
 
 - bU：vDom 更新了（dom 没更新，没有触发 render 函数） -获取到的数据（虚拟节点的数据是新的，但获取的节点信息、dom 信息是旧的）
 - u：dom 更新了
@@ -191,7 +189,7 @@ beforeCreate => created => beforeMount => mounted
   TS 装饰器，实现某个方法包个外壳，外壳插个插件，加个属性，用户名称，执行任何方法，套用这个外壳，都会把外壳名称注入到方法里。  
   当前组件任何变化都加 1、任何渲染都做相同的操作、视图变化 驱动本地数据、后置操作——updated 里。
 
-#### 1.2.3.5 bD 和 d 区别<span style="color:red;">（面试题）</span>：
+#### 1.2.3.5 bD 和 d 区别？<span style="color:red;">（面试题）</span>
 
 ##### 1.2.3.5.1.【vue2】：
 
@@ -209,9 +207,7 @@ beforeCreate => created => beforeMount => mounted
 
 1. vue 如何处理数据和视图之间的关系
 
-2. 生命周期里如何编排每个节点做什么事，从而与用户进行沟通的？  
-   （https://v2.vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks Along the way, it also runs functions called lifecycle hooks, giving users the opportunity to add their own code at specific stages.）
-
+2. 生命周期里如何编排每个节点做什么事，从而与用户进行沟通的？
    - 视图&数据的沟通
    - 生命周期&用户的沟通
 
@@ -233,7 +229,7 @@ beforeCreate => created => beforeMount => mounted
 
 now 要**知道区别**，源码**后面通读源码，知道实现上的差异**。
 
-### 1.2.4 vue 中有哪些实现定向监听的方法<span style="color:red;">（面试题）</span>
+### 1.2.4 vue 中有哪些实现定向监听的方法？<span style="color:red;">（面试题）</span>
 
 Unless Vuex 状态机&EventBus（实例直接存储数据），Vue 本身准备的定向监听的方式：
 
@@ -424,7 +420,7 @@ vue3.x 中，v-if 优先（正好相反）
 
 ## 2.2 指令
 
-## 2.2.1 默认指令
+### 2.2.1 默认指令
 
 没使用过建议实际试一试：
 
@@ -442,7 +438,7 @@ v-model - 双向绑定 => :value + @input
   }
 ```
 
-## 2.2.2 自定义指令
+### 2.2.2 自定义指令
 
 局部自定义指令：
 
@@ -781,6 +777,67 @@ watch: {
 ```
 
 5. 单 tick diff
+
+# <span style="color:red;">总结</span>
+
+经过以上整理，我对自己有如下要求：
+
+- 面试时能够思路清晰的阐述：1，2，3，4，5，6
+
+## 1.简单聊聊对于 MVVM 的了解<span style="color:red;">（面试题）</span>
+
+- （主干与旁支，发家史，进化史）、产生过程、重点是什么  
+  参考：  
+  1.1.2 语义化模板  
+  1.1.3 MVC  
+  1.1.4 MVVM  
+  1.1.4.5.TODO：了解 MVVM 究竟是什么，跟 MVC 究竟的差别，就在于 ViewModel。
+
+## 2.基于 MVVM 思想，Vue 是如何搭建自己的一整套生态环境的？<span style="color:red;">（面试题）</span>
+
+[1]vue 如何处理数据和视图之间的关系
+
+- 参考：  
+  1.2.2 vue 是如何利用 mvvm 思想进行开发的？
+
+[2]生命周期里如何编排每个节点做什么事，从而与用户进行沟通的？
+
+- 视图&数据的沟通
+- 生命周期&用户的沟通
+- 参考：  
+   1.2.3 生命周期  
+   1.2.3.1 vue 生命周期？<span style="color:red;">（面试题）</span>生命周期有哪些？  
+   1.2.3.2 bC 和 c 区别？<span style="color:red;">（面试题）</span>（vue2 VS vue3）  
+   1.2.3.3 bM 和 m 区别？<span style="color:red;">（面试题）</span>（vue2 VS vue3）  
+   1.2.3.4 bU 和 u 区别？<span style="color:red;">（面试题）</span>（vue2 VS vue3）  
+   1.2.3.5 bD 和 d 区别？<span style="color:red;">（面试题）</span>  
+  [官网 Instance Lifecycle Hooks](https://v2.vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks)：（在此过程中，它还运行称为生命周期挂钩的功能，让用户有机会在特定阶段添加自己的代码。Along the way, it also runs functions called lifecycle hooks, giving users the opportunity to add their own code at specific stages.）
+
+## 3.computed 和 watch 异同/vue 中有哪些实现定向监听的方法？<span style="color:red;">（面试题）</span>
+
+- 参考：  
+  1.2.4 vue 中有哪些实现定向监听的方法？<span style="color:red;">（面试题）</span>  
+  1.2.4.1 computed 和 watch 异同——相同点&不同点
+
+## 4.v-if & v-show & v-else & v-else-if？
+
+- 参考：  
+  1.2.5 条件
+
+## 5.v-for 和 v-if 优先级的问题？
+
+- 参考：  
+  1.2.6 循环  
+  1.2.6.1 v-for 和 v-if 优先级的问题？<span style="color:red;">（面试题）</span>
+
+## 6.key 的作用？
+
+- 参考：  
+  1.2.6.2 key 的作用<span style="color:red;">（面试题）</span>
+
+## 7.过指令、事件
+
+## 8.计算机是一门实践性质的学科，过去只是理论性，不实践，两秒就忘记！
 
 # 参考链接
 
