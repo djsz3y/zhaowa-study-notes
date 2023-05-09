@@ -53,17 +53,17 @@ Vue 基础用法
 
 对于 MVC：
 
-#### 1.1.3.1.MVC（Model View Controller）（模型-视图-控制器） => （对整体）设计认知 （软件设计规范）
+#### 1.1.3.1 MVC（Model View Controller）（模型-视图-控制器） => （对整体）设计认知 （软件设计规范）
 
-#### 1.1.3.2.不同范畴（不同维度）具有不同含义：
+#### 1.1.3.2 不同范畴（不同维度）具有不同含义：
 
-##### 1.1.3.2.1.**观点 1**——jQuery 是 MVC（纯前端角度理解 MVC 所处理的能力）：
+##### 1.1.3.2.1 **观点 1**——jQuery 是 MVC（纯前端角度理解 MVC 所处理的能力）：
 
 - Model：数据结构（数据驱动页面，现在数据和页面都是设计成层级是统一的，页面有一行表格，数据设计成数组里有一个对象，这样数据和视图是对应的。）（以前使用 jQuery，数据和页面是分开的，数据和页面没有任何关系，Model 层是纯粹从后台拿到数据后，存储、解析拼装数据。）
 - View：视图、template(for Vue，layout、style)
 - Controller：解析到的数据 set 到视图上（jQuery 是`$.attribute/$.value`）。
 
-##### 1.1.3.2.2.**观点 2**——jQuery 是前端框架，加上后台接口、中转层 controller 加起来才是 MVC 的东西（上升维度：整个应用、前后端加在一起的层级，应用整合、应用架构角度理解 MVC）
+##### 1.1.3.2.2 **观点 2**——jQuery 是前端框架，加上后台接口、中转层 controller 加起来才是 MVC 的东西（上升维度：整个应用、前后端加在一起的层级，应用整合、应用架构角度理解 MVC）
 
 - Model：就是底层的数据、读的数据表
 - View：整个前端领域可以抽象成视图，或者说是视图的一部分，后台的接口是渲染驱动视图的，也可以并到 View 层里来。
@@ -73,30 +73,30 @@ Vue 基础用法
 
 而对于现在主流的 MVVM：
 
-#### 1.1.4.1.MVVM（Model-View-ViewModel）（数据、状态-视图-数据视图绑定层）（对主流框架有使用经验和了解）
+#### 1.1.4.1 MVVM（Model-View-ViewModel）（数据、状态-视图-数据视图绑定层）（对主流框架有使用经验和了解）
 
-#### 1.1.4.2.ViewModel 是 MVVM 所特有的数据视图绑定层。每个框架的实现用的发布订阅。
+#### 1.1.4.2 ViewModel 是 MVVM 所特有的数据视图绑定层。每个框架的实现用的发布订阅。
 
-#### 1.1.4.3.ViewModel 所代表的思想：
+#### 1.1.4.3 ViewModel 所代表的思想：
 
-##### 1.1.4.3.1.数据会绑定在 viewModel 层，并且会直接驱动数据到页面的渲染 => 自动 trigger 的功能（视图增加的第一层自动化）：
+##### 1.1.4.3.1 数据会绑定在 viewModel 层，并且会直接驱动数据到页面的渲染 => 自动 trigger 的功能（视图增加的第一层自动化）：
 
 - 自动 trigger 的功能：MVVM 和 jQuery 最大区别：jQuery 的数据都需要手动调用$dom 的名字.value = xxx，把数据替换掉现有的 dom 的数据。
 - 数据变化 + 视图绑定数据变量 => 视图数据变量，自动发生变化
 
-##### 1.1.4.3.2.（数据 -> 视图，数据变化到视图变化：vue-{{}}，react-setState、小程序-setData）
+##### 1.1.4.3.2 （数据 -> 视图，数据变化到视图变化：vue-{{}}，react-setState、小程序-setData）
 
 视图变化时，同时也会通知到 viewModel 层：
 
 - View 变化 => ViewModel 同样可以拿到回调
 - （在主流框架 Vue、React 里就是相应的 hook，相应的 hook 回来，告诉我们某个事件函数被触发了，hook 到相应的所写的函数里。）。
 
-#### 1.1.4.4.ViewModel 的作用（与 MVC 的差别就在于 ViewModel）：
+#### 1.1.4.4 ViewModel 的作用（与 MVC 的差别就在于 ViewModel）：
 
 - 所以，ViewModel 不仅有 Controller 的作用，实际在 Controller 里增加了双向的发布订阅，或者说利用发布订阅机制实现自动化的 Controller。
 - View 变化，VM 知道 hook 出去；Model 变化，触发 VM，在 View 中找 Model 相应绑定的变量。
 
-#### 1.1.4.5.TODO：了解 MVVM 究竟是什么，跟 MVC 究竟的差别，就在于 ViewModel。
+#### 1.1.4.5 TODO：了解 MVVM 究竟是什么，跟 MVC 究竟的差别，就在于 ViewModel。
 
 ## 1.2 Vue 简介
 
@@ -122,9 +122,9 @@ beforeCreate => created => beforeMount => mounted
 
 #### 1.2.3.2 bC 和 c 区别？<span style="color:red;">（面试题）</span>（vue2 VS vue3）
 
-##### 1.2.3.2.1.【vue2】：bC：new Vue() - 初始化类、挂载属性（新建 vue 实例，实例挂载功能）
+##### 1.2.3.2.1 【vue2】：bC：new Vue() - 初始化类、挂载属性（新建 vue 实例，实例挂载功能）
 
-##### 1.2.3.2.2.【vue2】：c：
+##### 1.2.3.2.2 【vue2】：c：
 
 ###### 1.merge options 的操作：
 
@@ -139,7 +139,7 @@ beforeCreate => created => beforeMount => mounted
 
 - 任何对 dom 和 vdom 挂载处理的事情都不是在 created 之前去完成的。虚拟节点还没完全的 ready，不能说完全的没有，只有一个壳。
 
-##### 1.2.3.2.3.【vue3】：
+##### 1.2.3.2.3 【vue3】：
 
 - bC&c 合并 => setup 阶段
 
@@ -191,12 +191,12 @@ beforeCreate => created => beforeMount => mounted
 
 #### 1.2.3.5 bD 和 d 区别？<span style="color:red;">（面试题）</span>
 
-##### 1.2.3.5.1.【vue2】：
+##### 1.2.3.5.1 【vue2】：
 
 - bD: vm 实例销毁前
 - d: 实例销毁后
 
-##### 1.2.3.5.2.【vue3】： => unmount
+##### 1.2.3.5.2 【vue3】： => unmount
 
 - beforeUnmount
 - unmounted
@@ -641,7 +641,7 @@ d. 大型项目的组件管理
 
 # 5.实战
 
-## 5.1.vue2
+## 5.1 vue2
 
 **<span style="color:red;">TODO:1:52:23</span>**
 
@@ -713,7 +713,7 @@ d. 大型项目的组件管理
 </script>
 ```
 
-## 5.2.vue3
+## 5.2 vue3
 
 > HelloWorld.vue
 
@@ -744,7 +744,7 @@ d. 大型项目的组件管理
 </script>
 ```
 
-## 5.3.其他
+## 5.3 其他
 
 1. 初始化  
    watch  
@@ -792,7 +792,7 @@ watch: {
   1.1.2 语义化模板  
   1.1.3 MVC  
   1.1.4 MVVM  
-  1.1.4.5.TODO：了解 MVVM 究竟是什么，跟 MVC 究竟的差别，就在于 ViewModel。
+  1.1.4.5 TODO：了解 MVVM 究竟是什么，跟 MVC 究竟的差别，就在于 ViewModel。
 
 ## 2.基于 MVVM 思想，Vue 是如何搭建自己的一整套生态环境的？<span style="color:red;">（面试题）</span>
 
