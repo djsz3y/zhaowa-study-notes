@@ -418,6 +418,99 @@ vue3.x 中，v-if 优先（正好相反）
    b. 自定义指令使用  
    c. 常见面试陷阱
 
+## 2.1 模板
+
+问：花括号里可以做什么？<span style="color:red;">（面试题）</span>
+
+- 参考链接：[vue3 parseInterpolation 源码位置](https://github1s.com/vuejs/core/blob/HEAD/packages/compiler-core/src/parse.ts#L160)
+- 参考书籍：《Vue.js 设计与实现》P449
+
+答：
+模板编译原理中，会区分数据类型：
+
+1.数值转换类类型  
+对于数字类型计算：`<h1>number + 1 : {{ number + 1}}</h1>`，  
+字符串操作：`<h1>{{ msg.slice(0, -1)}}</h1>`，  
+浮点以及整形计算：`<h1>{{ number.toFixed(2) }}</h1>`、`<h1>{{ parseInt(number, 10) }}</h1>`，  
+都是可以实现的。
+
+2.动态回调本地函数的方式（做函数加工）  
+在模板上：`{{ calcNumber(number) }}`，  
+在 methods 中：`calcNumber(number){ return num + 2 }`。
+
+3.混合方式`<h1>100 > 99 {{ 100 > 99 ? '对':'错'}}</h1>`  
+即会取模板上的值，又会做一个逻辑判断，所以会先执行响应的语句，拿到值后再把值放进模板中去。
+
+所以做逻辑运算&& ||、取反逻辑!、变量判断，都是可以的。
+
+**<span style="color:red;">TODO:2:04:13</span>**
+
+> HelloWorld.vue
+
+```html
+<template>
+  <!-- 1.数值转换类类型 -->
+  <h1>number + 1 : {{ number + 1}}</h1>
+  <!-- 数字类型计算 -->
+  <h1>{{ msg.slice(0, -1)}}</h1>
+  <!-- 字符串操作 -->
+  <h1>{{ number.toFixed(2) }}</h1>
+  <!-- 浮点 -->
+  <h1>{{ parseInt(number, 10) }}</h1>
+  <!-- 整形计算 -->
+  <!-- 上面4个都是可以实现的。 -->
+
+  <!-- 2.动态回调本地函数的方式 -->
+  <h1>{{ calcNumber(number) }}</h1>
+
+  <!-- 3.混合方式 -->
+  <h1>100 > 99 {{ 100 > 99 ? '对':'错'}}</h1>
+
+  <h1>{{ addMsg }}</h1>
+</template>
+<script>
+  import son from './son.vue'
+  export default {
+      data(){
+      return {
+        msg:'welcome to Your Vue.js App',
+        number: 100,
+        number2: 0
+      }
+    },
+    computed: {
+      addMsg() {
+        return this.msg + this.number
+      }
+    }
+    methods: {
+      calcNumber(number){ return num + 2 }
+    },
+    watch: {
+      number() {
+        this.number2++
+      }
+    },
+    mounted() {
+      this.number2 = 1 // 生命周期的变化
+    }
+  }
+</script>
+```
+
+> son.vue
+
+```html
+<template>
+  <div>son</div>
+</template>
+<script>
+  export default {
+    name: 'son'
+  }
+</script>
+```
+
 ## 2.2 指令
 
 ### 2.2.1 默认指令
@@ -592,126 +685,9 @@ d. 大型项目的组件管理
 
 ## 4.5 大型项目的组件管理
 
-## 过滤器 filter
-
-局部过滤器：
-
-```html
-<template>{ { scope.row.value | formatResVal } }</template>
-<script>
-  export default {
-    filters: {
-      formatVersion: function (value, symbol) {
-        return symbol + value //添加版本号前的V
-      },
-      formatSize: function (value, symbol) {
-        return value + symbol //添加大小后的MB
-      },
-      formatLevel: function (value) {
-        let result = ''
-        switch (value) {
-          case 'H':
-            result = '高'
-            break
-          case 'M':
-            result = '中'
-            break
-          case 'L':
-            result = '低'
-            break
-          default:
-            result = ''
-        }
-        return result
-      }
-    }
-  }
-</script>
-```
-
-全局过滤器:
-
-```html
-<template>{{data|capitalize|capitalizeLastLetter}}</template>
-<script>
-  Vue.filter('capitalize', function (value) {})
-  Vue.filter('capitalizeLastLetter', function (value) {})
-</script>
-```
-
 # 5.实战
 
 ## 5.1 vue2
-
-**<span style="color:red;">TODO:1:52:23</span>**
-
-> HelloWorld.vue
-
-```html
-<template>
-  // 数据类型 // 面试题 // 1.数值转换类类型
-  <h1>number + 1 : {{ number + 1}}</h1>
-  数字类型计算
-  <h1>{{ msg.slice(0, -1)}}</h1>
-  字符串操作
-  <h1>{{ number.toFixed(2) }}</h1>
-  浮点
-  <h1>{{ parseInt(number, 10) }}</h1>
-  整形计算
-  <!-- 上面4个都可以 -->
-
-  // 2.回调本地函数的方式
-  <h1>{{ calcNumber(number) }}</h1>
-
-  // 3.先执行语句拿到值，再放模板里
-  <h1>100 > 99 {{ 100 > 99 ? '对':'错'}}</h1>
-
-  <h1>{{ addMsg }}</h1>
-</template>
-<script>
-  import son from './son.vue'
-  export default {
-      data(){
-      return {
-        msg:'welcome to Your Vue.js App',
-        number: 100,
-        number2: 0
-      }
-    },
-    computed: {
-      addMsg() {
-        return this.msg + this.number
-      }
-    }
-    methods: {
-      calcNumber(number){
-        return num + 2
-      }
-    },
-    watch: {
-      number() {
-        this.number2++
-      }
-    },
-    mounted() {
-      this.number2 = 1 // 生命周期的变化
-    }
-  }
-</script>
-```
-
-> son.vue
-
-```html
-<template>
-  <div>son</div>
-</template>
-<script>
-  export default {
-    name: 'son'
-  }
-</script>
-```
 
 ## 5.2 vue3
 
@@ -782,8 +758,16 @@ watch: {
 
 经过以上整理，我对自己有如下要求：
 
-- 面试时能够思路清晰的阐述：1，2，3，4，5，6
-- 实践 7，8
+- [x] 面试时能够思路清晰的阐述：
+  - [x] 清晰阐述：1
+  - [ ] 清晰阐述：2
+  - [ ] 清晰阐述：3
+  - [ ] 清晰阐述：4
+  - [ ] 清晰阐述：5
+  - [ ] 清晰阐述：6
+  - [ ] 清晰阐述：7
+- [ ] 实践 8
+- [ ] 实践 9
 
 ## 1.简单聊聊对于 MVVM 的了解<span style="color:red;">（面试题）</span>
 
@@ -836,9 +820,14 @@ watch: {
 - 参考：  
   1.2.6.2 key 的作用<span style="color:red;">（面试题）</span>
 
-## 7.过指令、事件
+## 7.花括号里可以做什么？<span style="color:red;">（面试题）</span>
 
-## 8.计算机是一门实践性质的学科，过去只是理论性，不实践，两秒就忘记！
+- 参考：  
+  2.1 模板
+
+## 8.过指令、事件
+
+## 9.计算机是一门实践性质的学科，过去只是理论性，不实践，两秒就忘记！
 
 # 参考链接
 
