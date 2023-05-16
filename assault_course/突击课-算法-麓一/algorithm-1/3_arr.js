@@ -13,8 +13,7 @@ Array.from(arrayLike)
 
 function test() {
   // console.log(typeof arguments)
-  let args = arguments
-  const c = Array.apply(null, args)
-  console.log(c, args)
+  const arr = Array.apply(null, arguments)
+  console.log(arr, arguments)
 }
 test(1, 2, 3, 4)
