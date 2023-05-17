@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>json2dom</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+  <script>
+    window.onload = function () {
+      console.log('on load')
+      const json = {
+        tag: 'div',
+        attrs: {
+          id: 'app',
+          className: 'app'
+        },
+        children: [
+          {
+            tag: 'ul',
+            children: [
+              { tag: 'li', children: ['list 1'] },
+              { tag: 'li', children: ['list 2'] },
+              { tag: 'li', children: ['list 3'] },
+              { tag: 'li', children: ['list 4'] },
+              { tag: 'li', children: ['list 5'] }
+            ]
+          }
+        ]
+      }
+
+      function json2dom(vnode) {
+        if (typeof vnode === 'string' || typeof vnode === 'number') {
+          return document.createTextNode(String(vnode))
+        } else {
+          const __dom = document.createElement(vnode.tag)
+          if (vnode.attrs) {
+            Object.entries(vnode.attrs).forEach(([key, value]) => {
+              if (key === 'className') {
+                __dom[key] = value
+              } else {
+                __dom.setAttribute(key, value)
+              }
+            })
+          }
+          vnode.children.forEach((child) => __dom.appendChild(json2dom(child)))
+          return __dom
+        }
+      }
+
+      const app = json2dom(json)
+      const root = document.getElementById('root')
+      root.appendChild(app)
+    }
+  </script>
+  <style>
+    .app {
+      background-color: yellowgreen;
+    }
+  </style>
+</html>
