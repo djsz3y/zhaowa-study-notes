@@ -1,13 +1,11 @@
-20:00 正式开始。
-
-# 排序这件事情这么重要？<span style="color:red;">（很基础，只知道冒泡和快排是有问题的）</span><span style="color:red;">（双指针，难）</span>
+# 排序为什么如此重要？<span style="color:red;">（很基础，只知道冒泡和快排是有问题的）</span><span style="color:red;">（双指针，难）</span>
 
 我需要一个表格，在表格中根据一定的条件，筛选一部分的数据。
 
-**n 平方的排序，是蕴含着一定的 贪心 在里面的。**
-**n \* lgn 的排序，是蕴含着一定的 二分 在里面的。**
+- **n 平方的排序，是蕴含着一定的 贪心 在里面的。**
+- **n \* lgn 的排序，是蕴含着一定的 二分 在里面的。**
 
-## n 平方复杂度的排序有哪些？
+## 1.n 平方复杂度的排序有哪些？
 
 1. 冒泡排序
 2. 选择排序
@@ -15,10 +13,30 @@
 3. 插入排序
    - 插入数据，让前面的始终有序。
 
-## 如何实现冒泡排序，如何进行优化？
+## 2.实现 冒泡排序 & 优化
+
+优化思路：每一轮迭代，已经不迭代了，可以直接 break。
+
+<img src="./imgs/bubbleSort.png" />
+
+### bubbleSort.js
 
 ```js
-function bubbleSort(arr) {
+// function bubbleSort(arr) {
+//   const len = arr.length
+//   for (let i = 0; i < len; i++) {
+//     for (let j = 0; j < len - 1; j++) {
+//       if (arr[j] > arr[j + 1]) {
+//         ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+//       }
+//     }
+//     console.log(arr.join(','))
+//   }
+//   return arr
+// }
+
+// 写冒泡：
+function bubbleSort1(arr) {
   const len = arr.length
   for (let i = 0; i < len; i++) {
     for (let j = 0; j < len - 1; j++) {
@@ -26,32 +44,13 @@ function bubbleSort(arr) {
         ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
       }
     }
+    console.log(arr.join(','))
   }
   return arr
 }
-```
 
-### 如何优化？
-
-我每一轮迭代的时候，如果说最后已经不迭代了，那么我是不是可以直接 break ？
-####  bubbleSort.js
-
-```js
-function bubbleSort(arr) {
-  const len = arr.length
-  for (let i = 0; i < len; i++) {
-    for (let j = 0; j < len - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
-        ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
-      }
-    }
-
-    console.log(arr.join(', '))
-  }
-
-  return arr
-}
-
+// 优化 1：
+// j < len - i - 1
 function bubbleSort2(arr) {
   const len = arr.length
   for (let i = 0; i < len; i++) {
@@ -60,11 +59,13 @@ function bubbleSort2(arr) {
         ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
       }
     }
+    console.log(arr.join(','))
   }
-
   return arr
 }
 
+// 优化 2：
+// 每一轮迭代，已经不迭代了，可以直接break。
 function bubbleSort3(arr) {
   const len = arr.length
   for (let i = 0; i < len; i++) {
@@ -75,23 +76,38 @@ function bubbleSort3(arr) {
         unSwap = false
       }
     }
-
-    // 如果这个过程，没有交换，是不是可以直接 break?
-    if (unSwap) {
-      break
-    }
-    console.log(arr.join(', '))
+    if (unSwap) break
+    console.log(arr.join(','))
   }
-
   return arr
 }
 
-////////////
+// 测试：
+// const arr = [2, 6, 5, 9, 3, 1, 8, 4, 7]
+const arr1 = [2, 6, 5, 9, 3, 1, 8, 4, 7]
+const arr2 = [2, 6, 5, 9, 3, 1, 8, 4, 7]
+const arr3 = [2, 6, 5, 9, 3, 1, 8, 4, 7]
 
-const arr = [2, 6, 5, 9, 3, 1, 8, 4, 7]
+// console.time('bubbleSort')
+// bubbleSort(arr)
+// console.timeEnd('bubbleSort') // 5.124ms
 
-console.log(bubbleSort3(arr))
+console.time('bubbleSort1')
+bubbleSort1(arr1)
+console.timeEnd('bubbleSort1') // 0.459ms
+
+console.time('bubbleSort2')
+bubbleSort2(arr2)
+console.timeEnd('bubbleSort2') // 0.355ms
+
+console.time('bubbleSort3')
+bubbleSort3(arr3)
+console.timeEnd('bubbleSort3') // 0.238ms
+
+console.log('冒泡排序数组，优化后：', arr3)
 ```
+
+# 20:40
 
 ## 如何实现选择排序和插入排序？
 
@@ -216,8 +232,6 @@ var maxArea = function (height) {
 最核心的一点是，你的局部最优解，和全局最优解，没有直接关系。
 
 人 place.
-
-
 
 # insertSort.js
 
