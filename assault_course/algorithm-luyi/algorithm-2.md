@@ -116,6 +116,8 @@ console.log('冒泡排序数组，优化后：', arr3)
 思路：选择 后面（内部循环）最小的，和外部循环 i 交换。  
 注意：外部到 len - 1，内部到 len！
 
+- 选择最小的，开始交换。
+
 <img src="./imgs/selectSort.png" />
 
 ### selectSort.js
@@ -144,13 +146,36 @@ const arr = [2, 6, 5, 9, 3, 1, 8, 4, 7]
 selectSort(arr)
 ```
 
-# 27:22
-
 ## 1.4 实现 插入排序
 
-```js
+思路：从 1 开始的新的，插入到前边排好序的，数组的正确位置
 
+- 插入数据，让前面的始终有序。
+
+<img src="./imgs/insertSort.png" />
+
+### insertSort.js
+
+```js
+function insertSort(arr) {
+  const len = arr.length
+  for (let i = 1; i < len; i++) {
+    let j = i // j 倒着走
+    let target = arr[j] // 记录要往前插入的值
+    while (j > 0 && arr[j - 1] > target) {
+      arr[j] = arr[j - 1]
+      j--
+    } // 目标前所有大于目标的往后移一位
+    arr[j] = target // 此时 j 即插入位
+    console.log(arr.join())
+  }
+  return arr
+}
+const arr = [2, 6, 5, 9, 3, 1, 8, 4, 7]
+insertSort(arr)
 ```
+
+# 35:47
 
 # 2. n\*logn 复杂度的排序有哪些？
 
