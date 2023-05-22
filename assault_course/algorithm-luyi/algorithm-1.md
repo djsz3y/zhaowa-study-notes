@@ -103,7 +103,7 @@ console.log(lru.get(1)) // { 3 => 3, 4 => 4 }
 
 思路：快指针每隔一个走，慢指针一个一个走，快慢相遇有环。
 
-<img src="./imgs/141.环形链表.png" />
+<img src="./imgs/141.hasCycle.png" />
 
 ### 141.环形链表.js
 
