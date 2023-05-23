@@ -59,19 +59,19 @@ export const createStore = function (reducer, initState) {
 // 那么我们实现一下 _setData ：
 // 观察在 index.jsx 里的数据 init ，我们假设只会进行 count 的加一、减一的这两种操作；
 // 那么我们这样实现：
-function _setData(data, action) {
-  // ?使得数据变得可预测：
-  // ?你要去处理 data，只能是这两种方式，如果不是，那就不让你改变。
-  // !这就是redux
-  switch (action.type) {
-    case 'INCREMENT':
-      return { ...data, count: data.count + 1 }
-    case 'DECREMENT':
-      return { ...data, count: data.count - 1 }
-    default:
-      return data
-  }
-}
+// function _setData(data, action) {
+//   // ?使得数据变得可预测：
+//   // ?你要去处理 data，只能是这两种方式，如果不是，那就不让你改变。
+//   // !这就是redux
+//   switch (action.type) {
+//     case 'INCREMENT':
+//       return { ...data, count: data.count + 1 }
+//     case 'DECREMENT':
+//       return { ...data, count: data.count - 1 }
+//     default:
+//       return data
+//   }
+// }
 
 // *4.我现在就要实现这样一个函数：（上接 index.js）
 export const combineReducers = function (reducers) {

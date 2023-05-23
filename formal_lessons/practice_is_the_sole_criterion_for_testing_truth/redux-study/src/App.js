@@ -1,12 +1,12 @@
 import Data from './data'
 // , { dataObj }
-// import Recontext from './store/connentValue'
+import ReduxTest from './reduxTest'
 function App() {
   return (
     <div>
       {/* {JSON.stringify(dataObj.getData())}  */}
       <Data />
-      {/* <ReduxContext /> */}
+      <ReduxTest />
     </div>
   )
 }

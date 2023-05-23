@@ -126,6 +126,12 @@ module.exports = {
 
 <strong>1:21:15</strong>
 
+<strong>1:39:52</strong>
+
 react@17.0.2
 
 P7 框架无关，技术无关
+
+# 其他
+
+一个 VSCode 插件：ES7+ React/Redux/React-Native snippets
