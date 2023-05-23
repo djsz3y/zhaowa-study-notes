@@ -175,11 +175,80 @@ const arr = [2, 6, 5, 9, 3, 1, 8, 4, 7]
 insertSort(arr)
 ```
 
-# 35:47
-
 # 2. n\*logn 复杂度的排序有哪些？
 
 ## 2.1 实现 快速排序
+
+思路：选一个支点 pivot（少宾），让左边都是小于 pivot 的，右边都是大于 pivot 的，递归，concat 连接。
+
+<img src="./imgs/quickSort.png" />
+
+### quickSort.js
+
+> 写法 Ⅰ
+
+```js
+function quickSort(arr) {
+  // if (!arr.length) return []
+  if (arr.length <= 1) {
+    return arr.slice()
+  }
+
+  const pivot = arr[Math.floor(Math.random() * arr.length)]
+
+  let left = []
+  let right = []
+  let middle = []
+
+  for (let i = 0; i < arr.length; i++) {
+    let val = arr[i]
+    if (val < pivot) {
+      left.push(val)
+    }
+    if (val === pivot) {
+      middle.push(val)
+    }
+    if (val > pivot) {
+      right.push(val)
+    }
+  }
+
+  return quickSort(left).concat(middle, quickSort(right))
+}
+```
+
+> 写法 Ⅱ
+
+```js
+function quickSort2(arr) {
+  // if (!arr.length) return []
+  if (arr.length <= 1) {
+    return arr
+  }
+
+  const pivot = arr[arr.length - 1]
+  const left = arr.filter((v, i) => v <= pivot && i !== arr.length - 1)
+  const right = arr.filter((v) => v > pivot)
+
+  return quickSort2(left).concat(pivot, quickSort2(right))
+}
+```
+
+### 测试
+
+```js
+const arr = [2, 6, 5, 3, 3, 1, 8, 4, 7]
+
+console.time('quickSort')
+console.log(quickSort(arr))
+console.timeEnd('quickSort')
+
+console.time('quickSort2')
+console.log(quickSort2(arr))
+console.timeEnd('quickSort2')
+```
+
+# 53:08
 
 ## 2.2 实现 归并排序
 
@@ -379,51 +448,4 @@ function mergeSort(arr) {
 const arr = [2, 6, 5, 9, 3, 1, 8, 4, 7]
 
 console.log(mergeSort(arr))
-```
-
-# quickSort.js
-
-```js
-function quickSort(arr) {
-  if (arr.length <= 1) {
-    return arr.slice()
-  }
-
-  const pivot = arr[Math.floor(Math.random() * arr.length)]
-
-  let left = []
-  let right = []
-  let middle = []
-
-  for (let i = 0; i < arr.length; i++) {
-    var val = arr[i]
-    if (val < pivot) {
-      left.push(val)
-    }
-    if (val === pivot) {
-      middle.push(val)
-    }
-    if (val > pivot) {
-      right.push(val)
-    }
-  }
-
-  return quickSort(left).concat(middle, quickSort(right))
-}
-
-function quickSort2(arr) {
-  if (arr.length <= 1) {
-    return arr
-  }
-
-  const pivot = arr[arr.length - 1]
-  const left = arr.filter((v, i) => v <= pivot && i !== arr.length - 1)
-  const right = arr.filter((v) => v > pivot)
-
-  return quickSort2(left).concat(pivot, quickSort2(right))
-}
-
-const arr = [2, 6, 5, 3, 3, 1, 8, 4, 7]
-
-console.log(quickSort2(arr))
 ```
