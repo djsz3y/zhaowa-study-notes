@@ -1,5 +1,6 @@
 import Data from './data'
 // , { dataObj }
+import A from './mobx/A'
 import ReduxTest from './reduxTest'
 function App() {
   return (
@@ -7,6 +8,8 @@ function App() {
       {/* {JSON.stringify(dataObj.getData())}  */}
       <Data />
       <ReduxTest />
+      <hr />
+      <A />
     </div>
   )
 }

@@ -24,6 +24,7 @@ export const connect = (mapStateToProps, mapDispatchToProps) => (Component) => {
     // 这样的话我们，基本上一个简单的 redux 就已经完成了。
     const forceUpdate = () => setBool((val) => !val)
     useEffect(() => {
+      // eslint-disable-next-line
       store.subscribe(forceUpdate)
     }, []) // ! 注意：传两个参数——第二个是空数组 []
 
