@@ -2,6 +2,7 @@ function insertSort(arr) {
   const len = arr.length
   for (let i = 1; i < len; i++) {
     let j = i // j 倒着走
+    // 当前我可能要插入或者要排的一个数据。
     let target = arr[j] // 记录要往前插入的值
     while (j > 0 && arr[j - 1] > target) {
       arr[j] = arr[j - 1]
