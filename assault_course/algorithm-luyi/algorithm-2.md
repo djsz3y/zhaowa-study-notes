@@ -248,13 +248,68 @@ console.log(quickSort2(arr))
 console.timeEnd('quickSort2')
 ```
 
-# 53:08
-
 ## 2.2 实现 归并排序
 
-## 2.3 实现原地快速排序
+思路：之前的有序数组合并，得来新的有序数组。
+
+归并用的方法是合并两个有序数组。
+
+[2,3,5,6,9] 和 [1,4,7,8] 合并，两个共同遍历，到最后剩余的那个一定是最大的值，比如这里的 9（因为本身就是两个有序数组合并）。
+
+它也相当于一种分治，把一些问题拆解成了更小的问题，反向拆解问题，归并排序是在归的阶段（快速排序是递的阶段，这两个排序对比着看）。
+
+### mergeSort.js
+
+```js
+function merge(left, right) {
+  let res = []
+  let i = 0
+  let j = 0
+  while (i < left.length && j < right.length) {
+    if (left[i] < right[j]) {
+      res.push(left[i])
+      i++
+    } else {
+      res.push(right[j])
+      j++
+    }
+  }
+
+  if (i < left.length) {
+    res.push(...left.slice(i))
+  } else {
+    res.push(...right.slice(j))
+  }
+
+  return res
+}
+
+// 这个函数的功能，是不是就是排序？input arr， --> sorted arr
+function mergeSort(arr) {
+  if (arr.length <= 1) {
+    return arr
+  }
+
+  const mid = Math.floor(arr.length / 2)
+  // mergeSort 本身给出的就是一个有序数组。
+  const left = mergeSort(arr.slice(0, mid))
+  // mergeSort 本身给出的就是一个有序数组。
+  const right = mergeSort(arr.slice(mid))
+
+  // 合并两个有序数组。
+  return merge(left, right)
+}
+
+const arr = [2, 6, 5, 9, 3, 1, 8, 4, 7]
+
+console.log(mergeSort(arr))
+```
+
+## 2.3 **实现原地快速排序**
 
 ## 2.4 快速排序和归并排序的区别是什么？
+
+<img src="./imgs/quickSort-vs-mergeSort.png" />
 
 快速排序
 
@@ -263,6 +318,8 @@ console.timeEnd('quickSort2')
 归并排序
 
 - 归并的主要方法，是递归地合并两个有序数组。
+
+# 1:05:20
 
 # 3. 复杂度为 n 的排序算法有哪些？具体的思路是什么样的？
 
