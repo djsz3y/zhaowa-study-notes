@@ -67,7 +67,7 @@ function App() {
 
 - DB，用户在，名字在，
 - localStorage、sessionStorage 较长
-- project runtime 较短
+- project runtime - 较短
   - 状态管理的作用（项目运行时、全局存储）
 - component [state, props, data]
 
@@ -87,29 +87,39 @@ redux 为主 & mobx
 
 ### 状态管理方法论
 
-[1]组件之外，可以共享状态/数据；（有一部分数据在全局生命周期里）
+#### [1]组件之外，可以共享状态/数据；（有一部分数据在全局生命周期里（- project runtime - 较短））
 
-- 闭包可以解决。
+- 闭包可以解决（怎么样让一个数据大家都能访问到？）。
+
+CJS 方便理解，简单的一个例子：
+
+1. deps 是不是一个全局的、共享的数据，每个人都能修改它。
+2. 本质上就是一个闭包。
 
 ```js
-const deps = {}
-function modifyDeps(val) {
-  deps.value = val
-}
+// 本质上就是一个闭包。
+;(function (module, exports) {
+  const deps = {} // deps是不是一个全局的、共享的数据，每个人都能修改它。
 
-module.exports = {
-  modifyDeps
-}
+  function modifyDeps(val) {
+    deps.value = val
+  }
+
+  module.exports = {
+    modifyDeps
+  }
+})()
 ```
 
-[2]有修改状态的明确方法，并且能让其他的方法感知到；
+#### [2]有修改状态的明确方法，并且，能让其他的方法感知到；
 
 1. 发布订阅
 2. Proxy
 
-- 本质上，把 handler 放到一个地方，然后在一个合适的时间，执行一下。
+这两者本质上有区别吗？也没有。  
+本质上，把 handler 放到一个地方，然后在一个合适的时间，执行一下。
 
-[3]修改状态，会触发 UI 同步更新；
+#### [3]修改状态，会触发 UI 同步更新；
 
 1. forceUpdate
 2. Comsumer 和 Provider
@@ -173,14 +183,6 @@ redux 测试组件：
 // // mutable
 // state.x.y
 ```
-
-36:16
-
-43:08
-
-<strong>1:21:15</strong>
-
-<strong>1:39:52</strong>
 
 #### redux 补充说明
 
@@ -485,8 +487,9 @@ https://www.npmjs.com/package/customize-cra
 
 经过以上整理，我对自己有如下要求（好难/(ㄒ o ㄒ)/~~）：
 
-- [ ] 掌握状态管理方法论
-- [ ] 能手写一个 redux
+- [x] 掌握状态管理方法论
+- [x] 能手写一个 redux
+- [x] 为什么说 redux 是 immutable 的，数据不可变的？
 
 ## 额外学习了
 
