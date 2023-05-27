@@ -406,8 +406,6 @@ var lengthOfLongestSubstring = function (s) {
 }
 ```
 
-# 1:26:38
-
 ## 4.2 最长上升子序列（之前做过，是错的）<strong style="color:red;">（※）</strong>
 
 ### 300.最长递增子序列.js
@@ -439,18 +437,16 @@ var lengthOfLIS = function (nums) {
 
 ```js
 var maxArea = function (height) {
-  let max = 0
-  let pStart = 0
-  let pEnd = height.length - 1
-  //
+  let max = 0 // 起始面级
+  let pStart = 0 // 左指针
+  let pEnd = height.length - 1 // 右指针
   while (pStart !== pEnd) {
-    let hStart = height[pStart]
-    let hEnd = height[pEnd]
-    let minHeight = hStart < hEnd ? hStart : hEnd
-    let tmpMax = minHeight * (pEnd - pStart)
-    max = max > tmpMax ? max : tmpMax
-
-    hStart > hEnd ? pEnd-- : pStart++
+    let hStart = height[pStart] // 左高度
+    let hEnd = height[pEnd] // 右高度
+    let minHeight = hStart < hEnd ? hStart : hEnd // 最小高度
+    let tmpMax = minHeight * (pEnd - pStart) // 面积
+    max = max > tmpMax ? max : tmpMax // 与之前面积对比，记录最大面积
+    hStart > hEnd ? pEnd-- : pStart++ // 左、右高度，低的向里走。
   }
   return max
 }
@@ -459,3 +455,5 @@ var maxArea = function (height) {
 最核心的一点是，你的局部最优解，和全局最优解，没有直接关系。
 
 人 place.
+
+# 1:41:29
