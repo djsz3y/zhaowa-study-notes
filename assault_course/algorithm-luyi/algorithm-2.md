@@ -406,32 +406,7 @@ var lengthOfLongestSubstring = function (s) {
 }
 ```
 
-## 4.2 最长上升子序列（之前做过，是错的）<strong style="color:red;">（※）</strong>
-
-### 300.最长递增子序列.js
-
-```js
-var lengthOfLIS = function (nums) {
-  // 假如我第 i 个值，大于 第 j 个值。
-  // 那么，我的 dp[i] 的值。等于 j 从 0 到 i-1 各个位置的最长上升子序列+1 的最大值。
-  let dp = []
-  let max = 1
-  dp[0] = 1
-  for (let i = 1; i < nums.length; i++) {
-    dp[i] = 1
-    for (let j = 0; j < i; j++) {
-      if (nums[i] > nums[j]) {
-        dp[i] = Math.max(dp[j] + 1, dp[i])
-      }
-    }
-
-    max = Math.max(dp[i], max)
-  }
-  return max
-}
-```
-
-## 4.3 盛水最多的容器
+## 4.2 盛水最多的容器
 
 ### 11.盛最多水的容器.js
 
@@ -452,8 +427,53 @@ var maxArea = function (height) {
 }
 ```
 
-最核心的一点是，你的局部最优解，和全局最优解，没有直接关系。
+## 4.3 最长上升子序列（之前做过，是错的）<strong style="color:red;">（※）</strong>
 
-人 place.
+思路：看图画图。  
+递归的迭代。
 
-# 1:41:29
+<img src="./imgs/300.lengthOfLIS.jpg" />
+
+### 300.最长递增子序列.js
+
+```js
+var lengthOfLIS = function (nums) {
+  // 假如我第 i 个值，大于 第 j 个值。
+  // 那么，我的 dp[i] 的值。等于 j 从 0 到 i-1 各个位置的最长上升子序列+1 的最大值。
+  let dp = []
+  let max = 1
+  dp[0] = 1
+
+  for (let i = 1; i < nums.length; i++) {
+    dp[i] = 1
+    for (let j = 0; j < i; j++) {
+      if (nums[i] > nums[j]) {
+        dp[i] = Math.max(dp[j] + 1, dp[i])
+      }
+    }
+    max = Math.max(dp[i], max)
+  }
+
+  return max
+}
+```
+
+### 什么时候用动态规划？
+
+1. 动规，其实就是转移方程。  
+   如果能够把转移方程看出来，那这道题就解了一半了。
+
+2. 什么时候用动规？  
+   最核心的一点是，当你的局部最优解，和全局最优解，没有直接关系。
+
+3. 比如：人通过各种路径去一个地方 place。  
+   从上头走，一段 1s，这个是最优吗？不一定，但是之后可能需要 100s。  
+   有可能从下头走，2s，3s，5s 就到了。
+
+4. 所以就是当前局部最优解和全局最优解没有什么太大的关系。
+
+5. 这个举例，让我想到了之前刷题 labuladong，14 天进阶。  
+   最后一天，魔塔游戏？反正我是没解出来，可真太难。  
+   不过我有这个思路了，知道是啥意思，也不错~跟迷宫一样~
+
+第二波算法完喽~
