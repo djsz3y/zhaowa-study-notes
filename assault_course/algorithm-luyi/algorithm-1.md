@@ -274,11 +274,11 @@ var postorderTraversal = function (root) {
  * @return {number[][]}
  */
 var levelOrder = function (root) {
-  if (!root) return []
+  if (!root) return [] // 注意
   let queue = [root]
   let result = []
   while (queue.length) {
-    let len = queue.length
+    const len = queue.length // 注意
     let level = []
     for (let i = 0; i < len; i++) {
       let node = queue.shift()
@@ -291,6 +291,31 @@ var levelOrder = function (root) {
   return result
 }
 ```
+
+测试用例：
+
+```js
+const root = {
+  val: 3,
+  left: {
+    val: 9
+  },
+  right: {
+    val: 20,
+    left: {
+      val: 15
+    },
+    right: {
+      val: 7
+    }
+  }
+}
+console.log(levelOrder(root))
+console.log(levelOrder({ val: 1 }))
+console.log(levelOrder({}))
+```
+
+另一种方式书写：
 
 ```js
 /**
