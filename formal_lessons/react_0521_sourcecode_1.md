@@ -9,3 +9,305 @@ react.js 核心源码解析（上）
 - Suspense 原理详解（⭐）
 - lane 模型详解（⭐）
 - 优先级插队以及时间切片详解（⭐）
+
+# React 源码
+
+先问一个问题：读过源码吗？
+
+## 1.关于源码的一些误区
+
+### 1.1 是否读过源码
+
+1. react 源码，很多人都没读过；
+2. 读过的，跟写得好不好，其实没有什么太大的关系；
+3. 就算不读，依然可以回答好问题。**（读过一部分，大概看过。）**
+
+### 1.2 你读源码是为了什么？
+
+假设你是一名 Vue 的同学，为什么要学 react 的源码？
+
+1. **构建知识体系**（发现一类解决方案的规律）——> **做到技术无关**（比如 redux&mobx，如果只会 redux，你是不可能了解状态管理的规律的；但是你即了解 redux 又了解 mobx，又了解了更多的东西，你是不是就容易在这里面总结出这一类解决方案的规律，然后做到所谓的技术无关）。最终都要实现这一点，与技术无关（架构、更高 level 必经之路）。
+2. react 和 vue 的**对比**——>更好地了解 vue。
+3. **精神层面**，技多不压身，读了感觉自己很厉害很溜很牛皮很棒（这么多“很”都不认识了）。
+
+了解 react 源码与实现原理：
+
+1. 学习更多的东西，方便对前端的框架中原理、设计思路有更好的了解和吸收。
+2. 学习一些其他源码的思想，对自己的工作、业务知识也有一些帮助。
+3. 虽然公司里没有用过，但是对其他的知识也有比较了解。
+
+### 1.3 源码应该怎么学？
+
+#### 1）最厉害的
+
+- 源码全部通读完；
+- 每一个生命周期、每一个 API 做了什么，为什么这么做，都有了解；
+- 每一个要讨论的 issue 在 github 上，我很清楚。
+- 怎么用，怎么玩，甚至怎么改变它，做一个类似于 casong 那种，这肯定是最厉害的。
+
+#### 2）部分理解
+
+不是非常的感兴趣，想指导一下工作、interview；我们可以做到**部分理解**：
+
+1. 我们了解整个 react 的执行流程，在大方向上不出错。 —— 以 react 17 为例。（比如问到一些东西完全不了解，完全只会背题）
+2. 了解一些细节，了解一些常见的面试题。—— 以 react 18 的一些 API 为例。（因为不是必考）（比如说 fiber 架构）
+3. 在使用上有自己的心得。
+
+就可以了。
+
+- 本节主要前两点。
+- 第三点要在以后实战。
+
+#### 3）问到源码就不会
+
+最差的。
+
+## 2.关于 react 的一些问题
+
+概要：
+
+1. 包的版本
+2. 包的内容
+3. 什么是运行时框架
+
+### 2.0 提问：
+
+#### 1）react 好在哪？
+
+高优先级打断低优先级？版本？cra（create-react-app）？什么场景？
+
+- react 不是每一个版本都可以高优先级打断低优先级，哪怕在 react 源码里看到 fiber、看到类，他依然可能做不到这件事。
+- react 生态是什么样的？一般情况下，我要搞一个什么样的东西，这些东西有什么样的能力，说了很多，但是呢，我当前的版本还没实现。大家只看到了前一段话，fiber 好在哪？高优先级打断低优先级，这样说就是根本不了解了，还搞定过就不太可信了。
+
+#### 2）setState 是同步还是异步？
+
+1. 准确的来说，在 legacy 模式（默认）下，如果没有 setTimeout，没有一些定时器，没有一些闭包，这样一些场景下的时候，除了这些场景下是同步的，其他全是异步的；包括 18，包括 concurrent。
+2. 我们回头（next lesson）会手写一个这个东西。
+3. 其实他想让你解释清楚什么情况下是同步的，什么情况下是异步的。
+
+#### 3）API 的话很简单，我们手动调用 batchUpdate
+
+### 2.1 包的版本
+
+#### react 15
+
+最早的时候，react 15，
+stack reconciler
+state* num -> 1
+1,2,3 * num -> 2,4,6
+223, 243, 246.
+
+#### react 17.0.2（稳定版本，一直用的这个）
+
+三种模式（讲两种）：
+
+- legacy 模式 -- 同步模式
+- concurrent 模式 -- 异步、并发模式
+
+我们如果打开[react 源码：17.0.2/packages/react-reconciler/src](https://github.com/facebook/react/tree/17.0.2/packages/react-reconciler/src)，像\*.old.js 一般是 legacy 模式编译的，\*.new.js 一般是 concurrent 模式编译的，但不绝对。
+
+#### react 18
+
+直到 18 的版本，（真正由）同步的更新 -> 变为异步可中断的更新（要了解、知道，这个很难调试出来）。
+一般情况下，会问优先级，比如说 batchUpdate 的原理、Suspense 的实现——和 Promise 有关（可以考察基础知识点）。
+
+这是整个包版本的东西。
+
+那么既然这么复杂的话，我们的源码应该怎么学呢？【1.3 源码应该怎么学？】
+
+### 2.2 包的内容
+
+只需要先关注三个包就行（packages 里）：
+
+1. react:  
+   （1.虚拟 dom 相关 API）  
+   （2.hooks 用户侧 API）
+2. react-reconciler:  
+   （调和）
+3. react-dom:  
+   （操作 DOM 的 API）
+4. scheduler
+
+react-server：ssr  
+react-art：svg 处理
+
+其实：
+
+- 每个包都能单独使用（react、react-reconciler、scheduler；react-dom 可以换掉）。
+- RN（时候，单独使用，非常好玩）。
+- 无数种办法写一个迷你的 react。
+
+<img src="react-sourcecode_1.png" />
+
+#### react
+
+#### react-reconciler
+
+#### react-dom
+
+#### scheduler
+
+# 28:38
+
+### 2.3 什么是运行时框架？
+
+一般情况下，会和编译器，一起来说。
+
+假如有一个函数 Test()，如果说，我们想在 Test 执行的前后，增加一些能力。比如，打印一些内容。
+
+```js
+function Test() {
+  console.log('fn is starting...')
+  // todo something...
+  console.log('fn is ending...')
+}
+
+// 我们现在 Test 执行的前后，增加一些能力。比如，打印一些内容。
+function wrapped(fn) {
+  return function (...rest) {
+    console.log('fn is starting...')
+    fn.apply(this, rest)()
+    console.log('fn is ending...')
+  }
+}
+const NewTest = wrapped(Test)
+```
+
+一般我们说，应用到一些编译器的能力，就是直接读写字符串。
+
+比如，在 vue 里：
+
+```vue
+<template>
+  <div>
+    <div v-for="item of xxx"></div>
+  </div>
+</template>
+<script></script>
+```
+
+- vue 是一个半编译，半运行时的框架。
+- 但是，react 除了 jsx，是一个完全运行时的框架。
+
+另外一个角度：  
+如果你是一个架构的设计人员。
+
+如果架构设计的不太灵活，需要用户遵循步骤使用（先、再、再怎么用）。
+如果 架构设计的足够灵活，想怎么用怎么用。
+
+框架设计的足够灵活，就没有特定的语法。
+比如：react 没有语法糖，所有的东西都在 jsx 里直接写。
+
+甚至可以写 IIFE，
+也可以直接写一个 if-else
+
+```jsx
+<div>
+  {
+  return (function(){
+    return <div></div>
+  })()
+}
+</div>
+```
+
+react 为了保证自己的灵活性，你就不能走编译，你所有的东西，基本上都要是运行时的。
+运行时，是不可控的。
+你只有全 diff。
+所以说，openblock，patchFlag，
+你的书写规则，react 是没有办法给你做优化的。**只能在运行时做优化。**
+
+FMP、CLS、FID
+FID: first input delay。首次输入延时。
+
+#### react 中，唯一的编译，就是让 babel 团队帮它做（编译） jsx 为函数。
+
+```babel
+function App() {
+  return (
+    <div></div>
+  )
+}
+```
+
+babel-preset-react-app
+@babel/preset-react
+
+type, config, children
+
+react/src/React.js
+
+CreateElement(type, config, children)
+
+（今天讲的第一个数据结构）虚拟 dom，React.createElement 的嵌套的执行结果：
+
+> a.js
+
+```jsx
+import React from 'react'
+function App() {
+  React.createElement('div',...)
+}
+const vDom = {
+  type: 'div',
+  props: {
+    className: 'app',
+    children: [
+      {
+        type: 'h2',
+        props: {
+          value: 'hello'
+        }
+      }
+    ]
+  }
+}
+```
+
+> workLoopConcurrent
+
+```js
+let wip = root
+while (wip && !shouldYeild()) {}
+```
+
+## 源码
+
+### 如何进入正题？
+
+legacyRenderSubtreeIntoContainer
+
+legacyCreateRootFromDOMContainer 创建一个根的 fiber 节点
+
+createLegacyRoot 创建节点
+
+【react 的
+FiberRootNode】
+
+的 containerInfo
+指向
+#root 的 dom 节点
+
+\_reactRootContainer.\_\_internalRoot
+指向 【react 的
+FiberRootNode】
+
+updateContainer
+
+scheduleUpdateOnFiber 整个调度的核心入口
+
+workLoopSync
+
+Fiber 树，遍历递归的流程。
+
+# 友情链接
+
+- [我的掘金主页](https://juejin.cn/user/1042768423037150)
+
+- [我的 github 主页](https://github.com/djsz3y)
+
+- [读书视频学习笔记](https://github.com/djsz3y/learning-notes)
+
+- [爪哇学习笔记](https://github.com/djsz3y/zhaowa-study-notes)
+
+- [bug 仓库](https://github.com/djsz3y/bug-repository)
