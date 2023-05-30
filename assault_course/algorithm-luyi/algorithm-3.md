@@ -1,20 +1,32 @@
-20:00 准时开始。
+二分和回溯。
 
-# 二分和回溯。
+# 二分搜索
 
-一个典型的二分的写法：
+- 二分搜索包含在搜索算法里。搜索算法有：顺序搜索、二分搜索、内插搜索。
+
+- 必看——二分搜索方法论：[二分搜索算法总结](https://zhuanlan.zhihu.com/p/633311891)
+
+## 1.1 典型二分、基本二分：
+
+### 704.二分查找.js
 
 ```js
-function search(arr, target) {
+var search = function (nums, target) {
   let low = 0
-  let high = arr.length - 1 //
+  let high = nums.length - 1
   while (low <= high) {
+    /**
+     * // 防止 left & right 太大相加导致溢出
+     * let mid = left + (right - left) / 2;
+     * // JavaScript 向下取整，可是困难到我了，测试用例运行 Run Code 一直不出结果，因为别的语言自动取整了，我要手动取整。
+     * mid = Math.floor(mid);
+     */
     let mid = low + ((high - low) >> 1)
-    if (arr[mid] === target) {
+    if (nums[mid] === target) {
       return mid
-    } else if (arr[mid] < target) {
+    } else if (nums[mid] < target) {
       low = mid + 1
-    } else {
+    } else if (nums[mid] > target) {
       high = mid - 1
     }
   }
@@ -23,19 +35,19 @@ function search(arr, target) {
 }
 ```
 
-二分要注意的几个点：
+### 二分注意：
 
 1. low <= high, 而不是 low < high ， 如果数组的长度是偶数，倒数第二步，low = high.
 2. mid = low + ((high - low) >> 1); 而不是 mid = (low + high) / 2; 因为两者之和，有可能会溢出。
 3. low = mid + 1; high = mid - 1. 如果你直接写成 low = mid 或者 high = mid， 可能会发生死循环。
 
-二分场景：
+### 二分场景：
 
 1. 二分依赖的是顺序表，是数组，而不是链表；
 2. 二分查找的一定是有序数组；
 3. 数据量一般比较大。
 
-## leetcode 35. 搜索插入位置
+## 35.搜索插入位置.js
 
 ```js
 var searchInsert = function (nums, target) {
