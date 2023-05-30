@@ -6,7 +6,13 @@
 
 - 必看——二分搜索方法论：[二分搜索算法总结](https://zhuanlan.zhihu.com/p/633311891)
 
-## 1.1 典型二分、基本二分：
+## 1.1 典型二分（基本二分）：
+
+两种情形：
+
+1. 寻找一个数的位置，没找到 return -1（704.二分查找）
+2. 寻找一个数的位置，没找到返回插入的位置；（35.搜索插入位置）  
+   如果说是找一个位置，return left ; return right + 1；
 
 ### 704.二分查找.js
 
@@ -35,24 +41,14 @@ var search = function (nums, target) {
 }
 ```
 
-### 二分注意：
+### 35.搜索插入位置.js（确定一个数在有序数组中的位置）
 
-1. low <= high, 而不是 low < high ， 如果数组的长度是偶数，倒数第二步，low = high.
-2. mid = low + ((high - low) >> 1); 而不是 mid = (low + high) / 2; 因为两者之和，有可能会溢出。
-3. low = mid + 1; high = mid - 1. 如果你直接写成 low = mid 或者 high = mid， 可能会发生死循环。
-
-### 二分场景：
-
-1. 二分依赖的是顺序表，是数组，而不是链表；
-2. 二分查找的一定是有序数组；
-3. 数据量一般比较大。
-
-## 35.搜索插入位置.js
+> 法 Ⅰ：二分-while 循环
 
 ```js
 var searchInsert = function (nums, target) {
   let low = 0
-  let high = nums.length - 1 //
+  let high = nums.length - 1
   while (low <= high) {
     let mid = low + ((high - low) >> 1)
     if (nums[mid] === target) {
@@ -66,6 +62,8 @@ var searchInsert = function (nums, target) {
   return high + 1
 }
 ```
+
+> 法 Ⅱ：二分-递归
 
 ```js
 var searchInsert = function (arr, target) {
@@ -89,6 +87,20 @@ var searchInsert = function (arr, target) {
   return search(arr, target, 0, arr.length - 1)
 }
 ```
+
+### 二分注意：
+
+1. low <= high, 而不是 low < high ， 如果数组的长度是偶数，倒数第二步，low = high.
+2. mid = low + ((high - low) >> 1); 而不是 mid = (low + high) / 2; 因为两者之和，有可能会溢出。（考察）
+3. low = mid + 1; high = mid - 1. 如果你直接写成 low = mid 或者 high = mid， 可能会发生死循环。
+
+### 二分场景：
+
+1. 二分依赖的是顺序表，是数组，而不是链表；
+2. 二分查找的一定是有序数组；
+3. 数据量一般比较大。
+
+# 20:57
 
 ## 求平方根
 
