@@ -493,7 +493,7 @@ https://www.npmjs.com/package/customize-cra
 
 ## 额外学习了
 
-- [x] [一星期入不了门——React 进阶——react hook 用法详解](https://github.com/djsz3y/zhaowa-study-notes/blob/master/formal_lessons/react_0514_react-advanced-usage.md#react-hook-用法详解)
+- [x] [React 进阶——react hook 用法详解](https://github.com/djsz3y/zhaowa-study-notes/blob/master/formal_lessons/react_0514_react-advanced-usage.md#react-hook-用法详解)
 
 - [x] [《ES6 标准入门》读书笔记——第 21 章 修饰器](https://github.com/djsz3y/learning-notes/blob/master/book/es6-standards/README.md#第-21-章-修饰器)
 
