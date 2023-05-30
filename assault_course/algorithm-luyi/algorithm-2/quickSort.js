@@ -11,7 +11,7 @@ function quickSort(arr) {
   let middle = []
 
   for (let i = 0; i < arr.length; i++) {
-    let val = arr[i]
+    const val = arr[i]
     if (val < pivot) {
       left.push(val)
     }
