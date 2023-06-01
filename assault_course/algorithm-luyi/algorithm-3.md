@@ -133,11 +133,39 @@ var mySqrt = function (x) {
 }
 ```
 
-# 26:48
-
 ## 搜索旋转排序数组
 
+思路：二分左右指针。
+
+1. 先看**中间值 mid** 在整个数组的哪个**位置**；
+2. 有两种情况：  
+   1）因为是先逐渐升高突然到达断点再从更低再爬回原来的起始点，比如：[4,5,6,7,0,1,2]；  
+   2）所以要看 mid 在中间**断点悬崖左边还是右边**；断点左右分别有序，所以从 mid 在所在断点的相对位置->得知**某一边有序**。
+3. 某一边有序->再看 **target 区间是否位于其中**，就可以像基本的二分一样修改左右 left、right 或者低高 low、high 指针，从而完成循环判断。不存在返回-1 呗。
+
+总结：同基本的二分一样，就是**多了一层思路上的判断**。
+
+### 33.搜索旋转排序数组.js
+
+读懂题目：
+
+1. 首先：整数升序元素互不相同数组 nums ，  
+   未知下标 k 位置，元素旋转 180° 。
+2. 比如：[0,1,2,4,5,6,7] 下标 3 处 -> [4,5,6,7,0,1,2]
+3. 已知：旋转后数组 nums ，整数 target
+4. 求： search(nums, target) 函数，  
+   target 在 nums ，  
+   存在返回下标，  
+   不存在返回-1 。
+
+5. 时间复杂度 O(log n) 。
+
 ```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
 var search = function (nums, target) {
   let low = 0
   let high = nums.length - 1
@@ -150,14 +178,14 @@ var search = function (nums, target) {
     }
 
     if (nums[mid] >= nums[high]) {
-      // 左边有序。[low, mid)
+      // 左边有序——[low, mid)
       if (nums[low] <= target && target < nums[mid]) {
         high = mid - 1
       } else {
         low = mid + 1
       }
-    } else {
-      // 右边有序 -- (mid, high]
+    } else if (nums[mid] < nums[high]) {
+      // 右边有序——(mid, high]
       if (nums[mid] < target && target <= nums[high]) {
         low = mid + 1
       } else {
@@ -169,6 +197,8 @@ var search = function (nums, target) {
   return -1
 }
 ```
+
+# 37:28
 
 ## 在排序数组中查找元素的第一个和最后一个位置
 
