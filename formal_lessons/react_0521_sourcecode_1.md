@@ -147,22 +147,23 @@ react-art：svg 处理
 
 #### scheduler
 
-# 28:38
-
 ### 2.3 什么是运行时框架？
 
-一般情况下，会和编译器，一起来说。
+#### 【1】运行时，一般情况，会和编译器一起来说：
 
-假如有一个函数 Test()，如果说，我们想在 Test 执行的前后，增加一些能力。比如，打印一些内容。
+##### 函数执行前后增加能力——不用编译器：
+
+[1]假如有一个函数 Test()，
 
 ```js
 function Test() {
-  console.log('fn is starting...')
   // todo something...
-  console.log('fn is ending...')
 }
+```
 
-// 我们现在 Test 执行的前后，增加一些能力。比如，打印一些内容。
+[2]想在 Test 执行前后，增加一些能力（打印一些内容）：
+
+```js
 function wrapped(fn) {
   return function (...rest) {
     console.log('fn is starting...')
@@ -170,14 +171,44 @@ function wrapped(fn) {
     console.log('fn is ending...')
   }
 }
-const NewTest = wrapped(Test)
 ```
 
-一般我们说，应用到一些编译器的能力，就是直接读写字符串。
+[3]执行 NewTest，就可以做到这一点：
 
-比如，在 vue 里：
+```js
+const NewTest = wrapped(Test)
+NewTest(1, 2, 3) // 执行 NewTest
+```
 
-```vue
+##### 函数执行前后增加能力——使用编译器：
+
+[1]如果用户连 NewTest 这一行都不要加（第[3]步都不想），就像 Test 前后都打印，那么怎么办？
+
+[2]那么大家想一想是不是我们可以：  
+读到 function Test() {} 这几行代码，在这几行代码执行前后都塞入{1}，{2}（只要有 Test，我就放入这两行）；  
+这就是编译器的能力。
+
+```js
+function Test() {
+  console.log('fn is starting...') // {1}
+  // todo something...
+  console.log('fn is ending...') // {2}
+}
+```
+
+##### 编译器的进一步解释：
+
+[1]也就是：
+
+一般我们说，非运行时，编译器的能力；  
+**运用**到一些**编译器**的能力，就是**直接读写字符串**。
+把**函数当作字符串去读写**，
+
+[2]比如：
+
+在 vue 里，这一行`<div v-for="item of xxx"></div>`为什么生效？
+
+```html
 <template>
   <div>
     <div v-for="item of xxx"></div>
@@ -186,52 +217,121 @@ const NewTest = wrapped(Test)
 <script></script>
 ```
 
+在 html 里没有这个规则，它就是利用了编译器的能力：  
+只要读到这个字符串，我就知道把这句话给它扩写成几句，我们可以这样理解。
+
+[3]相对上面总结一下，就是：
+
 - vue 是一个半编译，半运行时的框架。
-- 但是，react 除了 jsx，是一个完全运行时的框架。
+- react 除了 jsx，是一个完全运行时的框架。
 
-另外一个角度：  
-如果你是一个架构的设计人员。
+#### 【2】架构层面
 
-如果架构设计的不太灵活，需要用户遵循步骤使用（先、再、再怎么用）。
-如果 架构设计的足够灵活，想怎么用怎么用。
-
-框架设计的足够灵活，就没有特定的语法。
-比如：react 没有语法糖，所有的东西都在 jsx 里直接写。
-
-甚至可以写 IIFE，
-也可以直接写一个 if-else
+[1]（我们再从另外一个角度想一想）  
+你是一个架构的设计人员，如果架构设计不太灵活，用户必须遵照已有的规则先用、再用、再怎么使用；如果架构设计的足够灵活，想怎么用怎么用，想传什么传什么；要想把一个框架设计的足够灵活，那它就没有很多特定的语法。比如：react 没有语法糖，没有 v-if、v-for，所有的东西都在 jsx 里直接写。甚至可以写 IIFE，也可以直接写一个 if-else。这就是 react 的灵活性。
 
 ```jsx
 <div>
-  {
-  return (function(){
+  {(function () {
     return <div></div>
-  })()
-}
+  })()}
 </div>
 ```
 
-react 为了保证自己的灵活性，你就不能走编译，你所有的东西，基本上都要是运行时的。
-运行时，是不可控的。
-你只有全 diff。
-所以说，openblock，patchFlag，
-你的书写规则，react 是没有办法给你做优化的。**只能在运行时做优化。**
+[2]react 是运行时的，要想解决性能问题，不可能走编译：
 
-FMP、CLS、FID
-FID: first input delay。首次输入延时。
+react 为**保证灵活性**，就**不能走编译**，所有的东西基本上都要是**运行时**的。
+然而，运行时是**不可控**的（用户的代码更新的，都不可控）。
+不可控，只有**全 diff**。react 再小的更新，只有从头再来一遍。
 
-#### react 中，唯一的编译，就是让 babel 团队帮它做（编译） jsx 为函数。
+（所以 react18 做时间切片）  
+（不能 openblock、patchFlag 都不能走，因为本质上没有编译器的东西，没办法在静态的东西上做任何的优化的）
 
-```babel
+**react 的书写规则无法做优化，只能在运行时做优化。**
+
+[3]不管怎样，都要**全 diff**（从头到尾完全的跑一遍）。  
+那就**让用户感觉到性能**是 ok 的。
+
+\*用户的性能体感是什么指标？
+
+- FMP（首屏加载）、
+- CLS、
+- **FID**（尤其是 FID，first input delay，首次输入延时。）  
+  更新的再慢，只要**让用户输入没有延时**，那么**用户就感觉不卡**。
+
+这就是运行时做优化。  
+\*现在体会一下：
+
+- vue 文件，后缀是 vue，因为要现以字符串的形式去读；
+- react 的文件后缀可以是 js，因为 react 唯一的编译只有 babel。
+
+#### 【3】react 中唯一的编译——babel 编译 jsx 为函数。
+
+[1]编译前：
+
+```jsx
 function App() {
   return (
-    <div></div>
+    <div className="app">
+      <h2>hello</h2>
+      <div id="list">
+        <ul>
+          <li>list 1</li>
+          <li>list 2</li>
+          <li>list 3</li>
+          <li>list 4</li>
+          <li>list 5</li>
+        </ul>
+      </div>
+    </div>
   )
 }
 ```
 
-babel-preset-react-app
-@babel/preset-react
+[2]编译后：
+
+[2.1]React Runtime(Automatic)
+
+```js
+import { jsx as _jsx } from 'react/jsx-runtime'
+function App() {
+  return /*#__PURE__*/ _jsx('div', {})
+}
+```
+
+[2.2]React Runtime 换成 Classic 版本；
+
+- 就是一个函数与函数的嵌套（React.createElement）：
+
+```js
+function App() {
+  return React.createElement(
+    'div',
+    { className: 'app' },
+    React.createElement('h2', null, 'hello'),
+    React.createElement(
+      'div',
+      { id: 'list' },
+      React.createElement(
+        'ul',
+        null,
+        React.createElement('li', null, 'list 1'),
+        React.createElement('li', null, 'list 2'),
+        React.createElement('li', null, 'list 3'),
+        React.createElement('li', null, 'list 4'),
+        React.createElement('li', null, 'list 5')
+      )
+    )
+  )
+}
+```
+
+这就是 要搞清楚 React 从头到尾有哪些东西，怎么来的。
+
+# 46:11
+
+babel6 : babel-preset-react-app
+babel7 : @babel/preset-react
 
 type, config, children
 
