@@ -328,26 +328,127 @@ function App() {
 
 这就是 要搞清楚 React 从头到尾有哪些东西，怎么来的。
 
-# 46:11
+# 3.画图学源码——17.0.2
 
 babel6 : babel-preset-react-app
 babel7 : @babel/preset-react
 
-type, config, children
+## 3.1 写 react 代码，最后成了什么样子？为什么是这个样子？
 
-react/src/React.js
+### 3.1.1 寻找 createElement
 
-CreateElement(type, config, children)
+【1】createElement 是什么？就是创建一个对象。
 
-（今天讲的第一个数据结构）虚拟 dom，React.createElement 的嵌套的执行结果：
+> 源码 [packages/react/src/ReactElement.js](https://github.com/facebook/react/blob/17.0.2/packages/react/src/ReactElement.js) 第 348 行
 
-> a.js
+```js
+/**
+ * Create and return a new ReactElement of the given type.
+ * See https://reactjs.org/docs/react-api.html#createelement
+ */
+export function createElement(type, config, children) {
+  // ...
+}
+```
 
-```jsx
+使用时就是：
+
+```js
+React.createElement('h2', null, 'hello')
+```
+
+【2】我们还是从 [packages/react/index.js](https://github.com/facebook/react/blob/17.0.2/packages/react/index.js) 里看：
+
+- 搜索 createElement ，发现最后一行引用自 `{...} from './src/React';`。
+
+```js
+// Export all exports so that they're available in tests.
+// We can't use export * from in Flow for some reason.
+export {
+  // ...
+  createElement
+  // ...
+} from './src/React'
+```
+
+【3】打开 [packages/react/src/React.js](https://github.com/facebook/react/blob/17.0.2/packages/react/src/React.js) 第 101 行：
+
+- 发现其实一样的，还是用的 `{...} from './ReactElement';`——当前目录下的 ReactElement 。
+
+```js
+import {
+  createElement as createElementProd,
+  createFactory as createFactoryProd,
+  cloneElement as cloneElementProd,
+  isValidElement
+} from './ReactElement'
+```
+
+【4】所以，还是看【1】ReactElement.js。
+
+### 3.1.2 分析 createElement
+
+打开 [packages/react/src/ReactElement.js](https://github.com/facebook/react/blob/17.0.2/packages/react/src/ReactElement.js#L348)，看第 348 行的 createElement 方法。
+
+- 我们且不管 createElement 中间做了什么，直接看 return ；
+- return 的参数里有 key、ref，也就是中间写了一些 key、ref；
+- 最后调用了 ReactElement 方法。
+
+```js
+/**
+ * Create and return a new ReactElement of the given type.
+ * See https://reactjs.org/docs/react-api.html#createelement
+ */
+export function createElement(type, config, children) {
+  // ...
+  return ReactElement(
+    type,
+    key,
+    ref,
+    self,
+    source,
+    ReactCurrentOwner.current,
+    props
+  )
+}
+```
+
+### 3.1.3 分析 ReactElement 方法（看到一个好用插件：）
+
+> 再看[packages/react/src/ReactElement.js——第 146 行](https://github.com/facebook/react/blob/17.0.2/packages/react/src/ReactElement.js#L146)
+
+[1]先定义一个 element，最后 return element——返回了一个对象。
+
+[2]说白了，babel 生成的 React.createElement() 方法，  
+这一系列的 createElement，最后形成的就是一个对象；  
+这些对象以树的形式，一点点的嵌套起来；
+
+```js
+const ReactElement = function (type, key, ref, self, source, owner, props) {
+  const element = {
+    // ...
+  }
+
+  return element
+}
+```
+
+[3]这些执行完，得到一个 vDom。
+
+- 所以上面的使用 babel 编译后——[2]编译后（本篇文章第 291 行）的代码：
+
+```js
 import React from 'react'
 function App() {
   React.createElement('div',...)
 }
+```
+
+- 得到的就是：
+
+> a.js
+
+```jsx
 const vDom = {
   type: 'div',
   props: {
@@ -356,13 +457,39 @@ const vDom = {
       {
         type: 'h2',
         props: {
-          value: 'hello'
+          value: 'hello' // 文本
         }
       }
+      // ...
     ]
   }
 }
 ```
+
+就这样一层一层的，得到的最后一个 jsx，  
+就是虚拟 dom，291 行 `function App(){}` 函数执行的结果。
+
+### 3.1.4 总结：
+
+1. 这就是今天讲的**第一个重点**：  
+   数据结构——虚拟 dom（React.createElement 的嵌套的执行结果）。
+
+2. 即：图里的黄色框框 react 里的第 1 点。
+
+3. jsx -> React.createElement -> VDom
+
+4. react 组件，执行，得到虚拟 dom。
+
+剩下的就是运行时了，没有编译了。
+
+接下来是调试部分。
+
+## 3.2 额外问：react 的 diff 和 vue 的 diff 有什么区别？（一般比较少问。）
+
+- react 的 diff 前后比对，普通遍历比。
+- vue 有两种 diff，vue2 把前后不一样的找出来，然后再取中间的，vue3 的 diff 算法是最长上升子序列，也就是莱温斯坦最短距离。
+
+# 59:50
 
 > workLoopConcurrent
 
