@@ -204,13 +204,26 @@ var search = function (nums, target) {
 }
 ```
 
-### <strong style="color:red;">37:28</strong>
-
 ### 1.2.5 在排序数组中查找元素的第一个和最后一个位置
+
+思路：
+
+找到 target 的范围区间内的值的时候——  
+需要根据 true / false ——
+
+- 左移右指针找（target 区间的）左边界，
+- 右移左指针找（target 区间的）右边界；
+
+从而找到左右边界；
 
 #### 34.在排序数组中查找元素的第一个和最后一个位置.js
 
 ```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
 var searchRange = function (nums, target) {
   const search = function (fromLow) {
     let low = 0,
@@ -222,15 +235,24 @@ var searchRange = function (nums, target) {
       } else if (nums[mid] > target) {
         high = mid - 1
       } else {
+        // 找到 target 的范围区间内的值的时候——
+        // 需要根据 true / false ——
+
+        // - 左移右指针找（target 区间的）左边界，
+        // - 右移左指针找（target 区间的）右边界；
+
+        // 从而找到左右边界；
         if (fromLow) {
-          // 我的值，在我的左区间
+          // 值，在左区间
           if (nums[mid] === nums[mid - 1]) {
+            // 左边还有-相同的-目标值
             high = mid - 1
           } else {
             return mid
           }
         } else {
           if (nums[mid] === nums[mid + 1]) {
+            // 右边还有-相同的-目标值
             low = mid + 1
           } else {
             return mid
@@ -240,10 +262,11 @@ var searchRange = function (nums, target) {
     }
     return -1
   }
-
   return [search(true), search(false)]
 }
 ```
+
+# <strong style="color:red;">45:36</strong>
 
 # 回溯<span style="color:red;">（常考，重点）</span>
 
