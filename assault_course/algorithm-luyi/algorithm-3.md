@@ -266,7 +266,7 @@ var searchRange = function (nums, target) {
 }
 ```
 
-# <strong style="color:red;">45:36</strong>
+# <strong style="color:red;">51:02</strong>
 
 # 回溯<span style="color:red;">（常考，重点）</span>
 
