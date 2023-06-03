@@ -226,8 +226,8 @@ var search = function (nums, target) {
  */
 var searchRange = function (nums, target) {
   const search = function (fromLow) {
-    let low = 0,
-      high = nums.length - 1
+    let low = 0
+    let high = nums.length - 1
     while (low <= high) {
       let mid = low + ((high - low) >> 1)
       if (nums[mid] < target) {
