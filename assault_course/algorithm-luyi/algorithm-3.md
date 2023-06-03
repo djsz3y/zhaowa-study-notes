@@ -276,30 +276,31 @@ var searchRange = function (nums, target) {
 2. 排列： N 个数，有几种排列方式；
 3. 棋盘： N 皇后，数独。
 
-## 2.1 大概率是一个公式
+## 2.1 回溯方法论
+
+回溯大概率是一个公式：
 
 ```js
 var combine = function(n, k) {
-    const result = [];
-    const path = [];
+  const result = []
+  const path = []
 
-    function backtrack() {
-        if(condition) {
-            result.push([...path]);
-            return;
-        }
-
-        for() {
-            path.push();
-            backtrack();
-            path.pop();
-        }
+  function backtrack() {
+    if(condition) {
+      result.push([...path])
+      return
     }
+    for() {
+      path.push()
+      backtrack()
+      path.pop()
+    }
+  }
 
-    backtrack();
+  backtrack()
 
-    return result;
-};
+  return result
+}
 ```
 
 ## 2.2 题目
