@@ -1,6 +1,6 @@
 二分和回溯
 
-# 二分搜索
+# 一、二分搜索
 
 ## 1.0 概述
 
@@ -266,15 +266,17 @@ var searchRange = function (nums, target) {
 }
 ```
 
-# <strong style="color:red;">51:02</strong>
+# 二、回溯<span style="color:red;">（常考，重点）</span>
 
-# 回溯<span style="color:red;">（常考，重点）</span>
+## 2.0 概述
 
 大部分情况下，解决的都是一个广义搜索的问题，也就是，从一组可能满足需求的解中，找出一部分正解。
 
-组合： N 个数，找 K 个数的集合；
-排列： N 个数，有几种排列方式；
-棋盘： N 皇后，数独。
+1. 组合： N 个数，找 K 个数的集合；
+2. 排列： N 个数，有几种排列方式；
+3. 棋盘： N 皇后，数独。
+
+## 2.1 大概率是一个公式
 
 ```js
 var combine = function(n, k) {
@@ -300,7 +302,11 @@ var combine = function(n, k) {
 };
 ```
 
-## 组合 1：给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合
+## 2.2 题目
+
+### 2.2.1 组合 1：给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合
+
+#### 77.组合.js
 
 ```js
 var combine = function (n, k) {
@@ -324,7 +330,11 @@ var combine = function (n, k) {
 }
 ```
 
-## 组合 2：找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合
+## <strong style="color:red;">51:02</strong>
+
+### 2.2.2 组合 2：找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合
+
+#### 39.组合总和.js
 
 ```js
 var combinationSum = function (candidates, target) {
@@ -352,7 +362,9 @@ var combinationSum = function (candidates, target) {
 }
 ```
 
-## 组合 3：找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合， candidates 不重复
+### 2.2.3 组合 3：找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合， candidates 不重复
+
+#### 40.组合总和-ii.js
 
 ```js
 var combinationSum2 = function (candidates, target) {
@@ -383,7 +395,9 @@ var combinationSum2 = function (candidates, target) {
 }
 ```
 
-## 全排列 1：数组 nums ，返回其 所有可能的全排列
+### 2.2.4 全排列 1：数组 nums ，返回其 所有可能的全排列
+
+#### 46.全排列.js
 
 ```js
 var permute = function (nums) {
@@ -410,7 +424,9 @@ var permute = function (nums) {
 }
 ```
 
-## 全排列 2：数组 nums ，返回其 所有可能的全排列，不重复
+### 2.2.5 全排列 2：数组 nums ，返回其 所有可能的全排列，不重复
+
+#### 47.全排列-ii.js
 
 ```js
 var permuteUnique = function (nums) {
@@ -443,7 +459,9 @@ var permuteUnique = function (nums) {
 }
 ```
 
-## 8 皇后问题
+### 2.2.6 N 皇后问题
+
+#### 51.N-皇后.js
 
 ```js
 var solveNQueens = function (n) {
