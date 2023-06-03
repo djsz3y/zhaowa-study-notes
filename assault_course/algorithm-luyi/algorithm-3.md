@@ -315,23 +315,30 @@ var combine = function (n, k) {
   const path = []
 
   function backtrack(path, startIndex) {
+    // 到达树的底部
     if (path.length === k) {
       result.push([...path])
       return
     }
 
+    // 注意 i 从 startIndex 开始递增
+    // 注意小于等于 <=
     for (let i = startIndex; i <= n; i++) {
+      // 做选择
       path.push(i)
       backtrack(path, i + 1)
+      // 撤销选择
       path.pop()
     }
   }
+
   backtrack(path, 1)
+
   return result
 }
 ```
 
-## <strong style="color:red;">51:02</strong>
+## <strong style="color:red;">1:03:27</strong>
 
 ### 2.2.2 组合 2：找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合
 
