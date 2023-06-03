@@ -269,6 +269,8 @@ react 为**保证灵活性**，就**不能走编译**，所有的东西基本上
 
 [1]编译前：
 
+> a.js
+
 ```jsx
 function App() {
   return (
@@ -302,6 +304,8 @@ function App() {
 [2.2]React Runtime 换成 Classic 版本；
 
 - 就是一个函数与函数的嵌套（React.createElement）：
+
+> a.js
 
 ```js
 function App() {
@@ -413,7 +417,7 @@ export function createElement(type, config, children) {
 }
 ```
 
-### 3.1.3 分析 ReactElement 方法（看到一个好用插件：）
+### 3.1.3 分析 ReactElement 方法<span style="color: red;">（TODO 看到一个好用插件：）</span>
 
 > 再看[packages/react/src/ReactElement.js——第 146 行](https://github.com/facebook/react/blob/17.0.2/packages/react/src/ReactElement.js#L146)
 
@@ -433,9 +437,11 @@ const ReactElement = function (type, key, ref, self, source, owner, props) {
 }
 ```
 
-[3]这些执行完，得到一个 vDom。
+[3]执行完，得到一个 vDom。
 
-- 所以上面的使用 babel 编译后——[2]编译后（本篇文章第 291 行）的代码：
+[3.1]所以上面的使用 babel 编译后——[2]编译后（本篇文章第 291 行）的代码：
+
+> a.js
 
 ```js
 import React from 'react'
@@ -444,11 +450,11 @@ function App() {
 }
 ```
 
-- 得到的就是：
+[3.2]得到的就是：
 
 > a.js
 
-```jsx
+```js
 const vDom = {
   type: 'div',
   props: {
@@ -466,10 +472,10 @@ const vDom = {
 }
 ```
 
-就这样一层一层的，得到的最后一个 jsx，  
+[3.3]就这样一层一层的，得到的最后一个 jsx，  
 就是虚拟 dom，291 行 `function App(){}` 函数执行的结果。
 
-### 3.1.4 总结：
+### 3.1.4 <strong style="color: red;">总结</strong>：
 
 1. 这就是今天讲的**第一个重点**：  
    数据结构——虚拟 dom（React.createElement 的嵌套的执行结果）。
@@ -480,27 +486,232 @@ const vDom = {
 
 4. react 组件，执行，得到虚拟 dom。
 
-剩下的就是运行时了，没有编译了。
-
+剩下的就是运行时了，没有编译了。  
 接下来是调试部分。
 
-## 3.2 额外问：react 的 diff 和 vue 的 diff 有什么区别？（一般比较少问。）
+> [总结：a.js](./practice_is_the_sole_criterion_for_testing_truth/react-17-study/src/a.js)
+
+```js
+// [1]编译前：
+function App() {
+  return (
+    <div className="app">
+      <h2>hello</h2>
+      <div id="list">
+        <ul>
+          <li>list 1</li>
+          <li>list 2</li>
+          <li>list 3</li>
+          <li>list 4</li>
+          <li>list 5</li>
+        </ul>
+      </div>
+    </div>
+  )
+}
+// [2]编译后：
+import React from 'react'
+function App() {
+  return React.createElement(
+    'div',
+    { className: 'app' },
+    React.createElement('h2', null, 'hello'),
+    React.createElement(
+      'div',
+      { id: 'list' },
+      React.createElement(
+        'ul',
+        null,
+        React.createElement('li', null, 'list 1'),
+        React.createElement('li', null, 'list 2'),
+        React.createElement('li', null, 'list 3'),
+        React.createElement('li', null, 'list 4'),
+        React.createElement('li', null, 'list 5')
+      )
+    )
+  )
+}
+// [3]执行完，得到一个 vDom：
+const vDom = {
+  type: 'div',
+  props: {
+    className: 'app',
+    children: [
+      {
+        type: 'h2',
+        props: {
+          value: 'hello' // 文本
+        }
+      }
+      // ...
+    ]
+  }
+}
+```
+
+## 3.2 额外问：
+
+### 1）react 的 diff 和 vue 的 diff 有什么区别？（一般比较少问。）
+
+答：
 
 - react 的 diff 前后比对，普通遍历比。
 - vue 有两种 diff，vue2 把前后不一样的找出来，然后再取中间的，vue3 的 diff 算法是最长上升子序列，也就是莱温斯坦最短距离。
 
-# 59:50
+### 2）react 的中断可恢复，它是 js 代码执行了一半停下来，然后中断恢复后，再继续执行吗？如果是这样的话，js 的代码怎么能做到中断呢？
 
-> workLoopConcurrent
+答：
+
+[1]校验优先级的函数：should && shouldYield()
+
+[2]举个例子：
 
 ```js
 let wip = root
-while (wip && !shouldYeild()) {}
+while (wip && !shouldYield()) {
+  // do something
+  wip = wip.child
+}
 ```
 
-## 源码
+[3]源码：
 
-### 如何进入正题？
+只要没有交执行权`!shouldYield()`的时候，  
+就接着往下走`performUnitOfWork`：
+
+> [packages/react-reconciler/src/ReactFiberWorkLoop.old.js](https://github.com/facebook/react/blob/17.0.2/packages/react-reconciler/src/ReactFiberWorkLoop.old.js#LL1634C1-L1640C2)
+
+```js
+/** @noinline */
+function workLoopConcurrent() {
+  // Perform work until Scheduler asks us to yield
+  while (workInProgress !== null && !shouldYield()) {
+    performUnitOfWork(workInProgress)
+  }
+}
+```
+
+[4]一会看：怎么样**执行**这个函数 performUnitOfWork 的，一点点**打断点**打到这。
+
+## 3.3 调试源码——实践检验真理
+
+### 3.3.0 前言
+
+运行时框架，跟踪很容易：
+
+- vue 都不知道 js 线程怎么跑的
+- react 不同，react 能很清楚的看到。
+
+把编译的拷贝过来，开始调试源码。
+
+### 3.3.1 创建&启动项目：
+
+#### 1）创建一个项目 react-17-study：
+
+```bash
+npx create-react-app react-17-study
+cd react-17-study
+npm start
+```
+
+#### 2）版本降级（新启动的项目是@18.2.0 需要降级到@17.0.2）
+
+1. 卸载 react react-dom
+2. 安装 react@17.0.2 react-dom@17.0.2
+
+```bash
+npm uninstall react react-dom
+npm install react@17.0.2 react-dom@17.0.2
+```
+
+参考链接：
+
+- [React 18 降级到 17.0.2](https://blog.csdn.net/qq3163566/article/details/125842229)
+
+- [安装 React 脚手架，并指定版本](https://blog.csdn.net/m0_67301837/article/details/128345530)
+
+#### 3）修改 index.js
+
+> src/index.js
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
+import reportWebVitals from './reportWebVitals'
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+)
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals()
+```
+
+#### 4）修改 App.js ，接下来针对如下 code ，调试源码：
+
+> src/App.js
+
+```js
+// import logo from './logo.svg'
+import './App.css'
+
+function App() {
+  return (
+    <div className="app">
+      <h2>hello</h2>
+      <div id="list">
+        <ul>
+          <li>list 1</li>
+          <li>list 2</li>
+          <li>list 3</li>
+          <li>list 4</li>
+          <li>list 5</li>
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+export default App
+```
+
+## <span style="color: red;">1:02:41</span>
+
+## 调试 render(element, container, callback) 函数
+
+> F12 ->  
+> Sources -> Page ->  
+> top -> localhost:3000 -> static/js ->  
+> D:/.../react-17-study ->  
+> node_modules/react-dom/cjs/react-dom.development.js
+
+```js
+function render(element, container, callback) {
+  // ...
+  return legacyRenderSubtreeIntoContainer(
+    null,
+    element,
+    container,
+    false,
+    callback
+  )
+}
+```
+
+1. 在 render 函数里的 `if (!isValidContainerLegacy(container))` 打断点，
+
+### 3.3.2 调试步骤（依次创建 src 下的文件）：
+
+#### 源码
+
+##### 如何进入正题？
 
 legacyRenderSubtreeIntoContainer
 
@@ -526,6 +737,12 @@ scheduleUpdateOnFiber 整个调度的核心入口
 workLoopSync
 
 Fiber 树，遍历递归的流程。
+
+### 3.3.3 项目 react-17-study
+
+> react-17-study
+
+- 仓库地址：[react-17-study](https://github.com/djsz3y/zhaowa-study-notes/tree/master/formal_lessons/practice_is_the_sole_criterion_for_testing_truth/react-17-study)
 
 # 友情链接
 
