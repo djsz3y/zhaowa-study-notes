@@ -396,7 +396,9 @@ var combinationSum = function (candidates, target) {
 
 ```js
 var combinationSum2 = function (candidates, target) {
+  // 注意：必须排序，否则报错！
   candidates = candidates.sort((a, b) => a - b)
+
   const result = []
   const path = []
 
@@ -405,20 +407,25 @@ var combinationSum2 = function (candidates, target) {
       result.push([...path])
       return
     }
-
     for (let i = startIndex; i < candidates.length; i++) {
       // 剪枝
       if (candidates[i] + sum > target) return
       // 数组中可能有相同的数据，这个数据会影响最后的结果，有重复。
       if (i === startIndex || candidates[i] !== candidates[i - 1]) {
         path.push(candidates[i])
-        backtrack(i + 1, sum + candidates[i])
+        // 在每次回溯时候：
+        // 把当前循环的项 item(=candidates[i]) 与 sum 相加
+        // ——从而计算下次回溯的参数：和 sum 。
+
+        // !注意 i + 1
+        backtrack(i + 1, candidates[i] + sum)
         path.pop()
       }
     }
   }
 
   backtrack(0, 0)
+
   return result
 }
 ```
@@ -452,7 +459,7 @@ var permute = function (nums) {
 }
 ```
 
-## <strong style="color:red;">1:12:49</strong>
+## <strong style="color:red;">1:17:26</strong>
 
 ### 2.2.5 全排列 2：数组 nums ，返回其 所有可能的全排列，不重复
 
