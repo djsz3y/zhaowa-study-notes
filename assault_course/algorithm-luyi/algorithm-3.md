@@ -355,15 +355,15 @@ var combine = function (n, k) {
 }
 ```
 
-## <strong style="color:red;">1:03:27</strong>
-
 ### 2.2.2 组合 2：找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合
 
 #### 39.组合总和.js
 
 ```js
 var combinationSum = function (candidates, target) {
+  // 注意：必须排序，否则报错！
   candidates = candidates.sort((a, b) => a - b)
+
   const result = []
   const path = []
 
@@ -372,17 +372,20 @@ var combinationSum = function (candidates, target) {
       result.push([...path])
       return
     }
-
     for (let i = startIndex; i < candidates.length; i++) {
-      // 剪枝
+      // 剪枝？
       if (candidates[i] + sum > target) return
       path.push(candidates[i])
-      backtrack(i, sum + candidates[i])
+      // 在每次回溯时候：
+      // 把当前循环的项 item(=candidates[i]) 与 sum 相加
+      // ——从而计算下次回溯的参数：和 sum 。
+      backtrack(i, candidates[i] + sum)
       path.pop()
     }
   }
 
   backtrack(0, 0)
+
   return result
 }
 ```
@@ -448,6 +451,8 @@ var permute = function (nums) {
   return result
 }
 ```
+
+## <strong style="color:red;">1:12:49</strong>
 
 ### 2.2.5 全排列 2：数组 nums ，返回其 所有可能的全排列，不重复
 
