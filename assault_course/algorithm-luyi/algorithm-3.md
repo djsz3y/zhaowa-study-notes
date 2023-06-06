@@ -432,6 +432,8 @@ var combinationSum2 = function (candidates, target) {
 
 ### 2.2.4 全排列 1：数组 nums ，返回其 所有可能的全排列
 
+<img src="./imgs/46.permute.png" />
+
 #### 46.全排列.js
 
 ```js
@@ -444,8 +446,8 @@ var permute = function (nums) {
       result.push([...path])
       return
     }
-
     for (let i = 0; i < nums.length; i++) {
+      // [1,2,3]
       const _nums = [...nums]
       const tmp = _nums.splice(i, 1)[0]
       path.push(tmp)
@@ -455,11 +457,12 @@ var permute = function (nums) {
   }
 
   backtrack(nums)
+
   return result
 }
 ```
 
-## <strong style="color:red;">1:17:26</strong>
+## <strong style="color:red;">1:23:23</strong>
 
 ### 2.2.5 全排列 2：数组 nums ，返回其 所有可能的全排列，不重复
 
