@@ -479,7 +479,6 @@ var permuteUnique = function (nums) {
       result.push([...path])
       return
     }
-
     for (let i = 0; i < nums.length; i++) {
       if (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]) {
         continue
@@ -495,6 +494,7 @@ var permuteUnique = function (nums) {
   }
 
   backtrack([])
+
   return result
 }
 ```
