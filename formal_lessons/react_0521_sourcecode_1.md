@@ -137,7 +137,7 @@ react-art：svg 处理
 - RN（时候，单独使用，非常好玩）。
 - 无数种办法写一个迷你的 react。
 
-<img src="react-sourcecode_1.png" />
+<img src="./imgs/react_0521_sourcecode_1/react-sourcecode-1.png" />
 
 #### react
 
@@ -614,7 +614,7 @@ cd react-17-study
 npm start
 ```
 
-#### 2）版本降级（新启动的项目是@18.2.0 需要降级到@17.0.2）
+#### 2）版本降级（新启动的项目是@18.2.0 需要降级到@17.0.2 不然后面调试代码不是 17.0.2 的新手就更不懂了）
 
 1. 卸载 react react-dom
 2. 安装 react@17.0.2 react-dom@17.0.2
@@ -641,18 +641,19 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+// debugger
+ReactDOM.render(<App />, document.getElementById('root')) // 把 App 节点渲染到 root 里。
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
 ```
+
+解释：
+
+1. ReactDOM.render(<App />, document.getElementById('root')) // 把 App 节点渲染到 root 里。
+2. root 在 public/index.html 里。
 
 #### 4）修改 App.js ，接下来针对如下 code ，调试源码：
 
@@ -682,9 +683,11 @@ function App() {
 export default App
 ```
 
-## <span style="color: red;">1:02:41</span>
+# 开始调试
 
-## 调试 render(element, container, callback) 函数
+## 1.调试 render(element, container, callback) 函数
+
+### 1.1 render 函数的位置：
 
 > F12 ->  
 > Sources -> Page ->  
@@ -705,36 +708,245 @@ function render(element, container, callback) {
 }
 ```
 
-1. 在 render 函数里的 `if (!isValidContainerLegacy(container))` 打断点，
+### 1.2 操作步骤：
+
+Chrome:
+
+- F10: Step over
+- F11: Step into
+
+1. 在 render 函数里的 `if (!isValidContainerLegacy(container))` {26089}打断点；
+
+2. 在 index.js 的 ReactDOM.render 上面增加 debugger ；
+
+3. 调试：
+
+第一步：  
+F5 刷新项目(index.js: debugger{6}) -> F10(index.js: ReactDOM.render{7})
+
+第二步：  
+(Teacher:)
+
+- F11(logo.svg: `export default __webpack_public_path__ + 'static/media/logo.hash一大坨.svg'`{30})
+- F11(index.js: ReactDOM.render{7})
+- F11(react-jsx-dev-r...development.js: `var validType = isValidElementType(type); // We warn in this case but don't throw. We expect ...`{1121})
+- Shift + F11(react-dom.development.js: `if (!isValidContainerLegacy(container))`{26089})
+
+第三步：  
+(Teacher:)
+
+- F11(react-dom.development.js: `return !!(node && (node.nodeType === ELEMENT_NODE || node.nodeType === DOCUMENT_NODE || node.nodeType === DOCUMENT_FRAGMENT_NODE || node.nodeType === COMMENT_NODE && node.nodeValue === ' react-mount-point-unstable '));`{25903})
+- Shift + F11(react-dom.development.js: `var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;`{26096})【这是校验无所谓】
+- F10(react-dom.development.js: `if (isModernRoot) {`{26098})
+- F10(react-dom.development.js: `return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);`{26103})【**legacyRenderSubtreeIntoContainer**这个函数是干嘛的？先去判断 root 的 dom 节点下有没有一个叫做`_reactRootContainer`的东西，如果没有的话，他就会进入这里。】[Breakpoint]——**PS**：打上断点，后面全部用 Breakpoint 标记。
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-1.png" />
+
+第四步：  
+(Teacher:)
+
+- F11(react-dom.development.js: `topLevelUpdateWarnings(container);`{25996})  
+  [Breakpoint]——`var fiberRoot;`{26003}  
+  【`root = container._reactRootContainer = legacyCreateRootFromDOMContainer(container, forceHydrate);`{26007}】【这里有个**核心**的方法叫做：**legacyCreateRootFromDOMContainer**，这个函数是干嘛的呢？创建一个根的 fiber 节点。】
+- F10(react-dom.development.js: `warnOnInvalidCallback$1(callback === undefined ? null : callback, 'render');`{25997})
+- F10(react-dom.development.js: `var root = container._reactRootContainer;`{26002})
+- F10(react-dom.development.js: `if (!root) {`{26005})【此时，{26003}的 fiberRoot 为 undefined；{26002}的 container 这个 div 里的值都为 null，这个 h5 的 root 的节点下面`_reactRootContainer`是空的；所以我要现在创建它。】【继续往下走 Step over F10】
+- F10(react-dom.development.js: `root = container._reactRootContainer = legacyCreateRootFromDOMContainer(container, forceHydrate);`{26007})【接下来进来 Step into F11】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-2.png" />
+
+aaaaaaaa，让我吟诗一首，难难难，难于上青天；行路难，行路难，多歧路，今安在；我好难；继续：我没有付出 20 倍的努力，我连 4 倍的努力都没有付出，aoeiuv。2023-6-4  
+作为一个处女座，让我吐槽一下，好继续难下去 T_T。
+
+第五步：  
+(Teacher:)
+
+- F11(react-dom.development.js: `var shouldHydrate = forceHydrate || shouldHydrateDueToLegacyHeuristic(container); // First clear any existing content.`{25954})【这一部分不管，这一部分是 SSR 的。】
+- F11(react-dom.development.js: `var rootElement = getReactRootElementInContainer(container);`{25949})
+- Shift + F11(react-dom.development.js: `if (!shouldHydrate) {`{25956})
+- 先[Breakpoint]，再 F8(`return createLegacyRoot(container, shouldHydrate ? {`{25981})【有一个 API 叫做 createLegacyRoot，我们进去。】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-3.png" />
+
+- F11(react-dom.development.js: `return new ReactDOMBlockingRoot(container, LegacyRoot, options);`{25900})  
+   【好，大家看，这里干嘛？我们创建了一个节点：`new ReactDOMBlockingRoot`；  
+   上一行的 **createLegacyRoot** 方法定义位置{25899}，标记加粗一下方便追溯。】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-4.png" />
+
+好，我们往下走。
+
+第六步：  
+(Teacher:)
+
+- F11(react-dom.development.js: `this._internalRoot = createRootImpl(container, tag, options);`{25835})  
+  【创建节点 new ReactDOMBlockingRoot 的内部方法，就是创建节点的作用】
+- F10(react-dom.development.js: `}`{25836})
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-5.png" />
+
+- F10(react-dom.development.js: `return new ReactDOMBlockingRoot(container, LegacyRoot, options);`{25900})  
+  【又回到了 createLegacyRoot 方法】
+
+```js
+function createLegacyRoot(container, options) {
+  return new ReactDOMBlockingRoot(container, LegacyRoot, options)
+}
+```
+
+- F10(react-dom.development.js: `  } : undefined);`{25983})【到达 **createLegacyRoot** 】
+- F10(react-dom.development.js: `fiberRoot = root._internalRoot;`{26008})
+- F10(react-dom.development.js: `if (typeof callback === 'function') {`{26010})  
+   【好，我们来看：创建完以后，我们有一个 fiberRoot 的东西，fiberRoot 里有 current，】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-6.png" />
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-7.png" />
+
+- 【控制台（console）：】
+
+```js
+fiberRoot === fiberRoot.containerInfo._reactRootContainer._internalRoot
+// -> true
+```
+
+- <strong style="color:red;">（重要）</strong>【也就是它**整个形成了一个环**；
+  fiberRoot 就是 `root = container._reactRootContainer = legacyCreateRootFromDOMContainer(container, forceHydrate);` 的 root ，也就是 FiberRootNode ：】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-8.png" />
+
+- <strong style="color:red;">（重要）</strong>【FiberRootNode 下有 containerInfo(`fiberRoot.containerInfo`)，指向 #root 的 div dom 节点：】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-9.png" />
+
+- <strong style="color:red;">（重要）</strong>【`fiberRoot.containerInfo._reactRootContainer._internalRoot` 又指回了 fiberRoot：】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-10.png" />
+
+- 我们大家注意一下，root 是什么？
+
+第七步：  
+(Teacher:)
+
+- 先[Breakpoint]，再 F8(react-dom.development.js: `updateContainer(children, fiberRoot, parentComponent, callback);`{26021})  
+  【下面进入 **unbatchedUpdates** ，在 **updateContainer** 打断点，F8，然后进入 F11】
+- F11(react-dom.development.js: `onScheduleRoot(container, element);`{25431})
+- 先[Breakpoint]，再 F8(react-dom.development.js: `scheduleUpdateOnFiber(current$1, lane, eventTime);`{25482})  
+  【有一个非常重要的函数， **scheduleUpdateOnFiber** ，打断点；这个是处理我们的**更新队列**的；这个就是我们的**调度**，调度的函数的核心的入口；我们进入，F11。】
+- F11(react-dom.development.js: `checkForNestedUpdates();`{21835})
+- 先[Breakpoint](react-dom.development.js: `performSyncWorkOnRoot(root);`{21881})  
+  【在这个里面， performSyncWorkOnRoot 会做什么？大家可以看一下，为什么会进入这里？】
+- 先[Breakpoint]，再 F8(react-dom.development.js: `if (lane === SyncLane) {`{21872})  
+   【首先，{21872}这里有个判断，lane 模型是同步的；  
+   即：在这种情况下，如果是异步操作，就会进入 `ensureRootIsScheduled(root, eventTime);`{21883}，先判断根节点为调度的，再往下调度。】  
+   【但现在我们是同步的，相当于 legacy 模式，所以走 `performSyncWorkOnRoot(root);`{21881}这个函数。】  
+   【F11 进入这个函数： performSyncWorkOnRoot 】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-11.png" />
+
+- F11(react-dom.development.js: `function performSyncWorkOnRoot(root) {`{22262})  
+  【在这里他会调用 renderRootSync(root, lanes) 方法，以同步方式 render 去渲染；一路 F10 找到{22293}】
+
+- [Breakpoint](react-dom.development.js: `exitStatus = renderRootSync(root, lanes);`{22277})
+- [Breakpoint](react-dom.development.js: `exitStatus = renderRootSync(root, lanes);`{22289})
+- 先[Breakpoint]，F10(react-dom.development.js: `exitStatus = renderRootSync(root, lanes);`{22293})【找到这一步，进入 】
+
+- F11(react-dom.development.js: `function renderRootSync(root, lanes) {`{22655})【进入了 **renderRootSync** 函数】
+
+- 先[Breakpoint]，再 F8(react-dom.development.js: `workLoopSync();`{22670})【核心就在这个位置 **workLoopSync** ，把其他断点都关掉。进入 F11】
+
+- F11(react-dom.development.js: `while (workInProgress !== null) {`{22706})  
+  【这个方法叫做 workLoopSync ，使用了 **performUnitOfWork** 方法；】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-12.png" />
+
+- Ctrl + F(react-dom.development.js: `function workLoopConcurrent() {`{22759})  
+  【查询同样使用了 performUnitOfWork 方法的 workLoopConcurrent 函数；】
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-13.png" />
+
+解释：
+
+1. 【看上面*两个图片* 的两个方法： workLoopSync & workLoopConcurrent ，区别是后者方法 while 循环里，多了 `&& !shouldYield()`】
+2. 【workLoopConcurrent —— 在 concurrent 模式下，会判断高优先级是否要打断低优先级；这个 while 循环 为什么可以中断？就是在这里，即：`&& !shouldYield()`；】
+3. 【刚刚进入的判断 `if (lane === SyncLane) {`{21872} ，而不是另外一个，所以走的 workLoopSync ，而不是 Concurrent 模式的 workLoopConcurrent 函数。】
+
+> <strong style="color:red;">workLoopSync —— 同步模式直接执行。</strong>
+
+```js
+function workLoopSync() {
+  // Already timed out, so perform work without checking if we need to yield.
+  while (workInProgress !== null) {
+    // {22706}
+    performUnitOfWork(workInProgress)
+  }
+}
+```
+
+> <strong style="color:red;">workLoopConcurrent —— 在 concurrent 模式下，会判断高优先级是否要打断低优先级；</strong>  
+> 这个 while 循环 为什么可以中断？就是在这里，即：`&& !shouldYield()`；
+
+```js
+function workLoopConcurrent() {
+  // Perform work until Scheduler asks us to yield
+  while (workInProgress !== null && !shouldYield()) {
+    // {22761}
+    performUnitOfWork(workInProgress)
+  }
+}
+```
+
+第 步：
+
+- 先[Breakpoint]，再 F10(react-dom.development.js: `performUnitOfWork(workInProgress);`{22707})【下面该处理每一个单元的工作了，进入 F11 这个函数 **performUnitOfWork** 】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-14.png" />
+
+- F11(react-dom.development.js: `var current = unitOfWork.alternate;`{22770})  
+  1）【现在我们已经进入了 `function performUnitOfWork(unitOfWork)` 函数，在 {22770} 打个断点；】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-15.png" />  
+  2）【然后点击这里（右侧调用栈的 workLoopSync 函数），】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-16.png" />  
+  3）【回到 workLoopSync 函数的第 {22707} 行；这个节点（在前面的步骤中已经处理过了）就是我们之前看到的节点（root FiberRootNode）指向的 current】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-17.png" />  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-18.png" />  
+  4）【第一个节点是 tag 为 3 的节点（为啥我这是 tag 为 2 的节点？重新刷新为 tag = 3。）：】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-19.png" />  
+  5）【第二个节点是 tag 为 2 的节点（这个节点就是 App），也就是说进入了 src/App.js 下的 `function App() {...}` 这个函数里了；好，我们再往下走。】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-20.png" />  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-21.png" />  
+  6）【下个节点是 tag 为 5 的节点（hostComponent，它就是 div），它的 className 就是 app，也就是它现在在 `<div className="app">` 这个节点上】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-22.png" />  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-23.png" />  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-24.png" />  
+  7）【再走 F10，现在就在 h2 这个节点上；】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-25.png" />  
+  8）【再走 F10，现在就在 div#list 这个节点上；】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-26.png" />  
+  9）【再走 F10，在 ul 节点 `type: ul`；】  
+  10）【再走 F10，在第 1 个 li 节点；依次 F10 直到 第 5 个 li 节点；】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-27.png" />
+- F10(react-dom.development.js: `if (next === null) {`{22785})  
+  1）【从第 5 个 li 节点的 {22770} 行，一直 F10 到 {22785} 行；】  
+  2）【此时 `unitOfWork.pendingProps` 里是 `children: "list 5"`，进入了 `if (next === null) {` 的判断；】  
+  3）【此时的 next 是 null ，所以进入 completeUnitOfWork 。】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-28.png" />
+- F10(react-dom.development.js: `if (next === null) {`{22785})  
+  1）【completeUnitOfWork 完成了以后（所有的，都完成）；】  
+  1.1）【如果给 completeUnitOfWork {22787} 打断点，会发现走了很多次，应该都是退出的。】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-29.png" />  
+  2）【workLoopSync() 这个函数，执行完成（直到走到 {22709} 行）。】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-30.png" />
+
+- F10(react-dom.development.js: ``{})【我们往下走，F10，一直到 commitRoot 第 {22329} 行】
+
+## <span style="color: red;">1:23:31</span>
 
 ### 3.3.2 调试步骤（依次创建 src 下的文件）：
 
-#### 源码
+#### 源码——标记：方便追溯
 
 ##### 如何进入正题？
 
-legacyRenderSubtreeIntoContainer
-
-legacyCreateRootFromDOMContainer 创建一个根的 fiber 节点
-
-createLegacyRoot 创建节点
-
-【react 的
-FiberRootNode】
-
-的 containerInfo
-指向
-#root 的 dom 节点
-
-\_reactRootContainer.\_\_internalRoot
-指向 【react 的
-FiberRootNode】
-
-updateContainer
-
-scheduleUpdateOnFiber 整个调度的核心入口
-
-workLoopSync
+```js
+|-render
+  |-legacyRenderSubtreeIntoContainer
+    |-legacyCreateRootFromDOMContainer 创建一个根的 fiber 节点
+      |-createLegacyRoot 创建一个节点 `return new ReactDOMBlockingRoot(container, LegacyRoot, options);`
+      |-unbatchedUpdates
+        |-updateContainer
+          |-scheduleUpdateOnFiber 整个调度的核心入口
+            |-performSyncWorkOnRoot
+              |-renderRootSync
+                |-workLoopSync 直接执行，因为是 legacy 模式
+                  |-performUnitOfWork
+```
 
 Fiber 树，遍历递归的流程。
 
