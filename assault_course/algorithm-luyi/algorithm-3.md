@@ -108,6 +108,7 @@ var searchInsert = function (arr, target) {
   }
   return search(arr, target, 0, arr.length - 1)
 }
+console.log(searchInsert([2, 3, 4, 5, 6, 7, 8, 9], 10))
 ```
 
 ### 1.2.3 求平方根
@@ -462,8 +463,6 @@ var permute = function (nums) {
 }
 ```
 
-## <strong style="color:red;">1:23:23</strong>
-
 ### 2.2.5 全排列 2：数组 nums ，返回其 所有可能的全排列，不重复
 
 #### 47.全排列-ii.js
@@ -506,66 +505,88 @@ var permuteUnique = function (nums) {
 ```js
 var solveNQueens = function (n) {
   const res = []
-  const arr = Array(n)
+  // '.' 表示空，'Q' 表示皇后，初始化棋盘
+  // 0: (5) ['.', '.', '.', '.', '.']
+  // 1: (5) ['.', '.', '.', '.', '.']
+  // 2: (5) ['.', '.', '.', '.', '.']
+  // 3: (5) ['.', '.', '.', '.', '.']
+  // 4: (5) ['.', '.', '.', '.', '.']
+  // length: 5
+  const board = Array(n)
     .fill(-1)
     .map(() => Array(n).fill('.'))
-  function backtrack(arr, row) {
+
+  function backtrack(board, row) {
+    // 结束条件
     if (row === n) {
-      res.push(arr.map((i) => i.join('')))
+      // 最后形成了 n 皇后 board ，把 n 皇后 board 的每一行转字符串，形成一组可行的 n 皇后给了 结果数组 res 。
+      res.push(board.map((i) => i.join('')))
       return
     }
 
     for (let i = 0; i < n; i++) {
-      if (valid(arr, row, i)) {
-        arr[row][i] = 'Q'
-        backtrack(arr, row + 1)
-        arr[row][i] = '.'
+      if (valid(board, row, i)) {
+        // 去的时候，在本行设置 Q
+        board[row][i] = 'Q'
+        // 加 1 行 设置 Q ，每个回溯 都加 1 行，直到 row 是 n-1
+        backtrack(board, row + 1)
+        // 回来的时候，设置 '.'
+        board[row][i] = '.'
       }
     }
   }
 
-  function valid(arr, row, col) {
+  /* 是否可以在 board[row][col] 放置皇后？*/
+  function valid(board, row, col) {
+    /**
+     * 1.检查列是否有皇后互相冲突
+     */
+
+    // 检查 col 列中，从 0 到 row 行，没有 Q
     for (let i = 0; i < row; i++) {
-      if (arr[i][col] === 'Q') return false
+      if (board[i][col] === 'Q') return false
     }
 
+    /**
+     * 2.检查右上方是否有皇后互相冲突
+     */
+
+    // 2.1 检查：
+    // 从上一行 row-1 （let i = row - 1,），
+    // 从列加一 col+1 （j = col + 1;），
+    // 开始；
+    // 2.2 每次都让：
+    // 行减一 i-1 （i--），
+    // 以及（&），
+    // 列加一 j+1 （j++）；
+    // 2.3 符合：
+    // （ i >= 0 && j < n;），
+    // 条件；
+    // 2.4 使得：
+    // 右上对角线，如果有 Q 返回不合法 false 。
     for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
-      if (arr[i][j] === 'Q') return false
+      if (board[i][j] === 'Q') return false
     }
+
+    /**
+     * 3.检查左上方是否有皇后互相冲突
+     */
+
+    // 同理，以 `i=row-1,j=col-1` 为开始，i-- j--，左上对角线，如果有 Q 返回不合法 false 。
     for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-      if (arr[i][j] === 'Q') return false
+      if (board[i][j] === 'Q') return false
     }
+
+    /**
+     * 4.没有不合法的，返回 合法 true
+     */
+
     return true
   }
 
-  backtrack(arr, 0)
+  backtrack(board, 0)
+
   return res
 }
 ```
 
-# search.js
-
-```js
-function insertSearch(arr, target) {
-  const search = function (arr, target, low, high) {
-    let mid = low + ((high - low) >> 1)
-
-    if (arr[mid] === target) {
-      return mid
-    }
-
-    if (low > high) {
-      return low
-    }
-
-    if (arr[mid] < target) {
-      return search(arr, target, mid + 1, high)
-    } else {
-      return search(arr, target, low, mid - 1)
-    }
-  }
-  return search(arr, target, 0, arr.length - 1)
-}
-
-console.log(bSearch([2, 3, 4, 5, 6, 7, 8, 9], 10))
-```
