@@ -500,11 +500,16 @@ var permuteUnique = function (nums) {
 
 ### 2.2.6 N 皇后问题
 
-#### 51.N-皇后.js
+#### 51.n-皇后.js
 
 ```js
 var solveNQueens = function (n) {
   const res = []
+
+  /**
+   * 初始化棋盘
+   */
+
   // '.' 表示空，'Q' 表示皇后，初始化棋盘
   // 0: (5) ['.', '.', '.', '.', '.']
   // 1: (5) ['.', '.', '.', '.', '.']
@@ -517,6 +522,7 @@ var solveNQueens = function (n) {
     .map(() => Array(n).fill('.'))
 
   function backtrack(board, row) {
+    const n = board.length
     // 结束条件
     if (row === n) {
       // 最后形成了 n 皇后 board ，把 n 皇后 board 的每一行转字符串，形成一组可行的 n 皇后给了 结果数组 res 。
@@ -526,11 +532,11 @@ var solveNQueens = function (n) {
 
     for (let i = 0; i < n; i++) {
       if (valid(board, row, i)) {
-        // 去的时候，在本行设置 Q
+        // 去的时候，在本行设置 Q —— 设置皇后
         board[row][i] = 'Q'
         // 加 1 行 设置 Q ，每个回溯 都加 1 行，直到 row 是 n-1
         backtrack(board, row + 1)
-        // 回来的时候，设置 '.'
+        // 回来的时候，设置 '.' —— 恢复棋盘
         board[row][i] = '.'
       }
     }
@@ -538,6 +544,7 @@ var solveNQueens = function (n) {
 
   /* 是否可以在 board[row][col] 放置皇后？*/
   function valid(board, row, col) {
+    const n = board.length
     /**
      * 1.检查列是否有皇后互相冲突
      */
@@ -589,4 +596,3 @@ var solveNQueens = function (n) {
   return res
 }
 ```
-
