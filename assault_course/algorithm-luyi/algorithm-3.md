@@ -405,18 +405,19 @@ var combinationSum2 = function (candidates, target) {
   // 注意：必须排序，否则报错！
   candidates = candidates.sort((a, b) => a - b)
 
-  const result = []
+  const res = []
   const path = []
 
-  function backtrack(startIndex, sum) {
+  function backtrack(sum, startIndex) {
     if (sum === target) {
-      result.push([...path])
+      res.push([...path])
       return
     }
     for (let i = startIndex; i < candidates.length; i++) {
       // 剪枝
       if (candidates[i] + sum > target) return
       // 数组中可能有相同的数据，这个数据会影响最后的结果，有重复。
+      // 因为上面排过序了，这里判断 candidates 的 i 和 i -1 相同否，就可知道是否选择了重复的。
       if (i === startIndex || candidates[i] !== candidates[i - 1]) {
         path.push(candidates[i])
         // 在每次回溯时候：
@@ -424,7 +425,7 @@ var combinationSum2 = function (candidates, target) {
         // ——从而计算下次回溯的参数：和 sum 。
 
         // !注意 i + 1
-        backtrack(i + 1, candidates[i] + sum)
+        backtrack(candidates[i] + sum, i + 1)
         path.pop()
       }
     }
@@ -432,7 +433,7 @@ var combinationSum2 = function (candidates, target) {
 
   backtrack(0, 0)
 
-  return result
+  return res
 }
 ```
 
