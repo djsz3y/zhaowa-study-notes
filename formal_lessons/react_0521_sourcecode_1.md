@@ -10,19 +10,19 @@ react.js 核心源码解析（上）
 - lane 模型详解（⭐）
 - 优先级插队以及时间切片详解（⭐）
 
-# React 源码
+React 源码
 
 先问一个问题：读过源码吗？
 
-## 1.关于源码的一些误区
+# 1.关于源码的一些误区
 
-### 1.1 是否读过源码
+## 1.1 是否读过源码
 
 1. react 源码，很多人都没读过；
 2. 读过的，跟写得好不好，其实没有什么太大的关系；
 3. 就算不读，依然可以回答好问题。**（读过一部分，大概看过。）**
 
-### 1.2 你读源码是为了什么？
+## 1.2 你读源码是为了什么？
 
 假设你是一名 Vue 的同学，为什么要学 react 的源码？
 
@@ -36,16 +36,16 @@ react.js 核心源码解析（上）
 2. 学习一些其他源码的思想，对自己的工作、业务知识也有一些帮助。
 3. 虽然公司里没有用过，但是对其他的知识也有比较了解。
 
-### 1.3 源码应该怎么学？
+## 1.3 源码应该怎么学？
 
-#### 1）最厉害的
+### 1）最厉害的
 
 - 源码全部通读完；
 - 每一个生命周期、每一个 API 做了什么，为什么这么做，都有了解；
 - 每一个要讨论的 issue 在 github 上，我很清楚。
 - 怎么用，怎么玩，甚至怎么改变它，做一个类似于 casong 那种，这肯定是最厉害的。
 
-#### 2）部分理解
+### 2）部分理解
 
 不是非常的感兴趣，想指导一下工作、interview；我们可以做到**部分理解**：
 
@@ -58,11 +58,11 @@ react.js 核心源码解析（上）
 - 本节主要前两点。
 - 第三点要在以后实战。
 
-#### 3）问到源码就不会
+### 3）问到源码就不会
 
 最差的。
 
-## 2.关于 react 的一些问题
+# 2.关于 react 的一些问题
 
 概要：
 
@@ -70,26 +70,26 @@ react.js 核心源码解析（上）
 2. 包的内容
 3. 什么是运行时框架
 
-### 2.0 提问：
+## 2.0 提问：
 
-#### 1）react 好在哪？
+### 1）react 好在哪？
 
 高优先级打断低优先级？版本？cra（create-react-app）？什么场景？
 
 - react 不是每一个版本都可以高优先级打断低优先级，哪怕在 react 源码里看到 fiber、看到类，他依然可能做不到这件事。
 - react 生态是什么样的？一般情况下，我要搞一个什么样的东西，这些东西有什么样的能力，说了很多，但是呢，我当前的版本还没实现。大家只看到了前一段话，fiber 好在哪？高优先级打断低优先级，这样说就是根本不了解了，还搞定过就不太可信了。
 
-#### 2）setState 是同步还是异步？
+### 2）setState 是同步还是异步？
 
 1. 准确的来说，在 legacy 模式（默认）下，如果没有 setTimeout，没有一些定时器，没有一些闭包，这样一些场景下的时候，除了这些场景下是同步的，其他全是异步的；包括 18，包括 concurrent。
 2. 我们回头（next lesson）会手写一个这个东西。
 3. 其实他想让你解释清楚什么情况下是同步的，什么情况下是异步的。
 
-#### 3）API 的话很简单，我们手动调用 batchUpdate
+### 3）API 的话很简单，我们手动调用 batchUpdate
 
-### 2.1 包的版本
+## 2.1 包的版本
 
-#### react 15
+### react 15
 
 最早的时候，react 15，
 stack reconciler
@@ -97,7 +97,7 @@ state* num -> 1
 1,2,3 * num -> 2,4,6
 223, 243, 246.
 
-#### react 17.0.2（稳定版本，一直用的这个）
+### react 17.0.2（稳定版本，一直用的这个）
 
 三种模式（讲两种）：
 
@@ -106,7 +106,7 @@ state* num -> 1
 
 我们如果打开[react 源码：17.0.2/packages/react-reconciler/src](https://github.com/facebook/react/tree/17.0.2/packages/react-reconciler/src)，像\*.old.js 一般是 legacy 模式编译的，\*.new.js 一般是 concurrent 模式编译的，但不绝对。
 
-#### react 18
+### react 18
 
 直到 18 的版本，（真正由）同步的更新 -> 变为异步可中断的更新（要了解、知道，这个很难调试出来）。
 一般情况下，会问优先级，比如说 batchUpdate 的原理、Suspense 的实现——和 Promise 有关（可以考察基础知识点）。
@@ -115,7 +115,7 @@ state* num -> 1
 
 那么既然这么复杂的话，我们的源码应该怎么学呢？【1.3 源码应该怎么学？】
 
-### 2.2 包的内容
+## 2.2 包的内容
 
 只需要先关注三个包就行（packages 里）：
 
@@ -139,19 +139,19 @@ react-art：svg 处理
 
 <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-1.png" />
 
-#### react
+### react
 
-#### react-reconciler
+### react-reconciler
 
-#### react-dom
+### react-dom
 
-#### scheduler
+### scheduler
 
-### 2.3 什么是运行时框架？
+## 2.3 什么是运行时框架？
 
-#### 【1】运行时，一般情况，会和编译器一起来说：
+### 【1】运行时，一般情况，会和编译器一起来说：
 
-##### 函数执行前后增加能力——不用编译器：
+#### 函数执行前后增加能力——不用编译器：
 
 [1]假如有一个函数 Test()，
 
@@ -180,7 +180,7 @@ const NewTest = wrapped(Test)
 NewTest(1, 2, 3) // 执行 NewTest
 ```
 
-##### 函数执行前后增加能力——使用编译器：
+#### 函数执行前后增加能力——使用编译器：
 
 [1]如果用户连 NewTest 这一行都不要加（第[3]步都不想），就像 Test 前后都打印，那么怎么办？
 
@@ -196,7 +196,7 @@ function Test() {
 }
 ```
 
-##### 编译器的进一步解释：
+#### 编译器的进一步解释：
 
 [1]也就是：
 
@@ -225,7 +225,7 @@ function Test() {
 - vue 是一个半编译，半运行时的框架。
 - react 除了 jsx，是一个完全运行时的框架。
 
-#### 【2】架构层面
+### 【2】架构层面
 
 [1]（我们再从另外一个角度想一想）  
 你是一个架构的设计人员，如果架构设计不太灵活，用户必须遵照已有的规则先用、再用、再怎么使用；如果架构设计的足够灵活，想怎么用怎么用，想传什么传什么；要想把一个框架设计的足够灵活，那它就没有很多特定的语法。比如：react 没有语法糖，没有 v-if、v-for，所有的东西都在 jsx 里直接写。甚至可以写 IIFE，也可以直接写一个 if-else。这就是 react 的灵活性。
@@ -265,7 +265,7 @@ react 为**保证灵活性**，就**不能走编译**，所有的东西基本上
 - vue 文件，后缀是 vue，因为要现以字符串的形式去读；
 - react 的文件后缀可以是 js，因为 react 唯一的编译只有 babel。
 
-#### 【3】react 中唯一的编译——babel 编译 jsx 为函数。
+### 【3】react 中唯一的编译——babel 编译 jsx 为函数。
 
 [1]编译前：
 
@@ -341,7 +341,7 @@ babel7 : @babel/preset-react
 
 ### 3.1.1 寻找 createElement
 
-【1】createElement 是什么？就是创建一个对象。
+#### 【1】createElement 是什么？就是创建一个对象。
 
 > 源码 [packages/react/src/ReactElement.js](https://github.com/facebook/react/blob/17.0.2/packages/react/src/ReactElement.js) 第 348 行
 
@@ -361,7 +361,7 @@ export function createElement(type, config, children) {
 React.createElement('h2', null, 'hello')
 ```
 
-【2】我们还是从 [packages/react/index.js](https://github.com/facebook/react/blob/17.0.2/packages/react/index.js) 里看：
+#### 【2】我们还是从 [packages/react/index.js](https://github.com/facebook/react/blob/17.0.2/packages/react/index.js) 里看：
 
 - 搜索 createElement ，发现最后一行引用自 `{...} from './src/React';`。
 
@@ -375,7 +375,7 @@ export {
 } from './src/React'
 ```
 
-【3】打开 [packages/react/src/React.js](https://github.com/facebook/react/blob/17.0.2/packages/react/src/React.js) 第 101 行：
+#### 【3】打开 [packages/react/src/React.js](https://github.com/facebook/react/blob/17.0.2/packages/react/src/React.js) 第 101 行：
 
 - 发现其实一样的，还是用的 `{...} from './ReactElement';`——当前目录下的 ReactElement 。
 
@@ -388,7 +388,7 @@ import {
 } from './ReactElement'
 ```
 
-【4】所以，还是看【1】ReactElement.js。
+#### 【4】所以，还是看【1】ReactElement.js。
 
 ### 3.1.2 分析 createElement
 
@@ -593,9 +593,9 @@ function workLoopConcurrent() {
 
 [4]一会看：怎么样**执行**这个函数 performUnitOfWork 的，一点点**打断点**打到这。
 
-## 3.3 调试源码——实践检验真理
+## 3.3 调试源码——准备
 
-### 3.3.0 前言
+### 3.3.1 运行时框架，跟踪很容易：
 
 运行时框架，跟踪很容易：
 
@@ -604,7 +604,7 @@ function workLoopConcurrent() {
 
 把编译的拷贝过来，开始调试源码。
 
-### 3.3.1 创建&启动项目：
+### 3.3.2 创建&启动项目：
 
 #### 1）创建一个项目 react-17-study：
 
@@ -683,11 +683,38 @@ function App() {
 export default App
 ```
 
-# 开始调试
+### 3.3.3 调试简要步骤——如何进入正题？
 
-## 1.调试 render(element, container, callback) 函数
+- 源码（标记：方便追溯）
 
-### 1.1 render 函数的位置：
+```js
+|-render
+  |-legacyRenderSubtreeIntoContainer
+    |-legacyCreateRootFromDOMContainer ——创建一个根的 fiber 节点
+      |-createLegacyRoot ——创建一个节点 `return new ReactDOMBlockingRoot(container, LegacyRoot, options);`
+      |-unbatchedUpdates
+        |-updateContainer
+          |-scheduleUpdateOnFiber ——整个调度的核心入口
+            |-performSyncWorkOnRoot
+              |-renderRootSync
+                |-workLoopSync ——直接执行，因为是 legacy 模式
+                  |-performUnitOfWork
+                    |-beginWork
+                    |-completeWork
+              |-commitRoot ——显示出来界面
+```
+
+### 3.3.4 项目 react-17-study
+
+> react-17-study
+
+- 仓库地址：[react-17-study](https://github.com/djsz3y/zhaowa-study-notes/tree/master/formal_lessons/practice_is_the_sole_criterion_for_testing_truth/react-17-study)
+
+# 4.开始调试
+
+## 4.1 调试 render(element, container, callback) 函数
+
+### 4.1.1 render 函数的位置：
 
 > F12 ->  
 > Sources -> Page ->  
@@ -708,23 +735,27 @@ function render(element, container, callback) {
 }
 ```
 
-### 1.2 操作步骤：
+### 4.1.2 操作步骤：
 
 Chrome:
 
 - F10: Step over
 - F11: Step into
 
+#### 4.1.2.1 准备
+
 1. 在 render 函数里的 `if (!isValidContainerLegacy(container))` {26089}打断点；
 
 2. 在 index.js 的 ReactDOM.render 上面增加 debugger ；
 
-3. 调试：
+#### 4.1.2.2 调试：
 
-第一步：  
+##### 第一步：
+
 F5 刷新项目(index.js: debugger{6}) -> F10(index.js: ReactDOM.render{7})
 
-第二步：  
+##### 第二步：
+
 (Teacher:)
 
 - F11(logo.svg: `export default __webpack_public_path__ + 'static/media/logo.hash一大坨.svg'`{30})
@@ -732,7 +763,8 @@ F5 刷新项目(index.js: debugger{6}) -> F10(index.js: ReactDOM.render{7})
 - F11(react-jsx-dev-r...development.js: `var validType = isValidElementType(type); // We warn in this case but don't throw. We expect ...`{1121})
 - Shift + F11(react-dom.development.js: `if (!isValidContainerLegacy(container))`{26089})
 
-第三步：  
+##### 第三步：
+
 (Teacher:)
 
 - F11(react-dom.development.js: `return !!(node && (node.nodeType === ELEMENT_NODE || node.nodeType === DOCUMENT_NODE || node.nodeType === DOCUMENT_FRAGMENT_NODE || node.nodeType === COMMENT_NODE && node.nodeValue === ' react-mount-point-unstable '));`{25903})
@@ -741,7 +773,8 @@ F5 刷新项目(index.js: debugger{6}) -> F10(index.js: ReactDOM.render{7})
 - F10(react-dom.development.js: `return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);`{26103})【**legacyRenderSubtreeIntoContainer**这个函数是干嘛的？先去判断 root 的 dom 节点下有没有一个叫做`_reactRootContainer`的东西，如果没有的话，他就会进入这里。】[Breakpoint]——**PS**：打上断点，后面全部用 Breakpoint 标记。
   <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-1.png" />
 
-第四步：  
+##### 第四步：
+
 (Teacher:)
 
 - F11(react-dom.development.js: `topLevelUpdateWarnings(container);`{25996})  
@@ -756,7 +789,8 @@ F5 刷新项目(index.js: debugger{6}) -> F10(index.js: ReactDOM.render{7})
 aaaaaaaa，让我吟诗一首，难难难，难于上青天；行路难，行路难，多歧路，今安在；我好难；继续：我没有付出 20 倍的努力，我连 4 倍的努力都没有付出，aoeiuv。2023-6-4  
 作为一个处女座，让我吐槽一下，好继续难下去 T_T。
 
-第五步：  
+##### 第五步：
+
 (Teacher:)
 
 - F11(react-dom.development.js: `var shouldHydrate = forceHydrate || shouldHydrateDueToLegacyHeuristic(container); // First clear any existing content.`{25954})【这一部分不管，这一部分是 SSR 的。】
@@ -772,7 +806,8 @@ aaaaaaaa，让我吟诗一首，难难难，难于上青天；行路难，行路
 
 好，我们往下走。
 
-第六步：  
+##### 第六步：
+
 (Teacher:)
 
 - F11(react-dom.development.js: `this._internalRoot = createRootImpl(container, tag, options);`{25835})  
@@ -815,7 +850,8 @@ fiberRoot === fiberRoot.containerInfo._reactRootContainer._internalRoot
 
 - 我们大家注意一下，root 是什么？
 
-第七步：  
+##### 第七步：
+
 (Teacher:)
 
 - 先[Breakpoint]，再 F8(react-dom.development.js: `updateContainer(children, fiberRoot, parentComponent, callback);`{26021})  
@@ -852,7 +888,7 @@ fiberRoot === fiberRoot.containerInfo._reactRootContainer._internalRoot
   【查询同样使用了 performUnitOfWork 方法的 workLoopConcurrent 函数；】
   <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-13.png" />
 
-解释：
+##### 解释：
 
 1. 【看上面*两个图片* 的两个方法： workLoopSync & workLoopConcurrent ，区别是后者方法 while 循环里，多了 `&& !shouldYield()`】
 2. 【workLoopConcurrent —— 在 concurrent 模式下，会判断高优先级是否要打断低优先级；这个 while 循环 为什么可以中断？就是在这里，即：`&& !shouldYield()`；】
@@ -883,7 +919,9 @@ function workLoopConcurrent() {
 }
 ```
 
-第 步：
+##### 第八步：
+
+(Teacher:)
 
 - 先[Breakpoint]，再 F10(react-dom.development.js: `performUnitOfWork(workInProgress);`{22707})【下面该处理每一个单元的工作了，进入 F11 这个函数 **performUnitOfWork** 】  
   <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-14.png" />
@@ -915,46 +953,54 @@ function workLoopConcurrent() {
 - F10(react-dom.development.js: `if (next === null) {`{22785})  
   1）【从第 5 个 li 节点的 {22770} 行，一直 F10 到 {22785} 行；】  
   2）【此时 `unitOfWork.pendingProps` 里是 `children: "list 5"`，进入了 `if (next === null) {` 的判断；】  
-  3）【此时的 next 是 null ，所以进入 completeUnitOfWork 。】  
+  3）【此时的 next 是 null ，所以进入 completeUnitOfWork ；下一个没有节点了。】  
   <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-28.png" />
-- F10(react-dom.development.js: `if (next === null) {`{22785})  
-  1）【completeUnitOfWork 完成了以后（所有的，都完成）；】  
+- F10(react-dom.development.js: `}`{22709})  
+  1）【所有的 completeUnitOfWork 都完成以后，】  
   1.1）【如果给 completeUnitOfWork {22787} 打断点，会发现走了很多次，应该都是退出的。】  
   <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-29.png" />  
-  2）【workLoopSync() 这个函数，执行完成（直到走到 {22709} 行）。】  
+  2）【直到走到 {22709} 行，workLoopSync() 函数执行完成。】  
   <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-30.png" />
 
-- F10(react-dom.development.js: ``{})【我们往下走，F10，一直到 commitRoot 第 {22329} 行】
+##### 第九步：
+
+(Teacher:)
+
+- F10(react-dom.development.js: `break;`{22671})  
+  【这个时候，completeUnitOfWork 都执行完，workLoopSync() 执行完，所有节点遍历完成后，界面上没东西。】
+- F10(react-dom.development.js: `if (root.tag !== LegacyRoot && exitStatus === RootErrored) {`{22296})
+- F10(react-dom.development.js: `commitRoot(root);`{22329})  
+  【我们往下走，F10，一直到 **commitRoot** 执行完，界面上就有东西了。】  
+  <img src="./imgs/react_0521_sourcecode_1/react-sourcecode-operate-31.png" />
+
+好，结束。
+
+### 4.1.3 react 源码的三大阶段（react-reconciler）：
+
+- beginWork
+- completeWork
+- commitRoot
+
+中断可恢复，主要打断的 beginWork 的流程。
+
+#### 4.1.3.1 beginWork
+
+最核心的内容，就是根据当前的 fiber 节点，去创建第一个子节点。
+beginWork 是根据当前的 currentFiber 对比你的 vdom, 生成 wipFiber
+
+#### 4.1.3.2 completeWork
+
+给你创建相应的 dom，以及 diff 的操作。
+
+- createInstance 方法，创建。
+
+#### 4.1.3.3 commitWork
+
+- 同步执行更新。
 
 ## <span style="color: red;">1:23:31</span>
 
-### 3.3.2 调试步骤（依次创建 src 下的文件）：
-
-#### 源码——标记：方便追溯
-
-##### 如何进入正题？
-
-```js
-|-render
-  |-legacyRenderSubtreeIntoContainer
-    |-legacyCreateRootFromDOMContainer 创建一个根的 fiber 节点
-      |-createLegacyRoot 创建一个节点 `return new ReactDOMBlockingRoot(container, LegacyRoot, options);`
-      |-unbatchedUpdates
-        |-updateContainer
-          |-scheduleUpdateOnFiber 整个调度的核心入口
-            |-performSyncWorkOnRoot
-              |-renderRootSync
-                |-workLoopSync 直接执行，因为是 legacy 模式
-                  |-performUnitOfWork
-```
-
 Fiber 树，遍历递归的流程。
-
-### 3.3.3 项目 react-17-study
-
-> react-17-study
-
-- 仓库地址：[react-17-study](https://github.com/djsz3y/zhaowa-study-notes/tree/master/formal_lessons/practice_is_the_sole_criterion_for_testing_truth/react-17-study)
 
 # 友情链接
 
