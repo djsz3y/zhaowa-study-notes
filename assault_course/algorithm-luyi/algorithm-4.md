@@ -129,24 +129,30 @@ var findContentChildren = function (g, s) {
 }
 ```
 
-## 最大子数组和
-```js
-//  贪心贪在哪里？
-// 只要你有负数，你就会拉低我的值，我就不要你。
-var maxSubArray = function(nums) {
-    let result = nums[0];
-    let sum = 0;
-    for(let i = 0; i < nums.length; i++) {
-        if(sum > 0) {
-            sum = sum + nums[i]
-        } else {
-            sum = nums[i];
-        }
-        result = Math.max(result, sum);
-    }
+## 53.最大子数组和.js
 
-    return result;
-};
+最大连续子数组的最大和。
+
+有负数拉底总和。
+
+贪心贪在哪里？
+
+- 只要你有负数，你就会拉低我的值，我就不要你。
+
+```js
+var maxSubArray = function (nums) {
+  let sum = 0
+  let result = nums[0]
+  for (let i = 0; i < nums.length; i++) {
+    if (sum > 0) {
+      sum = sum + nums[i]
+    } else {
+      sum = nums[i]
+    }
+    result = Math.max(sum, result)
+  }
+  return result
+}
 ```
 
 ## 跳跃游戏
