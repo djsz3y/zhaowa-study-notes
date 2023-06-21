@@ -823,7 +823,140 @@ this 总结完毕。
 
 ## 思考题
 
+1. 下面两段代码的相同点：  
+   都打印'local scope'
+2. 下面两段代码的区别：  
+   执行上下文栈的**变化不一样**  
+   （栈 & 文 变化情况）
+3. 接下来，详细解析：  
+   执行上下文栈和执行上下文的**具体变化过程**。
+
+> case1
+
+```js
+var scope = 'global scope'
+function checkscope() {
+  var scope = 'local scope'
+  function f() {
+    return scope
+  }
+  return f()
+}
+checkscope() // 打印'local scope'
+```
+
+> case2
+
+```js
+var scope = 'global scope'
+function checkscope() {
+  var scope = 'local scope'
+  function f() {
+    return scope
+  }
+  return f
+}
+checkscope()() // 打印'local scope'
+```
+
 ## 具体执行分析
+
+分析 case1：
+
+> case1
+
+```js
+var scope = 'global scope'
+function checkscope() {
+  var scope = 'local scope'
+  function f() {
+    return scope
+  }
+  return f()
+}
+checkscope() // 打印'local scope'
+```
+
+分析过程：
+
+[1]执行全局代码（**执行 `global`**），创建全局执行上下文（**创 `globalContext`**），全局上下文被压入执行上下文栈（**`ECStack.push(globalContext)`**）。
+
+```js
+ECStack = [globalContext]
+```
+
+[2]全局上下文初始化（`globalContext init`）
+
+```js
+globalContext = {
+  VO: [global],
+  Scope: [globalContext.VO],
+  this: globalContext.VO
+}
+```
+
+[3]初始化的同时，checkscope 函数被创建（**创 checkScope fun**），**保存作用域链**到函数的**内部属性[[scope]]**
+
+```js
+checkscope.[[scope]] = [
+    globalContext.VO // 创 checkScope fun ，保存作用域链到函数内部属性 [[scope]]
+];
+```
+
+[4]执行 checkscope 函数，创建 checkscope 函数执行上下文，checkscope 函数执行上下文被压入执行上下文栈
+
+| 执行函数                     | 执行 checkscope                 |
+| ---------------------------- | ------------------------------- |
+| 创建函数执行上下文           | 创 checkscopeContext            |
+| 函数执行上下文压执行上下文栈 | ECStack.push(checkscopeContext) |
+
+```js
+ECStack = [checkscopeContext, globalContext]
+```
+
+[5]checkscope 函数执行上下文初始化：
+
+1. 复制函数 [[scope]] 属性创建作用域链；
+2. 用 arguments 创建活动对象；
+3. 初始化活动对象，即加入形参、函数声明、变量声明；
+4. 将活动对象压入 checkscope 作用域链顶端；
+
+同时 f 函数被创建，保存作用域链到 f 函数的内部属性[[scope]]
+
+```js
+f.[[scope]] = [
+  checkscopeContext.AO,
+  globalContext.VO
+]
+```
+
+```js
+checkscopeContext = {
+  AO: {
+    arguments: {
+      length: 0
+    }, // 5b
+    scope: undefined, // 5c
+    f: reference to function f(){}
+  },
+  Scope: [AO, globalContext.VO], // [5d 5a]
+  this: undefined
+}
+```
+
+[6]**f 函数执行**，沿着**作用域链查找 scope 值，返回 scope 值**；
+
+[7]**f 函数执行完毕**，**f 函数上下文**从**执行上下文栈中弹出**（`ECStack.pop(fContext)`）；
+
+```js
+ECStack = [checkscopeContext, globalContext]
+```
+
+[8]checkscope **函数执行完毕**，**checkscope 执行上下文**从**执行上下文栈**中**弹出**（`ECStack.pop(checkscopeContext)`）
+
+```js
+ECStack = [globalContext]
+```
 
 # 四、闭包
 
