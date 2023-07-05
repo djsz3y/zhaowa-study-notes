@@ -199,6 +199,8 @@ var canJump = function (nums) {
 }
 ```
 
+# <span style="color:red;">48:39</span>
+
 ## 跳跃游戏 2
 
 ```js
