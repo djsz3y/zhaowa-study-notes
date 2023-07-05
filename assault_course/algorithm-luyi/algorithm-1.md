@@ -465,6 +465,13 @@ dom2json(dom)
         } else {
           const __dom = document.createElement(vnode.tag)
           if (vnode.attrs) {
+            // for (let key in vnode.attrs) {
+            //   if (key === 'className') {
+            //     __dom[key] = vnode.attrs[key]
+            //   } else {
+            //     __dom.setAttribute(key, vnode.attrs[key])
+            //   }
+            // }
             Object.entries(vnode.attrs).forEach(([key, value]) => {
               if (key === 'className') {
                 __dom[key] = value
@@ -478,8 +485,8 @@ dom2json(dom)
         }
       }
 
-      const app = json2dom(json)
       const root = document.getElementById('root')
+      const app = json2dom(json)
       root.appendChild(app)
     }
   </script>
