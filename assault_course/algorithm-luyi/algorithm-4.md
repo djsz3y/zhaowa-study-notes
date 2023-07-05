@@ -172,20 +172,29 @@ var maxSubArray = function (nums) {
 
 ## 跳跃游戏
 
-给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。
-数组中的每个元素代表你在该位置可以跳跃的最大长度。
+[1]思路：  
+从头开始 for 循环，  
+记录每次循环 下标与当前值的和 的最大值，  
+当 最大值大于等于长度 时，  
+（因为每个值都是跳跃的步数，所以是 max >= len ）  
+返回 true ，说明能否到达最后一个下标。
+
+[2]题目：  
+给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。  
+数组中的每个元素代表你在该位置可以跳跃的最大长度。  
 判断你是否能够到达最后一个下标。
+
+### 55.跳跃游戏.js
 
 ```js
 var canJump = function (nums) {
-  let len = nums.length - 1
+  const len = nums.length - 1
   let max = 0
   // 为什么是 max， 不是len， 因为当我跳到 max 时，没法往下跳了，后面是不能继续的。
   for (let i = 0; i <= max; i++) {
     max = Math.max(max, nums[i] + i)
     if (max >= len) return true
   }
-
   return false
 }
 ```
