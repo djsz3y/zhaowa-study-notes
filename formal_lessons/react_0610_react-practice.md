@@ -117,11 +117,9 @@ Monorepo 最早的出处是软件开发策略的一个分支，”mono” 表示
 
 ### 三、这两者之间不同点是？
 
-### 四、实战：
+### 四、实战：使用 pnpm 构建 mono
 
-#### 使用 pnpm 构建 mono
-
-##### 主要步骤
+#### 4.1 主要步骤
 
 【1】安装 pnpm ：`npm install pnpm -g`
 
@@ -196,6 +194,8 @@ mkdir react-components # 创建 项目文件夹
 【5.2】初始化 my_proj/packages/components/react-components 项目；  
 `pnpm init` 并且修改名称 `@proj/react-components`：
 
+> my_proj/packages/components/react-components/package.json
+
 ```json
 {
   "name": "@proj/react-components",
@@ -211,19 +211,94 @@ mkdir react-components # 创建 项目文件夹
 }
 ```
 
-【6】
+【6.1】在 react-components 项目，新建 src/index.js
 
-进行测试：
+> react-components/src/index.js
 
-【3】共建软链接
+```js
+export const getID = () => `${Math.random()}`
+```
 
-`pnpm add @proj/react-components --filter @proj/react-x`
+【6.2】一会要用 node 启动，所以给 react-components 以及 react-x 的 package.json 一个内容 `"type": "module",`
 
-如果说自己构建
-@proj/react-components: `pnpm link`
+【6.3】共建软链接：
+
+法 Ⅰ：  
+把 react-components 安装在 react-x 里，运行命令：
+
+```bash
+pnpm add @proj/react-components --filter @proj/react-x
+```
+
+法 Ⅱ：
+
+如果说自己构建  
+@proj/react-components: `pnpm link`  
 @proj/react-x: `pnpm link @proj/react-components`
 
-##### 安装测试环境
+此时，可以看到，react-x/package.json 里多了如下代码：
+
+> react-x/package.json
+
+```js
+{
+  "name": "@proj/react-x",
+  // ...
+  "dependencies": {
+    "@proj/react-components": "workspace:^"
+  }
+}
+```
+
+【6.4】引用组件 & 使用组件：
+
+> react-components/src/index.js
+
+```js
+import { getID } from '@proj/react-components'
+
+console.log(getID())
+```
+
+【6.5】修改 package.json `"main": "index.js",`，  
+为 `"main": "src/index.js",` 。
+
+【7】运行代码，得出结果：
+
+- 右键——Run Code 或者 `node src/index.js`，这样这两个工程相互独立。
+- 公共组件库，发包：修改一个内容，两边同步，并且这两个工程是相互独立的。
+
+【8】monorepo 方案更适用于什么开发？
+
+- 本身工程很庞大，本身项目需要多个工程，并且工程之间要协作，有一些管理方面的关系。
+- 比如，有三个平台项目，有一个共同的公共组件库，发包，Ctrl + C 、V 这样用。
+- 做公共组件和做项目的是同一人，公共组件发包，私有 npm。  
+  比如，高德地图、蚂蚁金服使用 Ant-D ，本身之间没有什么关系，所以使用 npm 发包没有问题；  
+  高德地图做了高德的组件，团队平时只有 20~30 人维护，此时使用 monorepo 更好一些。  
+  比如，当领导布置两个工作，在同一个项目里，改两个就没事了；  
+  但是如果使用 npm 发包的方式，改完一个项目后（测试-发包）；再改另一个项目（安装依赖-再处理-再发包）。
+
+#### 4.2 外层如何安装依赖？
+
+根目录安装依赖，运行 `pnpm add lodash`，报错：
+
+```bash
+ ERR_PNPM_ADDING_TO_ROOT  Running this command will add the dependency to the workspace root, which might not be what you want - if you really meant it, make it explicit by running this command again with the -w flag (or --workspace-root). If you don't want to see this warning anymore, you may set the ignore-workspace-root-check setting to true.
+```
+
+##### 4.2.1 给 react-x 安装依赖 lodash：
+
+```bash
+pnpm add lodash --filter @proj/react-x
+```
+
+##### 4.2.2 全局安装依赖 husky ：
+
+```bash
+pnpm add husky -D -w
+```
+
+#### 4.3 安装 ESLint（安装测试环境）
 
 ```sh
 pnpm add eslint -D -w
@@ -235,13 +310,53 @@ pnpm add eslint-plugin-react -D -w
 
 ```
 
-###### 安装 eslint 与 配置
+注意：
 
-- eslint 和 prettier 如何配置
-  - eslint 一般多用来做代码的检测（逻辑、功能）
-  - prettier 一般用来做代码的美化
+执行 `npx eslint --init` 命令后
 
-##### 安装 typescript 配置
+```bash
+...\my_proj>npx eslint --init
+# You can also run this command directly using 'npm init @eslint/config'.
+# Need to install the following packages:
+#   @eslint/create-config@0.4.5
+# Ok to proceed? (y) y
+# √ How would you like to use ESLint? · problems
+# √ What type of modules does your project use? · esm
+# √ Which framework does your project use? · none
+# √ Does your project use TypeScript? · No / Yes
+# √ Where does your code run? · browser
+# √ What format do you want your config file to be in? · JSON
+# The config that you've selected requires the following dependencies:
+
+# @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest
+# √ Would you like to install them now? · No / Yes
+# √ Which package manager do you want to use? · pnpm
+# Installing @typescript-eslint/eslint-plugin@latest, @typescript-eslint/parser@latest
+```
+
+会报错：
+
+```js
+ERR_PNPM_ADDING_TO_ROOT  Running this command will add the dependency to the workspace root, which might not be what you want - if you really meant it, make it explicit by running this command again with the -w flag (or --workspace-root). If you don't want to see this warning anymore, you may set the ignore-workspace-root-check setting to true.
+Successfully created .eslintrc.json file in ...\my_proj
+```
+
+因为：
+
+```js
+
+```
+
+# 44:29
+
+##### 安装 eslint 与 配置
+
+eslint 和 prettier 如何配置
+
+- eslint 一般多用来做代码的检测（逻辑、功能）
+- prettier 一般用来做代码的美化
+
+#### 安装 typescript 配置
 
 - tsc, ts-loader, @babel/preset-typescript 有什么区别？
 
