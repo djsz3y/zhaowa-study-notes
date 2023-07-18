@@ -1046,8 +1046,6 @@ if (siblingFiber !== null) {
 
 beginWork 构建 fiber
 
-## <span style="color: red;">1:23:31</span>
-
 # 友情链接
 
 - [我的掘金主页](https://juejin.cn/user/1042768423037150)
