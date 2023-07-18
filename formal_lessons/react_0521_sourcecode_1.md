@@ -1046,6 +1046,10 @@ if (siblingFiber !== null) {
 
 beginWork 构建 fiber
 
+# 本节图示
+
+<img src="./imgs/react_0521_sourcecode_1/react-sourcecode-1.png" />
+
 # 友情链接
 
 - [我的掘金主页](https://juejin.cn/user/1042768423037150)
