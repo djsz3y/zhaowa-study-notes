@@ -2,6 +2,8 @@ react.js 核心源码解析（上）
 
 # 目标
 
+弄清楚运行时，编译器是什么，了解 react 源码调试。
+
 - react 代码组织及 diff 详解
 - 组件的实现与挂载原理（⭐）
 - 详解事务与队列原理（⭐）
@@ -699,9 +701,9 @@ export default App
               |-renderRootSync
                 |-workLoopSync ——直接执行，因为是 legacy 模式
                   |-performUnitOfWork
-                    |-beginWork
-                    |-completeWork
-              |-commitRoot ——显示出来界面
+                    |-beginWork ——react三大阶段
+                    |-completeWork ——react三大阶段
+              |-commitRoot ——显示出来界面——react三大阶段
 ```
 
 ### 3.3.4 项目 react-17-study
@@ -975,32 +977,76 @@ function workLoopConcurrent() {
 
 好，结束。
 
-### 4.1.3 react 源码的三大阶段（react-reconciler）：
+所以整个过程，分为哪几部分？
 
-- beginWork
-- completeWork
-- commitRoot
+### 4.1.3 react 源码的三大阶段（react-reconciler）【<strong style="color:red;">beginWork 和 completeWork 的 Fiber 树遍历递归的流程</strong>】：
 
-中断可恢复，主要打断的 beginWork 的流程。
+#### 4.1.3.1 三大阶段：
 
-#### 4.1.3.1 beginWork
+【1】beginWork ——**中断可恢复**，主要打断的 beginWork 的流程。
 
-最核心的内容，就是根据当前的 fiber 节点，去创建第一个子节点。
-beginWork 是根据当前的 currentFiber 对比你的 vdom, 生成 wipFiber
+- 最核心的内容，就是根据当前的 fiber 节点，去创建第一个子节点。
+- beginWork 是根据当前的 currentFiber 对比你的 vdom, 生成 wipFiber
 
-#### 4.1.3.2 completeWork
+【2】completeWork
 
-给你创建相应的 dom，以及 diff 的操作。
-
+- 给你创建相应的 dom，以及 diff 的操作。
 - createInstance 方法，创建。
 
-#### 4.1.3.3 commitWork
+【3】commitWork ——渲染是同步的过程
 
-- 同步执行更新。
+- 等到这里，再同步执行更新。
+
+#### 4.1.3.2 调试步骤：
+
+【1】第一次进入 beginWork$1：
+<img src="./imgs/react_0521_sourcecode_1/react-sourcecode-beginWork-1.png" />
+
+`next = beginWork$1(current, unitOfWork, subtreeRenderLanes);`，F11（Step into）进入
+
+<img src="./imgs/react_0521_sourcecode_1/react-sourcecode-beginWork-2.png" />
+
+`return beginWork(current, unitOfWork, lanes);`，F11（Step into）再进入，
+然后一路 F10，直到 `      return updateHostRoot(current, workInProgress, renderLanes);`{19077}，更新 hostroot 根节点。
+
+【2】第二次走入 beginWork `  var updateLanes = workInProgress.lanes;`{18845}，此时鼠标悬浮 workInProgress 上发现，tag 为 2.
+
+```js
+function beginWork(current, workInProgress, renderLanes) {
+  //18844
+  var updateLanes = workInProgress.lanes // 18845
+
+  // ...
+}
+```
+
+【3】`<h2>hello</h2>` 没有子节点，所以执行 completeWork ：
+
+<img src="./imgs/react_0521_sourcecode_1/react-sourcecode-completeWork-h2.png" />
+
+【4】在 `    completeUnitOfWork(unitOfWork);`{22787} F11 进入，一直 F10 直到 `    var siblingFiber = completedWork.sibling;`{22906}，这里的意思是：completeWork 执行完后，检查是否有兄弟节点，对于 h2 来说有兄弟节点，就是 `<div id="list">`：
+
+所以有兄弟节点，把兄弟结点赋值给 workInProgress ，那么下一次执行 beginWork 时，workInProgress 就是兄弟节点 div 了。
+
+```js
+var siblingFiber = completedWork.sibling
+
+if (siblingFiber !== null) {
+  // If there is more work to do in this returnFiber, do that next.
+  workInProgress = siblingFiber
+  return
+} // Otherwise, return to the parent
+```
+
+【5】遇到 li 同理
+
+【6】这样就形成了<strong style="color:red;">beginWork 和 completeWork 的 Fiber 树遍历递归的流程</strong>：
+
+<img src="./imgs/react_0521_sourcecode_1/react-sourcecode-Fiber树遍历递归的流程.png" />
+
+beginWork 构建 fiber
 
 ## <span style="color: red;">1:23:31</span>
-
-Fiber 树，遍历递归的流程。
 
 # 友情链接
 
