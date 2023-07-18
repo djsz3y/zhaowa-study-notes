@@ -230,11 +230,15 @@ export const getID = () => `${Math.random()}`
 pnpm add @proj/react-components --filter @proj/react-x
 ```
 
-法 Ⅱ：
+法 Ⅱ（如果说自己构建）：
 
-如果说自己构建  
-@proj/react-components: `pnpm link`  
-@proj/react-x: `pnpm link @proj/react-components`
+```bash
+# @proj/react-components:
+pnpm link
+
+# @proj/react-x:
+pnpm link @proj/react-components
+```
 
 此时，可以看到，react-x/package.json 里多了如下代码：
 
@@ -268,7 +272,7 @@ console.log(getID())
 - 右键——Run Code 或者 `node src/index.js`，这样这两个工程相互独立。
 - 公共组件库，发包：修改一个内容，两边同步，并且这两个工程是相互独立的。
 
-【8】monorepo 方案更适用于什么开发？
+#### 4.2 monorepo 方案更适用于什么开发？
 
 - 本身工程很庞大，本身项目需要多个工程，并且工程之间要协作，有一些管理方面的关系。
 - 比如，有三个平台项目，有一个共同的公共组件库，发包，Ctrl + C 、V 这样用。
@@ -276,43 +280,47 @@ console.log(getID())
   比如，高德地图、蚂蚁金服使用 Ant-D ，本身之间没有什么关系，所以使用 npm 发包没有问题；  
   高德地图做了高德的组件，团队平时只有 20~30 人维护，此时使用 monorepo 更好一些。  
   比如，当领导布置两个工作，在同一个项目里，改两个就没事了；  
-  但是如果使用 npm 发包的方式，改完一个项目后（测试-发包）；再改另一个项目（安装依赖-再处理-再发包）。
+  但是如果使用 npm 发包的方式，改完一个项目后（测试-发包）；再改另一个项目（安装依赖-再处理、再更新-再发包）。
 
-#### 4.2 外层如何安装依赖？
+#### 4.3 外层如何安装依赖？
 
 根目录安装依赖，运行 `pnpm add lodash`，报错：
 
-```bash
+```
  ERR_PNPM_ADDING_TO_ROOT  Running this command will add the dependency to the workspace root, which might not be what you want - if you really meant it, make it explicit by running this command again with the -w flag (or --workspace-root). If you don't want to see this warning anymore, you may set the ignore-workspace-root-check setting to true.
 ```
 
-##### 4.2.1 给 react-x 安装依赖 lodash：
+怎么办呢？
+
+例子 1：给 react-x 安装依赖 lodash：
 
 ```bash
 pnpm add lodash --filter @proj/react-x
 ```
 
-##### 4.2.2 全局安装依赖 husky ：
+例子 2：全局安装依赖 husky ：
 
 ```bash
 pnpm add husky -D -w
 ```
 
-#### 4.3 安装 ESLint（安装测试环境）
+#### 4.4 安装测试环境——安装 ESLint 、TS、Typescript、prettier、冲突插件并设置默认格式化 prettier
+
+##### 安装 eslint 与 配置——eslint 和 prettier 如何配置：
+
+- eslint 一般多用来做代码的检测（逻辑、功能）
+- prettier 一般用来做代码的美化
+
+##### 步骤：
+
+【1】安装 eslint 并初始化：
 
 ```sh
-pnpm add eslint -D -w
-npx eslint --init
-
-# 由于命令行自动化，不给我们加 w
-pnpm add @typescript-eslint/eslint-plugin @typescript-eslint/parser -D -w
-pnpm add eslint-plugin-react -D -w
-
+pnpm add eslint -D -w # 安装
+npx eslint --init # 初始化
 ```
 
-注意：
-
-执行 `npx eslint --init` 命令后
+【2】注意执行 `npx eslint --init` 命令完毕后（TS 选 yes，后面装）会报错（ERR_PNPM_ADDING_TO_ROOT），因为安装这两个它不会给我们加 -w
 
 ```bash
 ...\my_proj>npx eslint --init
@@ -323,7 +331,7 @@ pnpm add eslint-plugin-react -D -w
 # √ How would you like to use ESLint? · problems
 # √ What type of modules does your project use? · esm
 # √ Which framework does your project use? · none
-# √ Does your project use TypeScript? · No / Yes
+# √ Does your project use TypeScript? · No / Yes（选Yes）
 # √ Where does your code run? · browser
 # √ What format do you want your config file to be in? · JSON
 # The config that you've selected requires the following dependencies:
@@ -332,29 +340,118 @@ pnpm add eslint-plugin-react -D -w
 # √ Would you like to install them now? · No / Yes
 # √ Which package manager do you want to use? · pnpm
 # Installing @typescript-eslint/eslint-plugin@latest, @typescript-eslint/parser@latest
+# ERR_PNPM_ADDING_TO_ROOT  Running this command will add the dependency to the workspace root, which might not be what you want - if you really meant it, make it explicit by running this command again with the -w flag (or --workspace-root). If you don't want to see this warning anymore, you may set the ignore-workspace-root-check setting to true.
+# Successfully created .eslintrc.json file in ...\my_proj
 ```
 
-会报错：
+所以需要我们自己安装 Typescript ：
 
-```js
-ERR_PNPM_ADDING_TO_ROOT  Running this command will add the dependency to the workspace root, which might not be what you want - if you really meant it, make it explicit by running this command again with the -w flag (or --workspace-root). If you don't want to see this warning anymore, you may set the ignore-workspace-root-check setting to true.
-Successfully created .eslintrc.json file in ...\my_proj
+```bash
+# 由于命令行自动化，不给我们加 w ，所以需要我们自己安装
+pnpm add @typescript-eslint/eslint-plugin @typescript-eslint/parser -D -w
 ```
 
-因为：
+【3.1】安装 prettier ：
 
-```js
-
+```bash
+pnpm add prettier -D -w
 ```
 
-# 44:29
+【3.2】配置 .prettierrc.json 文件：
 
-##### 安装 eslint 与 配置
+> .prettierrc.json
 
-eslint 和 prettier 如何配置
+```json
+{
+  "printWidth": 80,
+  "tabWidth": 4,
+  "useTabs": true,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "none"
+}
+```
 
-- eslint 一般多用来做代码的检测（逻辑、功能）
-- prettier 一般用来做代码的美化
+【4.1】重新初始化一下吧：
+
+```bash
+npx eslint --init
+#  To check syntax and find problems(√ How would you like to use ESLint? · problems)
+#  JavaScript modules (import/export)(√ What type of modules does your project use? · esm)
+#  React(√ Which framework does your project use? · react)
+#  Yes(√ Does your project use TypeScript? · No / Yes(选) )
+#  Node(Where does your code run?)(√ Where does your code run? · browser)
+#  JSON(√ What format do you want your config file to be in? · JSON)
+#  Yes(@typescript-eslint/eslint-plugin@latest eslint-plugin-react@latest @typescript-eslint/parser@latest)  (? Would you like to install them now? » No / Yes(选) )
+#  pnpm(√ Which package manager do you want to use? · pnpm)
+```
+
+报错：
+
+```bash
+# Installing @typescript-eslint/eslint-plugin@latest, eslint-plugin-react@latest, @typescript-eslint/parser@latest
+# ERR_PNPM_ADDING_TO_ROOT  Running this command will add the dependency to the workspace root, which might not be what you want - if you really meant it, make it explicit by running this command again with the -w flag (or --workspace-root). If you don't want to see this warning anymore, you may set the ignore-workspace-root-check setting to true.
+# Successfully created .eslintrc.json file in D:\workspaces\codeOrgan\zhaowa-study-notes\formal_lessons\practice_is_the_sole_criterion_for_testing_truth\my_proj
+```
+
+【4.2】继续加 `-D -w` 安装 eslint-plugin-react ：
+
+```bash
+pnpm add eslint-plugin-react -D -w
+```
+
+【5.1】还要再安装两个插件，避免 eslint 和 prettier 的冲突：
+
+```bash
+pnpm add eslint-plugin-prettier eslint-config-prettier -D -w
+```
+
+【5.2】修改 .eslintrc.json ，给 plugins 数组添加 "prettier" ：
+
+> .eslintrc.json
+
+```json
+{
+  //...
+  "plugins": ["@typescript-eslint", "react", "prettier"]
+  //...
+}
+```
+
+【6】设置默认格式化为 prettier 格式，打开设置，搜索：eslint: default format 。
+
+#### 4.4 安装测试环境——安装 git hooks
+
+【1】初始化 git 仓库：`git init`，并且添加 .gitignore
+
+> .gitignore
+
+```
+node_modules/
+
+dist/
+```
+
+【2】安装 husky：
+
+```bash
+npx husky-init && pnpm i
+```
+
+【3】安装 pre-commit post-commit 钩子，提交前后要执行的命令（注意使用双引号，单引号无效）：
+
+```bash
+npx husky add .husky/pre-commit "npm run link"
+npx husky add .husky/post-commit "npm run publish"
+```
+
+安装后，都先修改为 `"npm run test"` 以免影响 ：
+
+【4】提交检测，还有 commit-lint，先不安装。
+
+#### 4.5 安装测试环境——安装 webpack
+
+#### 4.6 安装测试环境——安装 TS
 
 #### 安装 typescript 配置
 
@@ -379,3 +476,33 @@ eslint 和 prettier 如何配置
 ```sh
 pnpm add webpack webpack-cli webpack-merge webpack-dev-server @babel/core @babel/preset-react @babel/preset-typescript babel-loader css-loader less style-loader less-loader postcss postcss-loader tailwindcss autoprefixer html-webpack-plugin cross-env -D --filter @proj/react-x
 ```
+
+# 第二讲 react 环境安装
+
+## 如何选择合理的组件库？
+
+### headless with styled ， 应该怎么选？
+
+## 典型的 css 方案有哪些？
+
+## 如何选择合理的状态管理？
+
+- zustand ?
+- redux ?
+- mobx ?
+
+## 如何构建一个组件库？
+
+### 组件库打包的方案有哪些？
+
+一般情况下，我们需要“三证齐全”
+
+#### umd
+
+#### cjs
+
+#### esm
+
+### 组件库和前端项目，到底有什么区别？
+
+### 使用 rollup 构建组件库。
