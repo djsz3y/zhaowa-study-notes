@@ -806,7 +806,7 @@ module.exports = merge(getBaseCfg(false), {})
 
 # 最后
 
-## 问：如何配置 react 环境？
+## 1.问：如何配置 react 环境？
 
 怎么搭建非常的重要！需要 3-4 节课。
 
@@ -814,4 +814,10 @@ module.exports = merge(getBaseCfg(false), {})
 
 写 loader、plugin、css plugin 等
 
-## 往自己的亮点引导
+## 2.往自己的亮点引导
+
+## 3.项目 my_proj 地址
+
+> my_proj
+
+- 仓库地址：[my_proj](https://github.com/djsz3y/zhaowa-study-notes/tree/master/formal_lessons/practice_is_the_sole_criterion_for_testing_truth/my_proj)
