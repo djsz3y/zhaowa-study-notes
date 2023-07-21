@@ -15,7 +15,7 @@ export default function App({}: Props) {
 					padding: 32px;
 					background-color: pink;
 					&: hover {
-						color: ${color};
+						color: ${process.env.PRIMARY};
 					}
 				`}
 			>

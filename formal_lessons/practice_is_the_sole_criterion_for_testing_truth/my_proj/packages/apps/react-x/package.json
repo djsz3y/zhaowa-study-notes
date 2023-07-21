@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "webpack-dev-server -c scripts/webpack.dev.js",
+    "start:prod": "cross-env PRIMARY=blue webpack-dev-server -c scripts/webpack.dev.js",
     "build": "webpack -c scripts/webpack.prod.js"
   },
   "keywords": [],
@@ -25,8 +26,11 @@
     "@emotion/css": "^11.11.2",
     "autoprefixer": "^10.4.14",
     "babel-loader": "^9.1.3",
+    "compression-webpack-plugin": "^10.0.0",
+    "core-js": "^3.31.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
     "html-webpack-plugin": "^5.5.3",
     "less": "^4.1.3",
     "less-loader": "^11.1.3",
@@ -35,6 +39,7 @@
     "postcss-loader": "^7.3.3",
     "style-loader": "^3.3.3",
     "tailwindcss": "^3.3.3",
+    "terser-webpack-plugin": "^5.3.9",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",

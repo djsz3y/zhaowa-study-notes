@@ -1,6 +1,7 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const webpack = require('webpack')
 
 module.exports = (isDev) => ({
 	entry: path.join(__dirname, '../src/index.tsx'),
@@ -127,7 +128,10 @@ module.exports = (isDev) => ({
 		]
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.jsx', '.js'] // 常用写前面，提升寻找速度
+		extensions: ['.tsx', '.ts', '.jsx', '.js'], // 常用写前面，提升寻找速度
+		alias: {
+			'@': path.resolve(__dirname, '../src')
+		}
 	},
 
 	plugins: [
@@ -138,6 +142,10 @@ module.exports = (isDev) => ({
 		new MiniCssExtractPlugin({
 			// [content hash] - chunk hash - hash : 内容变了，我才有消除缓存的意义和价值。
 			filename: 'static/css/[name].[contenthash:8].css'
+		}),
+		new webpack.DefinePlugin({
+			// 有些代码 生产环境 不需要/进行特殊处理 ——使用 cross-env
+			'process.env.PRIMARY': JSON.stringify(process.env.PRIMARY) // 注入
 		})
 	]
 })

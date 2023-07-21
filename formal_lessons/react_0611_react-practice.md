@@ -4,7 +4,7 @@
 
 多个条件，多项选择。
 
-## 什么是亮点？
+## 1.什么是亮点？
 
 ### 学术性
 
@@ -28,33 +28,112 @@
 
 - 微前端，改了一些使用方法。让一部分能力增强了，但是可能会引入新的问题。
 
-### X 是不是亮点 ？
+## 2.X 是不是亮点 ？
 
 防抖节流不是亮点
 
 - 换个人想出来 X 方案，需要多少技术积累。
 - 如果不需要想很久，做出来，落地，有多困难。
 
-<!--
-### rollup
+## 3.写个类似 rollup 可以吗？
 
-- rollup 有一些问题，js 写的，不够快， rust 写一个。
-- rust: swc ？ ->
-- go: esbuild ? ->
+- rollup 有一些问题，js 写的，不够快；能否用 rust 写一个？
+- rust 市面上有：swc ； swc 有什么问题？能否解决？
+- go 语言写一个，有： esbuild ；esbuild 有什么问题？能否解决？
 
-### 优化
+这些就是上述亮点的组合性，也就是亮点了吧。
 
-优化啥？
+vite = esbuild + 自己做模块化 + 构建用 rollup => 亮点。
 
-- FMP
-  - 根据你的需求去优化
-    - I/O 角度： 让你的 bundlesize 最小
-      - minimize, terser, gzip
-    - CDN,
-    - DNS,
-    - webp,
-    - 加 key,
-- FID -->
+## 4.优化方案
+
+### 4.1 优化 what？
+
+#### FMP
+
+- 根据你的需求去优化
+  - I/O 角度： 让你的 bundlesize 最小（下面的-例子）
+    - minimize, terser, gzip（有插件 compression-webpack-plugin）
+  - 怎么操作 CDN ？
+  - 怎么优化 DNS ？
+  - 怎么请求更少？——图片 webp ？
+
+#### FID
+
+### 4.2 角度优化，寻找痛点
+
+- 从某个角度优化一个指标，在整个项目找当前项目里有哪些痛点！不是加个 key 、防抖、节流...就算优化了，不是这样的。优化一定是一个方案。
+- 就比如优化简历每个人不一样，优化想体现什么，重点写什么是不一样的。
+- 许多静态资源优化方案：  
+  iconfont？图标使用一张大图一次性请求？打成 svg ？现在是 png 变成 webp 是否也可以？png 太多影响什么？若影响首屏速度：先加载屏幕上展示的页，加载完先用占位符占住，先用 FMP 上报，再请求图片 ？或者先加载完内容再加载图片？CDN 贵。
+
+webpack 剔除无用图片，写个 loader 哪些图片不用了，删掉——算是一个小亮点。
+
+### 4.3 例子（很多 polyfill 在不同浏览器中按需加载——@babel/preset-env——安装 core-js）：
+
+#### 4.3.1 情景：
+
+写一个语法比如 async/await 在低版本浏览器中不支持，打包时就要加上 polyfill 按需加载，在运行时 ie 浏览器中加载 async/await ，在最新浏览器中就不会加载这个东西；就会让 bundlesize 更小了。
+
+#### 4.3.2 操作：
+
+假如说，有很多 polyfill 在不同浏览器中按需加载，那会在.babelrc 里配置 '@babel/preset-env'
+
+【1】安装：
+
+> my_proj
+
+```bash
+pnpm i core-js -D --filter @proj/react-x
+```
+
+【2】配置：
+
+> .babelrc
+
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIn": "usage",
+        "corejs": 3
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ]
+}
+```
+
+### 4.4 gzip（有插件 compression-webpack-plugin ，自行学习）
+
+#### 4.4.1 安装：
+
+```bash
+pnpm i compression-webpack-plugin -D --filter @proj/react-x
+```
+
+#### 4.4.2 了解 gzip ：
+
+[1]gzip 压缩：
+
+> HTTP 协议上的 gzip 编码是一种用来改进 web 应用程序性能的技术，web 服务器和客户端（浏览器）必须共同支持 gzip。目前主流的浏览器，Chrome,firefox,IE 等都支持该协议。  
+> 简单来说，gzip 是一种压缩技术。
+
+[2]为何要使用 gzip 压缩?
+
+> 打包的时候开启 gzip 可以很大程度减少包的大小，页面大小可以变为原来的 30%甚至更小，非常适合于上线部署。  
+> 更小的体积对于用户体验来说就意味着更快的加载速度以及更好的用户体验
+
+[3]为什么 gzip 压缩后页面加载速度提升
+
+> 浏览器向服务器发出请求，并且在请求头中声明可以使用 gzip 的编码格式，服务器接受到请求之后，读取压缩后的文件，服务器直接返回给浏览器 gzip 格式的文件，浏览器进行解压缩，这样以来就节省了服务器压缩的时间
+
+[4]参考链接：
+
+[webpack 优化系列二：Vue 配置 compression-webpack-plugin 实现 Gzip 压缩](https://blog.csdn.net/duanhy_love/article/details/125069009)
 
 # 开始
 
@@ -515,9 +594,76 @@ module.exports = {
 }
 ```
 
-## 三、其他
+#### 可以参考链接：
 
-### ts 声明文件 global.d.ts 添加-其他文件的声明 ：
+[官网：Tailwind CSS 入门-安装-Using PostCSS](https://www.tailwindcss.cn/docs/installation/using-postcss)
+
+## 三、生产环境（CSS）
+
+### 【1】安装插件：
+
+> my_proj
+
+```bash
+pnpm i css-minimizer-webpack-plugin terser-webpack-plugin -D --filter @proj/react-x
+```
+
+### 【2】配置 webpack.prod.js
+
+面试官不会问具体的配置策略：
+
+- 因为有的配置策略 你自己也不好分析，大概知道有这些东西就行；
+
+> webpack.prod.js
+
+```js
+const getBaseCfg = require('./webpack.base')
+const { merge } = require('webpack-merge')
+const path = require('path')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+
+// 优化、压缩、分治
+module.exports = merge(getBaseCfg(false), {
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin({
+        // 并行压缩
+        parallel: true,
+        terserOptions: {
+          compress: {
+            pure_funcs: ['console.log', 'console.warn'] // 生产环境 不能带上 console.log console.warn 等
+          }
+        }
+      })
+    ],
+    splitChunks: {
+      // 缓存组
+      cacheGroups: {
+        vendors: {
+          priority: 1,
+          test: /node_modules/,
+          name: 'vendors'
+          // minChunk, chunks, minSize,
+        },
+        common: {
+          name: 'commons',
+          minChunks: 3
+        }
+      }
+      // 面试官不会问具体的配置策略，因为有的配置策略 你自己也不好分析，大概知道有这些东西就行。
+      // 还剩 cross-env
+    }
+  }
+})
+```
+
+还剩 cross-env 。
+
+## 四、其他
+
+### 4.1 ts 声明文件 global.d.ts 添加-其他文件的声明 ：
 
 > global.d.ts
 
@@ -534,7 +680,142 @@ declare module '*.css'
 
 现在，开发环境的 css 、静态文件已经配置好了。
 
-### headless with styled ， 应该怎么选？
+### 4.2 设置别名 alias （@）
+
+> webpack.base.js
+
+```js
+// ...
+
+module.exports = (isDev) => ({
+  // ...
+  resolve: {
+    // ...
+    alias: {
+      '@': path.resolve(__dirname, '../src')
+    }
+  }
+  // ...
+})
+```
+
+### 4.3 生产环境特殊处理一些代码（cross-env）
+
+有些开发环境的代码，在生产环境不需要或需要进行特殊处理的，那就使用 cross-env 。
+
+#### 4.3.1 步骤
+
+【1】已安装 package.json ：
+
+- "cross-env": "^7.0.3",
+
+【2】配置全局环境变量值 PRIMARY=blue ：
+
+【2.1】设置 scripts 的 start:prod：
+
+> package.json
+
+```json
+{
+  // ...
+  "scripts": {
+    // ...
+    "start:prod": "cross-env PRIMARY=blue webpack-dev-server -c scripts/webpack.dev.js"
+    // ...
+  }
+  // ...
+}
+```
+
+【2.2】打印 PRIMARY 值：
+
+> webpack.dev.js
+
+```js
+// ...
+console.log('PRIMARY:', process.env.PRIMARY)
+// ...
+```
+
+【2.3】启动 npm run start:prod 命令：
+
+可以看到 PRIMARY 的值。
+
+<img src="./imgs/react_0611/react_0611_8-cross-env.png" />
+
+【3】注入 PRIMARY（配置 webpack.base.js ）：
+
+> webpack.base.js
+
+```js
+module.exports = (isDev) => ({
+  plugins: [
+    new webpack.DefinePlugin({
+      // 有些代码 生产环境 不需要/进行特殊处理 ——使用 cross-env
+      'process.env.PRIMARY': JSON.stringify(process.env.PRIMARY) // 注入
+    })
+  ]
+})
+```
+
+【4】使用 PRIMARY（App.tsx）：
+
+注意：<span style="color: red;">color: ${process.env.PRIMARY};</span>。
+
+> App.tsx
+
+```tsx
+import { css } from '@emotion/css'
+// ...
+;<div
+  className={css`
+    padding: 32px;
+    background-color: pink;
+    &: hover {
+      color: ${process.env.PRIMARY};
+    }
+  `}
+>
+  hello -emotion
+</div>
+// ...
+```
+
+【5】可以看到 hello -emotion 悬浮显示蓝色。
+
+同理也可以设置绿色 green 。
+
+#### 4.3.2 应用
+
+如果有不同的配置，就相当于把**不同配置打成不同的包**了。
+
+### 4.4 webpack & rollup & vite 触类旁通
+
+这里用 webpack ，其他地方用 rollup ，vite 也就差不多了。
+
+## 五、headless with styled ，应该怎么选？
+
+### 5.1 本项目做什么？
+
+本项目做一个知乎，所以 更加偏向于很多定制化的页面，所以不用带样式的组件库，用 headless 组件库（ @headlessui ——只有逻辑没有 ui，自己写 ui ）。
+
+### 5.2 [headless ui](https://headlessui.com/)
+
+比如折叠框，只有折叠的逻辑，样式自己写，方便自己做定制化。
+
+【1】自己用，有可能要封装，所以安装一个全局的：
+
+```bash
+pnpm i @headlessui/react -S -w
+```
+
+【2】同样的， react、react-dom、@types/react、@types/react-dom 也安装成全局的：
+
+```bash
+pnpm i react react-dom @types/react @types/react-dom -S -w
+```
+
+# 1:30:03
 
 ## 如何选择合理的状态管理？
 
@@ -563,6 +844,9 @@ vue: 我在修改了数据的时候，让界面更新了。
 - 这些函数，能够调用 setState
 
 # 总结
+
+1. 开发环境 css 等样式、静态文件相关配置
+2. 组件
 
 # 第三讲 组件库
 

@@ -2,6 +2,8 @@ const getBaseCfg = require('./webpack.base')
 const { merge } = require('webpack-merge')
 const path = require('path')
 
+console.log('PRIMARY:', process.env.PRIMARY)
+
 module.exports = merge(getBaseCfg(true), {
 	// dev 所以给 true
 	devtool: 'source-map', // 源码调试
