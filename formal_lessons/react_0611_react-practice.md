@@ -58,7 +58,7 @@
 
 # 开始
 
-## css 解析
+## 一、css 解析
 
 ### 什么是 loader？
 
@@ -264,7 +264,7 @@ chrome 20
 
 2. 后面会有两节针对 postcss 写一些插件。
 
-## 典型的 css 方案有哪些？（css 模块化方案、css 隔离方案有哪些？）
+## 二、典型的 css 方案有哪些？（css 模块化方案、css 隔离方案有哪些？）
 
 ### 1.css in js
 
@@ -515,9 +515,26 @@ module.exports = {
 }
 ```
 
-### headless with styled ， 应该怎么选？
+## 三、其他
 
-## headless with styled ， 应该怎么选？
+### ts 声明文件 global.d.ts 添加-其他文件的声明 ：
+
+> global.d.ts
+
+```ts
+declare module '*.module.less'
+declare module '*.less'
+declare module '*.svg'
+declare module '*.png'
+declare module '*.gif'
+declare module '*.webp'
+declare module '*.jpg'
+declare module '*.css'
+```
+
+现在，开发环境的 css 、静态文件已经配置好了。
+
+### headless with styled ， 应该怎么选？
 
 ## 如何选择合理的状态管理？
 
