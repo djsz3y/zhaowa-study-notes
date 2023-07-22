@@ -1,6 +1,6 @@
 二十八、react 实战- 玩转 react 全家桶（第二讲 react 环境安装）
 
-# 前言
+# 零、前言
 
 多个条件，多项选择。
 
@@ -85,6 +85,7 @@ webpack 剔除无用图片，写个 loader 哪些图片不用了，删掉——�
 
 ```bash
 pnpm i core-js -D --filter @proj/react-x
+pnpm add --save-dev @babel/preset-env --filter @proj/react-x
 ```
 
 【2】配置：
@@ -97,7 +98,7 @@ pnpm i core-js -D --filter @proj/react-x
     [
       "@babel/preset-env",
       {
-        "useBuiltIn": "usage",
+        "useBuiltIns": "usage",
         "corejs": 3
       }
     ],
@@ -135,11 +136,9 @@ pnpm i compression-webpack-plugin -D --filter @proj/react-x
 
 [webpack 优化系列二：Vue 配置 compression-webpack-plugin 实现 Gzip 压缩](https://blog.csdn.net/duanhy_love/article/details/125069009)
 
-# 开始
+# 一、css 解析
 
-## 一、css 解析
-
-### 什么是 loader？
+## 什么是 loader？
 
 ```js
 import styles from './index.less';
@@ -155,7 +154,7 @@ import img from './assert/img1.png';
 
 本质上 js 是不支持，浏览器不认识 `.xxx{}` ，只认识 `<style></style>` 和 `<link>`；所以需要 something 解析 this。
 
-### 测试：浏览器不认识，需要解析的情况
+## 测试：浏览器不认识，需要解析的情况
 
 【1】新建 index.less ：
 
@@ -193,7 +192,7 @@ return <div className="title">App--hello1</div>
 
 <img src="./imgs/react_0611/react_0611_1-what-is-loader.png" />
 
-### 解决：浏览器不认识，需要解析的情况（<span style="color: red;">不生效，就重启</span>）
+## 解决：浏览器不认识，需要解析的情况（<span style="color: red;">不生效，就重启</span>）
 
 【5】不管所有文件后缀是什么，都需要 babel 解析。所以打开 webpack.base.js ，在 module rules 里 ：
 
@@ -343,11 +342,11 @@ chrome 20
 
 2. 后面会有两节针对 postcss 写一些插件。
 
-## 二、典型的 css 方案有哪些？（css 模块化方案、css 隔离方案有哪些？）
+# 二、典型的 css 方案有哪些？（css 模块化方案、css 隔离方案有哪些？）
 
-### 1.css in js
+## 1.css in js
 
-#### 1.1 emotion
+### 1.1 emotion
 
 优缺点：
 
@@ -384,11 +383,11 @@ const color: string = 'white'
 // ...
 ```
 
-#### 1.2 styled-component
+### 1.2 styled-component
 
 这个可以自己查询使用方法。
 
-#### 1.3 css in js 总结：
+### 1.3 css in js 总结：
 
 做技术选型的时候，可以有 css module 的方案/css 样式隔离方案：  
 可以说自己之前调研过几种：  
@@ -397,7 +396,7 @@ const color: string = 'white'
 后来我们选择了哪一种；  
 这比直接说一个结果要好（因为这个嵌套了你的技术选型了）。
 
-### 2.css module（\*.module.less 以模块化解析）
+## 2.css module（\*.module.less 以模块化解析）
 
 对于 css module 我们一般情况下使用 css module。我们来配置一下。
 
@@ -527,7 +526,7 @@ import styles from './app.module.less'
 // ...
 ```
 
-### 3.utility css （以 tailwindcss 为例）
+## 3.utility css （以 tailwindcss 为例）
 
 原子化 css
 
@@ -594,13 +593,13 @@ module.exports = {
 }
 ```
 
-#### 可以参考链接：
+### 可以参考链接：
 
 [官网：Tailwind CSS 入门-安装-Using PostCSS](https://www.tailwindcss.cn/docs/installation/using-postcss)
 
-## 三、生产环境（CSS）
+# 三、生产环境（CSS）
 
-### 【1】安装插件：
+## 【1】安装插件：
 
 > my_proj
 
@@ -608,7 +607,7 @@ module.exports = {
 pnpm i css-minimizer-webpack-plugin terser-webpack-plugin -D --filter @proj/react-x
 ```
 
-### 【2】配置 webpack.prod.js
+## 【2】配置 webpack.prod.js
 
 面试官不会问具体的配置策略：
 
@@ -661,9 +660,9 @@ module.exports = merge(getBaseCfg(false), {
 
 还剩 cross-env 。
 
-## 四、其他
+# 四、其他
 
-### 4.1 ts 声明文件 global.d.ts 添加-其他文件的声明 ：
+## 4.1 ts 声明文件 global.d.ts 添加-其他文件的声明 ：
 
 > global.d.ts
 
@@ -680,7 +679,7 @@ declare module '*.css'
 
 现在，开发环境的 css 、静态文件已经配置好了。
 
-### 4.2 设置别名 alias （@）
+## 4.2 设置别名 alias （@）
 
 > webpack.base.js
 
@@ -699,11 +698,11 @@ module.exports = (isDev) => ({
 })
 ```
 
-### 4.3 生产环境特殊处理一些代码（cross-env）
+## 4.3 生产环境特殊处理一些代码（cross-env）
 
 有些开发环境的代码，在生产环境不需要或需要进行特殊处理的，那就使用 cross-env 。
 
-#### 4.3.1 步骤
+### 4.3.1 步骤
 
 【1】已安装 package.json ：
 
@@ -785,21 +784,21 @@ import { css } from '@emotion/css'
 
 同理也可以设置绿色 green 。
 
-#### 4.3.2 应用
+### 4.3.2 应用
 
 如果有不同的配置，就相当于把**不同配置打成不同的包**了。
 
-### 4.4 webpack & rollup & vite 触类旁通
+## 4.4 webpack & rollup & vite 触类旁通
 
 这里用 webpack ，其他地方用 rollup ，vite 也就差不多了。
 
-## 五、headless with styled ，应该怎么选？
+# 五、headless with styled ，应该怎么选？
 
-### 5.1 本项目做什么？
+## 5.1 本项目做什么？
 
 本项目做一个知乎，所以 更加偏向于很多定制化的页面，所以不用带样式的组件库，用 headless 组件库（ @headlessui ——只有逻辑没有 ui，自己写 ui ）。
 
-### 5.2 [headless ui](https://headlessui.com/)
+## 5.2 安装 [headless ui](https://headlessui.com/)
 
 比如折叠框，只有折叠的逻辑，样式自己写，方便自己做定制化。
 
@@ -809,15 +808,132 @@ import { css } from '@emotion/css'
 pnpm i @headlessui/react -S -w
 ```
 
+# 六、继续-安装环境
+
+## 6.1 安装全局的 react、react-dom、@types/react、@types/react-dom、typescript
+
 【2】同样的， react、react-dom、@types/react、@types/react-dom 也安装成全局的：
+
+有一些东西 用 react 不能依赖 react ，所以在外层安装 react 。
 
 ```bash
 pnpm i react react-dom @types/react @types/react-dom -S -w
 ```
 
-# 1:30:03
+```bash
+pnpm i typescript -S -w
+```
 
-## 如何选择合理的状态管理？
+【3.1】删掉 react-x/package.json 中 dependencies 下的：@types/react、@types/react-dom、react、react-dom 这 4 个依赖。
+
+【3.2】重新在项目中运行 `pnpm i` ：
+
+> my_proj
+
+```bash
+pnpm i
+```
+
+【3.3】重新运行之后，react-x/node_modules 下没有这 4 个依赖了，my_proj 下还存在这 4 个依赖。
+
+【4】就可以启动项目了：
+
+> my_proj\packages\apps\react-x
+
+```bash
+npm run start:prod
+```
+
+## 6.2 安装路由（react-x）
+
+```bash
+pnpm i react-router-dom --filter @proj/react-x
+```
+
+# 七、状态管理（如何选择合理的状态管理？）
+
+## 7.1 什么是 状态管理？
+
+状态管理的核心：  
+就是我有一个**统一的数据储存**，完了**修改**的时候，可以**触发更新**。
+
+react VS vue 区别？
+
+vue: 我在修改了数据的时候，让界面更新了。
+
+- document.createElement()
+- 我在什么时候，为什么能触发界面更新
+- data.x -> set -> get -> observers -> notifyAll
+
+react: 我在 setState 的时候，让界面更新了。
+
+- render -> 对比 -> effects -> 界面更新。
+
+修改一个数据
+
+- 数据的改变，触发某些函数的执行
+- 这些函数，能够调用 setState
+
+## 7.2 写一个简单的状态管理 & 怎么用状态管理
+
+【1】新建 state.js
+
+> my_proj/state.js
+
+```js
+// solid.js
+
+// 和 vue3 差不多
+
+const obs = [] // 我们还要定义一个数组：
+
+const createState = (value) => {
+  const subscribers = new Set()
+  // 假设有一个 getter setter 函数，
+  const getter = () => {
+    const curOb = obs[obs.length - 1]
+    if (curOb) {
+      subscribers.add(curOb) // 那么，此时我拿到的这个值就订阅了。
+    }
+    return value
+  }
+
+  const setter = (newValue) => {
+    value = newValue
+    subscribers.forEach((s) => s())
+  }
+  return [getter, setter] // return 这个 getter setter
+}
+
+// createEffect 是函数，执行时，先定义函数，把 它放进去，然后执行，如果用到了这个值，此时触发 getter ，getter 又把自己放进去了。
+const createEffect = (effect) => {
+  const execute = () => {
+    obs.push(execute) // execute 相当于 调用 createEffect 执行的
+    effect()
+    obs.pop()
+  }
+  execute()
+}
+
+// useState , useEffect.
+
+const [name, setName] = createState('luyi') // useState ，自己实现 所以命名 createState 。
+
+createEffect(() => {
+  console.log('name', name()) // 只要用到了 name ，name 是可执行的。
+})
+
+setName('yunyin')
+setName('yunyin2')
+
+// 我们先来实现这个状态管理，如果后面使用，就用自己实现的 状态管理。
+```
+
+【2】node state.js 执行。
+
+【3】我们先来实现这个状态管理，如果后面使用，就用自己实现的 状态管理。
+
+## 7.3 react 的状态管理：mobx、redux、pinia 等。
 
 - zustand ?
 - redux ?
@@ -829,26 +945,46 @@ pnpm i react react-dom @types/react @types/react-dom -S -w
 - redux ?
 - mobx ?
 
-状态管理的核心，就是我有一个统一的数据储存，完了修改的时候，可以触发更新。
-react - vue
-vue: 我在修改了数据的时候，让界面更新了。
+# 八、总结
 
-- document.createElement()
-- 我在什么时候，为什么能触发界面更新
-- data.x -> set -> get -> observers -> notifyAll
-  react: 我在 setState 的时候，让界面更新了。
-- render -> 对比 -> effects -> 界面更新。
+1. 环境 css 等样式、静态文件相关配置；css 方案；
+2. 别名、cross-env、headless、路由、状态管理
+3. 亮点
+4. 优化方案
+5. 设计组件库
 
-- 修改一个数据
-- 数据的改变，触发某些函数的执行
-- 这些函数，能够调用 setState
+## <strong style="color: red;">面试亮点怎么说？</strong>
 
-# 总结
+1. 你做了什么？比如说：针对于 xxx 的业务情况，我做了一个什么东西：第三方插件、写了一个 babel 的 loader，做了一个中间层、数据缓存。后面可以写一个普通的中间层演示，什么叫封装。
 
-1. 开发环境 css 等样式、静态文件相关配置
-2. 组件
+## <strong style="color: red;">怎么设计组件库？</strong>
+
+1. 功能：  
+   -这个组件有什么用？给自己项目同学用，还是给别的项目同学同，还是同一个团队用，这牵扯到它的构建方式，使用 monorepo 构建还是自己打开一个组件库构建还是怎么样？
+2. 定位：  
+   -这个组件库的定位是什么？  
+   -我理解的让我自己做一个组件库，肯定不是 antd 这样的，不然我为什么不直接使用 antd element 更香；  
+   -它的定位可能是一个业务组件，那我要区分出来 它和普通的基础组件 像 antd 这样的区别/边界 在哪里？比如说把一些业务组合，还是就是 antd 的样式 不 ok ，那么改一下它的 design.topic 配置文件，我就不用自己的组件库。  
+   -如果说是业务组件，我就要考虑它跟**底层**之间的**关系**是怎么样的，我**怎么**样去**封装**，组件库的定位是什么。
+3. 如果不考虑以上问题，那么我要做一个公共组件，我要考虑哪些东西？  
+   -把话题收敛到一起，首先考虑这个组件有哪些人在用，大概有哪些需求，这个需求的边界是什么？怎么设计自己的传参？有多少传参，通过增加参数？还是通过组件的组合来去让大家更好的使用？哪些东西不经过开发能够做降级，如果你不是用 props ，我也支持你可以传一些其他的，比如说插槽、renderProps、或一些高阶的；  
+   -对于组件库本身的组件，css 怎么做的样式隔离，不影响到其他的样式 css，你的 css 会不会与其他的一些 css 有样式冲突；  
+   -如果是我，我会从里到外这样的挨个的去回答。  
+   -大概是这样。
 
 # 第三讲 组件库
+
+src/button/index.tsx
+src/input/index.tsx
+src/image/index.tsx
+
+构建成要给大的 bundle 。
+
+组件库要按需引入，没有用到就不要引用，所以构建出的产物，应该和上面这个目录一致的。
+
+按照一定的规则，对 src 下的东西分开打包，我可以用 typescript tsc 。但 tsc 不支持 css ，所以可以用 gulp 。
+
+比如 antd 的构建：
 
 ## 如何选择合理的组件库？
 
@@ -864,14 +1000,18 @@ antd 的构建：
 
 #### umd
 
+方便 script 标签直接引用 cdn 。
+
 `<script src="xxxx.xxx.xxx.cdn.xxx.js"></script>`
 
 #### cjs
 
+require 引入
 `const xxx = require('xxxx')`
 
 #### esm
 
+import 引入
 `import { Button } from '@proj/c'`
 
 ### 组件库和前端项目，到底有什么区别？

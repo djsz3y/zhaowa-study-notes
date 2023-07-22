@@ -13,14 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "@proj/react-components": "workspace:^",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
     "lodash": "^4.17.21",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-router-dom": "^6.14.2"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "@emotion/css": "^11.11.2",
