@@ -58,6 +58,34 @@
 
 - [RN 入门与实战（下）](formal_lessons/react-native_0604_introduction_practice.md)
 
+- [react 实战-现代 web 开发的工程搭建](formal_lessons/react_0610_react-practice.md)
+
+- [react 实战- 玩转 react 全家桶](formal_lessons/react_0611_react-practice.md)
+
+- [react 实战 - 项目开发（1）-页面展示实现](formal_lessons)
+
+- [react 实战 - 项目开发（2）-发帖与回复、评论实现](formal_lessons)
+
+- [react 实战 - 工程化开发](formal_lessons)
+
+- [react 实战 - 接口封装与对接](formal_lessons)
+
+- [react 实战 - 登录功能前后端实现](formal_lessons)
+
+- [react 实战 - 项目埋点与监控](formal_lessons)
+
+- [6-1node.js 基础教学](formal_lessons)
+
+- [6-2node.js 原理详解](formal_lessons)
+
+- [6-3node.js 框架详解](formal_lessons)
+
+- [6-4node.js 网络 HTTP & 部署](formal_lessons)
+
+- [7-1 canvas 与 webGL](formal_lessons)
+
+- [7-2 可视化领域 —— 针对可视化领域的深度挖掘](formal_lessons)
+
 ## 突击课
 
 ## 公开课
