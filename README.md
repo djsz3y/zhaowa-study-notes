@@ -4,6 +4,8 @@
 
 ## 正式课
 
+三月
+
 - [一、JavaScript 高级用法（1）](formal_lessons/js_1_advanced_usage_1.md)
 
 - [一、JavaScript 高级用法（2）](formal_lessons/js_1_advanced_usage_2.md)
@@ -26,6 +28,8 @@
 
 - [十、ES6](formal_lessons/js_10_es6.md)
 
+四月
+
 - [Vue 基础用法](formal_lessons/vue_0408_vue-basic-usage.md)
 
 - [Vue 高级用法](formal_lessons/vue_0409_vue-advanced-usage.md)
@@ -37,6 +41,8 @@
 - [Vue 核心模块源码解析（上）](<formal_lessons/vue_0422_sourcecode(myCourseNotes).md>)
 
 - [Vue 核心模块源码解析（下）](formal_lessons/vue_0430_sourcecode_2.md)
+
+五月
 
 - [Vue Router 前端路由及异步组件](formal_lessons/vue_0501_vue-router.md)
 
@@ -54,6 +60,8 @@
 
 - [react.js 路由及状态同构](formal_lessons/react_0528_react-router_ssr.md)
 
+六月
+
 - [RN 入门与实战（上）](formal_lessons/react-native_0603_introduction_practice.md)
 
 - [RN 入门与实战（下）](formal_lessons/react-native_0604_introduction_practice.md)
@@ -62,11 +70,13 @@
 
 - [react 实战- 玩转 react 全家桶](formal_lessons/react_0611_react-practice.md)
 
-- [react 实战 - 项目开发（1）-页面展示实现](formal_lessons)
+- [react 实战 - 项目开发（1）-页面展示实现](formal_lessons/react_0617_proj-dev-1-page.md)
 
-- [react 实战 - 项目开发（2）-发帖与回复、评论实现](formal_lessons)
+- [react 实战 - 项目开发（2）-发帖与回复、评论实现](formal_lessons/react_0618_proj-dev-2-posting-reply-comment.md)
 
 - [react 实战 - 工程化开发](formal_lessons)
+
+七月
 
 - [react 实战 - 接口封装与对接](formal_lessons)
 
@@ -74,17 +84,41 @@
 
 - [react 实战 - 项目埋点与监控](formal_lessons)
 
-- [6-1node.js 基础教学](formal_lessons)
+- [6-1node.js 基础教学](formal_lessons/node_0708_node-base.md)
 
-- [6-2node.js 原理详解](formal_lessons)
+- [6-2node.js 原理详解](formal_lessons/node_0709_node-principle.md)
 
-- [6-3node.js 框架详解](formal_lessons)
+- [6-3node.js 框架详解](formal_lessons/node_0715_node-framework.md)
 
-- [6-4node.js 网络 HTTP & 部署](formal_lessons)
+- [6-4node.js 网络 HTTP & 部署](formal_lessons/node_0716_node-network-HTTP_deployment.md)
 
-- [7-1 canvas 与 webGL](formal_lessons)
+- [7-1 canvas 与 webGL](formal_lessons/low-code-conf_0722_canvas_webgl.md)
 
-- [7-2 可视化领域 —— 针对可视化领域的深度挖掘](formal_lessons)
+- [7-2 可视化领域 —— 针对可视化领域的深度挖掘](formal_lessons/low-code-conf_0723_visual.md)
+
+- [7-3 低代码领域 —— 切入最为火热的前端研究领域 Rico](formal_lessons)
+
+- [7-4 低代码平台深度进阶 —— 进一步提升 Rico](formal_lessons)
+
+八月
+
+- [8-1 前端 AST——Rico](formal_lessons)
+
+- [8-2 模块化开发与 webpack——Rico](formal_lessons)
+
+- [8-3 自动化构建、测试、部署-Rico](formal_lessons)
+
+- [8-3 自动化构建、测试、部署-Rico（下）](formal_lessons)
+
+- [9-1 设计模式解析与实战（上）--云隐老师](formal_lessons/js_0819_design-pattern-analysis-practice_1.md)
+
+- [9-1 设计模式解析与实战（下）--云隐老师](formal_lessons/js_0820_design-pattern-analysis-practice_2.md)
+
+- [9-2 小程序开发基础——云隐](formal_lessons/mini-program_0826_1.md)
+
+- [9-3 小程序开发框架解析——云隐](formal_lessons/mini-program_0826_2.md)
+
+九月
 
 ## 突击课
 
