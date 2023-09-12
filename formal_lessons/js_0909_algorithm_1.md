@@ -187,4 +187,6 @@ class DoubleLink extends LinkedList {
 // 栈和队列
 // 执行顺序：栈 - 先入后出，队列 - 先入先出
 // （如何实现一个栈）
+1:11:52
+
 ```
