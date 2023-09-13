@@ -50,9 +50,9 @@
 
 - **刷题**：代码的敏锐/熟练还是需要刷题。
 
-18:19
+# ⼀. 基础数据结构了解
 
-# 数组 & 链表
+## 1.数组和链表
 
 > array_link.js
 
@@ -97,7 +97,7 @@ class Node {
 // 1. 定位节点 => 前置节点
 function getElementAt(position) {
   // 边缘检测
-  if (position < 0 || position >= this.length) return null
+  if (position < 0 || position >= this.length) return null // 边缘检测 -> **注意是大于等于号**
 
   let _current = this.head
   for (let i = 0; i < position; i++) {
@@ -136,7 +136,7 @@ function append(element) {
 
 // 4. 插入节点 => 找到前一位（找到前置节点）
 function insert(position, element) {
-  if (position < 0 || position >= this.length) return false // 边缘检测
+  if (position < 0 || position > this.length) return false // 边缘检测 -> **注意是大于号**：插入时，position是length是可以插入，比长度大就不能插入了。
 
   let _node = new Node(element) // 构造新节点
 
@@ -155,7 +155,7 @@ function insert(position, element) {
 
 // 5. 删除节点 => 找到前置节点
 function removeAt(position) {
-  if (position < 0 || position >= this.length) return false // 边缘检测
+  if (position < 0 || position >= this.length) return false // 边缘检测 -> **注意是大于等于号**
 
   let _current = this.head
 
@@ -179,14 +179,250 @@ class DoubleLink extends LinkedList {
 }
 ```
 
-# 栈 & 队列
+## 2.栈与队列
 
 > stack_queue.js
 
 ```js
 // 栈和队列
-// 执行顺序：栈 - 先入后出，队列 - 先入先出
-// （如何实现一个栈）
-1:11:52
+// 执行顺序： 栈 - 先入后出，队列 - 先入先出
+// 面试题：实现一个栈（如何实现一个栈）
+class Stack {
+  constructor() {
+    this.items = []
+  }
+  // 添加新元素 入栈 => 栈顶
+  push(element) {
+    this.items.push(element)
+  }
+  // 删除
+  pop() {
+    return this.items.pop()
+  }
+  // 返回栈顶元素
+  peek() {
+    return this.items[this.items.length - 1]
+  }
+  // 是否为空
+  isEmpty() {
+    return this.items.length === 0
+  }
+  clear() {
+    this.items = []
+  }
+  // 大小
+  size() {
+    return this.items.length
+  }
+}
 
+// 【面试题-**真题**】
+// 判断括号是否有效自闭合——**有效自闭合**问题——// > 20.有效的括号.js
+// '{}[]' true, '[{()}]' true, \{\{}[] false
+
+// 【算法流程】
+// *1. 确定需要什么样的**数据结构**、满足模型的数据 -> 构造变量 & 常量
+
+// 比如此题：
+// - 1.有先后顺序？有，强相关于先后顺序
+// - 2.先后顺序是什么？
+// - 3.先后顺序是单向的还是双向的？
+// - 4.怎么样去匹配？需要去做什么？
+// 这几点考量之后，基本可以确认当前题目需要用什么样的数据结构去解决了：
+// - 单向的/单维度的/不是x、y轴的/找到左括号 再找右括号就可以了/从左向右 或者 从右向左——是单向的；
+// - 就排除了双向链表、一些双向的数据结构了。
+// - 先入后出，用栈
+// - 匹配，用哈希map
+
+// *2. **运行方式** 简单条件执行 | 遍历 | 递归 -> （搭建）算法主体结构
+
+// - 字符串一个一个匹配，要入栈，所以选择遍历方式。
+// - 条件执行：一整块处理，不需要关注内容每一个元素，不需要遍历 -> 条件执行就可以了；
+// - 递归：前一项包含后一项的内容，执行完前一项之后，需要再次执行 -> 用递归；
+
+// 当然，递归 & 遍历 在一些场景下可以互相替换。
+// - 比如 经典排序、走宫格（走两格退一格），可以既用遍历又用递归的。
+
+// *3. 确定**输入输出** - 确定流程（确定主要流程）
+
+const isValid = function (s) {
+  const stack = new Stack()
+  const map = {
+    '}': '{',
+    ']': '[',
+    ')': '('
+  }
+  // 因为是字符串，所以接下来要遍历了。
+  for (let i = 0; i < s.length; i++) {
+    const char = s[i] // 当前字符串遍历到哪一个字符
+    stack.push(char) // 当前字符串 push 进去 —— 薯片桶 立起来
+
+    if (stack.size() < 2) continue // 只有一个元素不能匹配/没必要匹配
+    // 等于2 或者 超过2，判断是否可以有效自闭合
+
+    // 顶层/次顶层
+    const theLastOne = stack[stack.size() - 1] // 栈顶
+    const theLastTwo = stack[stack.size() - 2] // 栈次顶
+
+    // 匹配是否有效：
+    if (map[theLastOne] === theLastTwo) {
+      stack.pop()
+      stack.pop()
+    } // 如果 栈顶 匹配上栈次顶，都弹出去
+    // * 两两配对都成功了 -> 说明 当前字符串 可以有效自闭合。
+  }
+  return stack.size === 0
+}
+
+// 判断如果字符长度奇数 直接返回false，偶数继续计算；
+// 有其他字符，只能严格的按照 '顶层 - 次顶层' 判断。
+// 只有**表里登记的才能入栈**，非括号不入栈。
 ```
+
+## 3.哈希表
+
+> hash.js
+
+```js
+// 哈希表 - 快速匹配定位
+
+// 面试题：罗马字符翻译
+// - 最经典题目：翻译字典类
+// - 变体：密码、罗马字符（中文、摩斯密码）
+
+// I   1
+// II  2
+// III 3
+// IV  4
+// V   5
+// VI  6
+// X   10
+// L   50
+// C   100
+
+// 【算法流程】——算法三部曲
+// *1. 确定需要什么样的**数据结构**、满足模型的数据 -> 构造变量 & 常量
+// - hash
+// *2. **运行方式** 简单条件执行 | 遍历 | 递归 -> （搭建）算法主体结构
+// - 遍历：翻译-单字母多字符-遍历 ，不需要入栈出栈弹出等操作。
+// *3. 确定**输入输出** - 确定流程（确定主要流程）
+// 分析 - **从右到左遍历**：罗马字符 & 数字一样，都是 右边个位 & 左边十位
+// - 从右往左遍历每个字符：
+// - 1）情况一：右侧 <= 左侧 => 可以通过hash表直接翻译 取值相加
+//    - 比如 VI ：1 + 5 = 6
+//           VIII=5+1+1+1=8
+// - 2）情况二：右侧 > 左侧
+//    - 比如 IV ：右侧 - 左侧 = 5 - 1 = 4
+//           IV=V-I=5-1=4
+// 这就是罗马字符的 特点/独特的算法。
+
+const MAP = {
+  I: 1,
+  V: 5,
+  X: 10,
+  L: 50,
+  C: 100
+}
+
+const romanToInt = function (s) {
+  // 接收字符串
+  let len = s.length
+  let max = 0 // max 判断最大值
+  let res = 0 // 保留结果
+
+  while (len--) {
+    // 遍历之后要做什么？翻译。
+    let num = MAP[s[len]] // s 是拿到的值，MAP[s[len]] 即 num 是翻译后的值
+    if (max > num) {
+      res -= num
+      continue
+    }
+    max = num
+    res += num
+  }
+
+  // 只要选对数据类型，选对执行方式，**遍历过程中 结合 算法**，就可以 快速返回 相应的操作。
+  // 重点在于找规律；一般题干告诉规律。
+
+  // 遍历时，结合规律，做相应的计算 -> 先翻译，后计算 -> 得到产出值。
+
+  return res // 返回计算之后的值
+}
+
+// 这就是哈希类型的题。
+```
+
+## 4.树结构
+
+> tree.js
+
+```js
+// 树结构
+// 遍历
+// 前序遍历（中左右）中是父
+// 中序遍历（左中右）
+// 后序遍历（左右中）
+
+// 数据结构体现 -> 通用树结构
+// const response = [{
+//     name: 'root',
+//     value: 5,
+//     children: [{
+//         name: 'node4',
+//         value: 0
+//     }, {
+//         name: 'node6',
+//         value: 1
+//     }, {
+//         name: 'node8',
+//         value: 3
+//     }, {
+//         name: 'node9',
+//         value: 5
+//     }]
+// }]
+
+// 遍历二叉树
+class Node {
+  constructor(node) {
+    this.left = node.left
+    this.right = node.right
+    this.value = node.value
+  }
+}
+// 父节点 包含 子节点的索引信息 -> 用递归。
+const PreOrder = function (node) {
+  if (node !== null) {
+    console.log(node.value)
+    PreOrder(node.left)
+    PreOrder(node.right)
+  }
+}
+
+const InOrder = function (node) {
+  if (node !== null) {
+    InOrder(node.left)
+    console.log(node.value)
+    InOrder(node.right)
+  }
+}
+
+const PostOrder = function (node) {
+  if (node !== null) {
+    PostOrder(node.left)
+    PostOrder(node.right)
+    console.log(node.value)
+  }
+}
+
+// xx二叉树 | XX树
+//  e.g. 搜索二叉树 平衡二叉树 红黑树 。。。。。。
+```
+
+## 【算法流程】重要思路
+
+最主要的就是这个【算法流程】的思路：
+
+1. 确定需要什么样的数据结构、满足模型的数据 - 构造变量 & 常量
+2. 运行方式 简单条件执行｜遍历｜递归 - 算法主体结构
+3. 确定输入输出 - 确定流程
