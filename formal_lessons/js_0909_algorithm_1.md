@@ -11,6 +11,8 @@
     3.哈希表
     4.树结构
 
+<img src="./imgs/js_0909_algorithm_1/js_0909_algorithm_1.png" />
+
 ⼆、数据结构分类实战
 
     5.栈的实现与应⽤
