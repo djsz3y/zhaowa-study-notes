@@ -102,6 +102,8 @@ function combine(n, k) {
 
 ### 455.分发饼干.js
 
+> 法 Ⅰ
+
 ```js
 var findContentChildren = function (g, s) {
   g = g.sort((a, b) => a - b) // 排序 胃口值
@@ -124,6 +126,8 @@ var findContentChildren = function (g, s) {
   return result
 }
 ```
+
+> 法 Ⅱ
 
 ```js
 var findContentChildren = function (g, s) {
