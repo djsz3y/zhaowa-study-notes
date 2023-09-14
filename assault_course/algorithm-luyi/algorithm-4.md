@@ -146,18 +146,22 @@ var findContentChildren = function (g, s) {
 
 ## 53.最大子数组和.js
 
-最大连续子数组的最大和。
+[1]最大连续子数组的最大和。
 
-有负数拉底总和。
+- if 有负数，拉底总和。
 
-贪心贪在哪里？
+[2]贪心贪在哪里？
 
 - 只要你有负数，你就会拉低我的值，我就不要你。
 
 ```js
+// 贪心贪在哪里？
+// 只要你有负数，你就会拉低我的值，我就不要你。
+// [-2,1,-3,4,-1,2,1,-5,4]
+// result = 4-1+2+1 = 6
 var maxSubArray = function (nums) {
-  let sum = 0
   let result = nums[0]
+  let sum = 0
   for (let i = 0; i < nums.length; i++) {
     if (sum > 0) {
       sum = sum + nums[i]
