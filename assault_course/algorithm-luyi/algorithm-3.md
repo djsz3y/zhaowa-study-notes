@@ -270,6 +270,7 @@ var searchRange = function (nums, target) {
         }
       }
     }
+    // 8. -1
     return -1
   }
   // 2. return [s..., s...]
