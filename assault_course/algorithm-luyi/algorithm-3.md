@@ -560,11 +560,12 @@ var solveNQueens = function (n) {
 
     for (let i = 0; i < n; i++) {
       if (valid(board, row, i)) {
-        // 去的时候，在本行设置 Q —— 设置皇后
+        // go 本行设置 'Q'，for设置皇后
         board[row][i] = 'Q'
-        // 加 1 行 设置 Q ，每个回溯 都加 1 行，直到 row 是 n-1
+        // row + 1（until row = n-1），回溯（设置 'Q'）
+        // ——（加 1 行 设置 Q ，每个回溯 都加 1 行，直到 row 是 n-1）
         backtrack(board, row + 1)
-        // 回来的时候，设置 '.' —— 恢复棋盘
+        // back 本行设置 '.'，for恢复棋盘
         board[row][i] = '.'
       }
     }
