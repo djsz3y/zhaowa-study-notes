@@ -37,9 +37,12 @@
 #### 704.二分查找.js
 
 ```js
+// 输入: nums = [-1,0,3,5,9,12], target = 9
+// 输出: 4
+// 解释: 9 出现在 nums 中并且下标为 4
 var search = function (nums, target) {
-  let low = 0
-  let high = nums.length - 1
+  let low = 0,
+    high = nums.length - 1
   while (low <= high) {
     /**
      * // 防止 left & right 太大相加导致溢出
@@ -48,12 +51,12 @@ var search = function (nums, target) {
      * mid = Math.floor(mid);
      */
     let mid = low + ((high - low) >> 1)
-    if (nums[mid] === target) {
-      return mid
-    } else if (nums[mid] < target) {
+    if (nums[mid] < target) {
       low = mid + 1
-    } else if (nums[mid] > target) {
+    } else if (target < nums[mid]) {
       high = mid - 1
+    } else if (nums[mid] === target) {
+      return mid
     }
   }
   return -1
