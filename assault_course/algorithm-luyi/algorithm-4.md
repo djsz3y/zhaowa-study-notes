@@ -248,6 +248,8 @@ var canJump = function (nums) {
 
 ### 45.跳跃游戏-ii.js
 
+<img src="./imgs/45.jump.png" />
+
 ```js
 // nums[i] 表示从索引 i 向前跳转的最大长度
 // nums[i] 处，可以跳转到 任意 nums[i + j] 处:
@@ -270,6 +272,8 @@ var jump = function (nums) {
 ```
 
 ## 买入股票的最佳时机
+
+<img src="./imgs/121.maxProfit.png" />
 
 ### 121.买卖股票的最佳时机.js
 
