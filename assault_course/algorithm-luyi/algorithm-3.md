@@ -247,19 +247,20 @@ var search = function (nums, target) {
 
 ```js
 // 题目要求：
-// - 非递减顺序排列的整数数组 nums
-// - 目标值 target
-// - 开始位置和结束位置
-// - 不存在 target，返回 [-1, -1]。
-// - O(log n) 的算法
+// 非递减顺序排列的整数数组 nums
+// 目标值 target
+//    给定目标值 开始位置、结束位置
+//    不存在，返回 [-1, -1]
+// 时间复杂度为 O(log n)
 // nums = [5,7,7,8,8,10], target = 8
+// [3,4]
 var searchRange = function (nums, target) {
   // 思路：题目要求 and 8 步（1 2 3 4 5 6 7 8）
   // 1. search fromLow
   const search = function (fromLow) {
     // 3. 左右指针
-    let low = 0
-    let high = nums.length - 1
+    let low = 0,
+      high = nums.length - 1
     // 4. while循环
     while (low <= high) {
       // 5. 二分查找 mid
@@ -279,15 +280,16 @@ var searchRange = function (nums, target) {
         // 从而找到左右边界；
 
         // 7. fromLow
+        // 找到目标值
         if (fromLow) {
-          // 找左边界
+          // 要找左边界
           if (nums[mid] === nums[mid - 1]) {
             high = mid - 1
           } else {
             return mid
           }
         } else {
-          // 找右边界
+          // 要找右边界
           if (nums[mid] === nums[mid + 1]) {
             low = mid + 1
           } else {
