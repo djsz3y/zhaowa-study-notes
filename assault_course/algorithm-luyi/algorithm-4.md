@@ -98,6 +98,8 @@ function combine(n, k) {
 2. 确定 dp 如何初始化；
 3. 通过“递推”得到全局最优解。
 
+# 贪心（例题）
+
 ## 饼干问题
 
 ### 455.分发饼干.js
@@ -288,22 +290,25 @@ var maxProfit = function (prices) {
 }
 ```
 
-# <span style="color:red;">1:06:54</span>
-
 ## 买入股票的最佳时机 2
 
+### 122.买卖股票的最佳时机-ii.js
+
 ```js
-// 贪心贪在哪？
-// 贪在，只要一涨，我就卖。只要一跌，我就不买。
+// 贪心贪在哪里？
+// 只要涨我就卖，只要跌我就不买。
 var maxProfit = function (prices) {
   let result = 0
   for (let i = 1; i < prices.length; i++) {
     result += prices[i] > prices[i - 1] ? prices[i] - prices[i - 1] : 0
   }
-
   return result
 }
 ```
+
+# 动态规划（例题）
+
+# <span style="color:red;">1:11:42</span>
 
 ## 爬楼梯
 
