@@ -267,26 +267,28 @@ var jump = function (nums) {
 }
 ```
 
-# <span style="color:red;">56:23</span>
-
 ## 买入股票的最佳时机
+
+### 121.买卖股票的最佳时机.js
 
 ```js
 var maxProfit = function (prices) {
+  // 1.边缘检测
   if (prices.length === 0) return 0
-
-  // 最低的买点
+  // 2.最低买点
   let min = prices[0]
-  // 最大的收入
+  // 3.最大利润
   let max = 0
-
   for (let i = 0; i < prices.length; i++) {
+    // 4.每个拐点计算适合的最低买入值和最大利润
     min = Math.min(min, prices[i])
     max = Math.max(max, prices[i] - min)
   }
   return max
 }
 ```
+
+# <span style="color:red;">1:06:54</span>
 
 ## 买入股票的最佳时机 2
 
