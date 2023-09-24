@@ -47,6 +47,8 @@
   [1]我们从后往前，先说效率。
   [2]再说策略。
 
+<img src="./imgs/js_0916_algorithm_2/js_0916_algorithm_2_data-structures-and-algorithms.png" />
+
 三、算法复杂度概念
 
     8.时间复杂度
