@@ -617,19 +617,24 @@ class AVL {
 
 [Depth-first search 深度优先搜索](https://en.wikipedia.org/wiki/Depth-first_search)
 
-- ① DFS-递归、
-- ② DFS-遍历、
+- ① dfs-递归、
+- ② dfs-遍历、
 
 [Breadth-first search 广度优先搜索](https://en.wikipedia.org/wiki/Breadth-first_search)
 
-- ③ BFS-递归、
-- ④ BFS-遍历；
+- ③ bfs-递归、
+- ④ bfs-遍历；
 
-[3.2]DFS / BFS - 思路：
+[3.2]dfs - 思路：
 
 - 输入输出（入 tree 出 void）
 - 执行方式（遍历 & 递归）
 - 先子后兄
+
+[3.3]bfs - 思路：
+
+- 递归
+- 遍历（和 dfs - 遍历一样，只不过这儿 bfs 是队列，dfs 是栈）
 
 [4] BT / BST / AVL / RBT
 
