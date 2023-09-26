@@ -164,10 +164,10 @@ const tree = {
       value: 'D',
       children: [
         {
-          value: 'E'
+          value: 'G'
         },
         {
-          value: 'F'
+          value: 'H'
         }
       ]
     }
@@ -187,6 +187,8 @@ const tree = {
 2. 确认执行方式 - 遍历 & 递归
 3. 先子后兄
 
+[3]都输出：A B E F C D G H。
+
 #### 1）dfs - 递归
 
 如果有孩子，那就去孩子；如果没有孩子，就打印。
@@ -194,7 +196,7 @@ const tree = {
 ```js
 // 递归方式
 function dfs(node) {
-  console.log(node.value)
+  console.log(node.value) // 打印
   // 有子则子
   if (node.children) {
     node.children.forEach((child) => {
@@ -202,8 +204,6 @@ function dfs(node) {
     })
   }
 }
-
-// 输出：A B E F C D E F
 ```
 
 #### 2）dfs - 遍历
@@ -221,12 +221,12 @@ function dfs(node) {
   const stack = [node]
   while (stack.length > 0) {
     const current = stack.pop()
+    console.log(current.value) // 打印
     if (current.children) {
       current.children.reverse().forEach((child) => stack.push(child)) // 后处理的先入栈
     }
   }
 }
-// 输出：A B E F C D G H
 ```
 
 ### 2.3.2 广度优先遍历
@@ -234,6 +234,8 @@ function dfs(node) {
 [1]关键词：辈分、家族、长幼。
 
 [2]两种不同的方式进行广度优先遍历。
+
+[3]都输出：A B C D E F G H。
 
 #### 1）bfs - 递归
 
@@ -246,7 +248,7 @@ function bfs(node, queue = [node]) {
   }
 
   const current = queue.shift()
-  console.log(current.value)
+  console.log(current.value) // 打印
   if (current.children) {
     queue.push(...current.children)
   }
@@ -262,6 +264,7 @@ function bfs(node) {
   const queue = [node]
   while (queue.length > 0) {
     const current = queue.shift()
+    console.log(current.value) // 打印
     if (current.children) {
       current.children.forEach((child) => {
         queue.push(child)
@@ -269,8 +272,6 @@ function bfs(node) {
     }
   }
 }
-
-// 输出：A B C D E F G H
 ```
 
 ## 2.4 二叉树/BT & 二叉搜索树/BST & 平衡二叉树/AVL & 红黑树/RBT
