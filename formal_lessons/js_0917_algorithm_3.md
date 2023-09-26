@@ -274,13 +274,13 @@ function bfs(node) {
 }
 ```
 
-## 2.4 二叉树/BT & 二叉搜索树/BST & 平衡二叉树/AVL & 红黑树/RBT
+## 2.4 二叉搜索树/BST & 平衡二叉树/AVL & 红黑树/RBT
 
-### 2.4.1 二叉树
+### 2.4.1 二叉搜索树
 
 #### 【1】题目：<span style="color:red;">面试题</span>
 
-面试：实现快速构造一个二叉树
+面试：实现快速构造一个二叉搜索树
 
 （1）若他的左子树非空，那么他的所有左子节点的值都应该小于根节点的值  
 （2）若他的右子树非空，那么他的所有右子节点的值都应该大于根节点的值  
@@ -292,7 +292,7 @@ function bfs(node) {
 
 - constructor(key) {}
 
-[2.2]BinaryTree
+[2.2]BinarySearchTree
 
 - constructor() {}
 - insert(key) {} 新增节点
@@ -304,7 +304,7 @@ function bfs(node) {
 #### 【3】实现：
 
 ```JS
-// 面试：实现快速构造一个二叉树
+// 面试：实现快速构造一个二叉搜索搜索树
 // （1）若他的左子树非空，那么他的所有左子节点的值都应该小于根节点的值
 // （2）若他的右子树非空，那么他的所有右子节点的值都应该大于根节点的值
 // （3）他的左右子树各自又是一颗满足上面两个条件的二叉树
@@ -317,7 +317,7 @@ class Node {
   }
 }
 
-class BinaryTree {
+class BinarySearchTree {
   constructor() {
     // 根节点
     this.root = null
@@ -634,14 +634,16 @@ class AVL {
 [3.3]bfs - 思路：
 
 - 递归
-- 遍历（和 dfs - 遍历一样，只不过这儿 bfs 是队列，dfs 是栈）
+- 遍历（和 dfs - 遍历一样，只不过这儿 **bfs 是队列，dfs 是栈**）
 
-[4] BT / BST / AVL / RBT
+[4] BST / AVL / RBT
 
-- [Binary tree 二叉树](https://en.wikipedia.org/wiki/Binary_tree)
+[Binary tree 二叉树](https://en.wikipedia.org/wiki/Binary_tree)
 
-- [Binary search tree 二叉搜索树](https://en.wikipedia.org/wiki/Binary_search_tree)
+[Binary search tree 二叉搜索树](https://en.wikipedia.org/wiki/Binary_search_tree)
 
-- [AVL tree AVL 树](https://en.wikipedia.org/wiki/AVL_tree)
+- 快速构造二叉搜索树 - **思路很重要**：（1）（2）（3）
 
-- [Red–black tree 红黑树](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree)
+[AVL tree AVL 树](https://en.wikipedia.org/wiki/AVL_tree)
+
+[Red–black tree 红黑树](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree)
