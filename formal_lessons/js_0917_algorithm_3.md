@@ -54,9 +54,11 @@
 
 ## 2.2 常见的树结构
 
-```js
-// dom 树
-;<html>
+### dom 树结构：
+
+```html
+<!-- dom 树 -->
+<html>
   <head></head>
   <body>
     <div id="app">
@@ -72,7 +74,13 @@
   </body>
   <script></script>
 </html>
+```
 
+### 抽象成一个树结构对象：
+
+描述当前页面中，dom 的状态。
+
+```js
 const tree_obj = {
   id: 1,
   type: 'dom',
@@ -98,12 +106,36 @@ const tree_obj = {
   ]
 }
 
-// Program
-// VariableDeclaration
-// tree_obj
-// init
-// key
 // 抽象语法树 AST
+```
+
+### 抽象语法树 AST：
+
+【1】js 写插件就是：对抽象语法树 AST 的编辑、解析的过程。
+
+【2】描述：
+
+[2.1]有一个 Program，其 body 下有一个声明 const，声明 VariableDeclarator 的就是一个 id 是 tree_obj 的声明；
+
+声明成了对象(init ObjectExpression)，有三个属性 Properties：
+
+- 第一个 key.name: 'id', value.value: 1;
+- 第二个 key.name: 'type', value.value: 'dom';
+- 第三个 key.name: 'children', value.elements: ObjectExpression; 继续嵌套。
+
+[2.2]如果是 `const tree_obj = 123` ，同样是树结构；
+
+[2.3]使用树形结构描述任何逻辑定义。
+
+【3】这就是抽象语法树 AST：
+网站：[AST Explorer](https://astexplorer.net/)
+
+![抽象语法树 AST](./imgs/js_0917_algorithm_3/js_0917_algorithm_3_ast.png)
+
+【4】错误：`const tree_obj == 123` ，展示如下；其中，token 表示错误节点，抽象语法树里没有节点概念，而是 token/令牌流：
+
+```js
+Unexpected token (1:15)
 ```
 
 ## 2.3 树结构的遍历
@@ -143,7 +175,7 @@ const tree = {
 
 ### 2.3.1 深度优先遍历 - dfs
 
-- 优先遍历节点的子节点，=》兄弟节点
+- 优先遍历节点的子节点 => 兄弟节点
 
 ```js
 // 请分别用两种不同的方式进行深度优先遍历
@@ -156,11 +188,19 @@ function dfs(node) {
   console.log(node.value)
   // 有子则子
   if (node.children) {
-    node.children.forEach((child) => dfs(child))
+    node.children.forEach((child) => {
+      dfs(child)
+    })
   }
-}
+} // 如果有孩子，那就去孩子；如果没有孩子，就打印。
 
 // 遍历方式 - 栈
+// 遍历时，用什么数据结构处理遍历树，能更好的承载？
+// - 如果用遍历方法，要单向线性遍历Node，有序（先走哪个再走哪个节点）。
+// - 栈：单向、有序且线性。
+
+写算法前，把数据结构温习一遍。
+
 function dfs(node) {
   const stack = [node]
   while (stack.length > 0) {
