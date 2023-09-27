@@ -323,25 +323,25 @@ const quickSort = function (arr) {
 // （[1, 2, 3, 5, -9, 2, 10, 22]）
 
 const maxSubArray = function (nums) {
-    // 1. 数据结构：数组。栈？不。 => 确定数据结构为数组
-    // 2. 遍历 => sum - 当前子序列的和；ans - 表示结果
+  // 1. 数据结构：数组。栈？不。 => 确定数据结构为数组
+  // 2. 遍历 => sum - 当前子序列的和；ans - 表示结果
 
-    // 3. 如果sum > 0，则说明sum对结果有整体增益效果 => sum保留并且加上当前遍历数字
-    // 4. 如果sum<=0，无增益效果，舍弃 => sum 则直接更新为当前遍历的数字即可
-    // 5. 每次都比较sum和ans的大小，将最大值给到ans
+  // 3. 如果sum > 0，则说明sum对结果有整体增益效果 => sum保留并且加上当前遍历数字
+  // 4. 如果sum<=0，无增益效果，舍弃 => sum 则直接更新为当前遍历的数字即可
+  // 5. 每次都比较sum和ans的大小，将最大值给到ans
 
-    let ans = nums[0]
-    let sum = 0
+  let ans = nums[0]
+  let sum = 0
 
-    for (const num of nums) {
-        if (sum > 0) {
-            sum += num
-        } else {
-            sum = num
-        }
-        ans = Math.max(ans, sum) // 始终取最大值
+  for (const num of nums) {
+    if (sum > 0) {
+      sum += num
+    } else {
+      sum = num
     }
-    return ans
+    ans = Math.max(ans, sum) // 始终取最大值
+  }
+  return ans
 }
 ```
 
@@ -366,7 +366,7 @@ const maxSubArray = function (nums) {
 // F(0) = 0, F(1) = 1
 // F(n) = F(n - 1) + F(n - 2), 其中 n > 1
 
-// 遍历
+// ------------------------------------遍历
 const fib = function (n) {
   // 1. 非通项公式 区域外的东西/规划外的东西，列出来；
   if (n < 2) {
@@ -380,7 +380,7 @@ const fib = function (n) {
 
   // 3. 从 2 开始遍历
   //    用遍历，将每一步的通项公式，转换成实际运行的结果，每一步 next、pre 不同，所以在每一步都要走一步看一步。
-  for (let i = 2; i < n; i++) {
+  for (let i = 2; i <= n; i++) {
     // 走一步看一步
     pre = next // 后一项往前移
     next = result // 已经求和完成的 当作统一的一项来处理。
@@ -390,10 +390,35 @@ const fib = function (n) {
   // 4. 直接 result
   return result
 }
+/**
+ * !经测试，发现要注意：for 循环的 <=：`i <= n`。
+ * f(2) = f(1) + f(0) = 1
+ * f(3) = f(2) + f(1) = 1 + 1 = 2
+ * f(4) = f(3) + f(2) = 2 + 1 = 3
+ */
 
-// 递归
+// ------------------------------------递归
 // ……
 // 一共三行。
+function fibonacciMemoization(n) {
+  if (n < 2) {
+    return n
+  }
+  const memo = [0, 1]
+  const fibonacciMem = (num) => {
+    if (memo[num] != null) {
+      return memo[num]
+    }
+    return (memo[num] = fibonacciMem(num - 1) + fibonacciMem(num - 2))
+  }
+  return fibonacciMem(n)
+}
+// f5=f4+f3=[(f1+f0+f1)+(f1+f0)] + (f1+f0+f1) = 5
+// f4=f3+f2=(f1+f0+f1)+(f1+f0)
+// f3=f2+f1=f1+f0+f1
+// f2=f1+f0
+// f1=1
+// f0=0
 ```
 
 # 五、⾯试技巧&学习总结（面试官问）
