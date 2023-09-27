@@ -114,11 +114,25 @@
 
 - [9-1 设计模式解析与实战（下）--云隐老师](formal_lessons/js_0820_design-pattern-analysis-practice_2.md)
 
-- [9-2 小程序开发基础——云隐](formal_lessons/mini-program_0826_1.md)
+- [10-1 小程序开发基础——云隐](formal_lessons/mini-program_0826_1_base.md)
 
-- [9-3 小程序开发框架解析——云隐](formal_lessons/mini-program_0826_2.md)
+- [10-2 小程序开发框架解析——云隐](formal_lessons/mini-program_0826_2_comparison_cross-platform-solutions.md)
 
 九月
+
+- [10-3 小程序项目实战——云隐](formal_lessons/mini-program_0902_3_project-practice.md)
+
+- [11-1 大厂性能的计算方式与优化方案——云隐](formal_lessons/js_0903_performance-optimization_advanced.md)
+
+- [12-1 算法问题详解（1）——云隐](formal_lessons/js_0909_algorithm_1.md)
+
+- [12-1 算法问题详解（2）--云隐老师](formal_lessons/js_0916_algorithm_2.md)
+
+- [12-1 算法问题详解（3）--云隐老师](formal_lessons/js_0917_algorithm_3.md)
+
+- [12-1 算法问题详解（4）--云隐老师](formal_lessons/js_0923_algorithm_4.md)
+
+十月
 
 ## 突击课
 
