@@ -1,7 +1,18 @@
 {
     "desc": "关于本文件的更多信息，请参考文档 https://developers.weixin.qq.com/miniprogram/dev/framework/sitemap.html",
     "rules": [{
-    "action": "allow",
-    "page": "*"
+      "action": "allow",
+      "page": "pages/index/index"
+    }, {
+      "action": "disallow",
+      "page": "pages/logs/logs"
+    }, {
+      "action": "allow",
+      "page": "pages/logs/logs",
+      "params": ["a", "b"],
+      "matching": "inclusive"
     }]
 }
+// pages/logs/logs?a=1&b=2 优先
+// pages/logs/logs?a=1&b=2&c=3 优先
+// pages/logs/logs 不会被索引
