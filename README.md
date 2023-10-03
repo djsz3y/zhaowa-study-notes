@@ -132,7 +132,13 @@
 
 - [12-1 算法问题详解（4）--云隐老师](formal_lessons/js_0923_algorithm_4.md)
 
+- [13-1 uniapp 基础——麓一](formal_lessons/cross-platform-app_uniapp_0930_1.md)
+
 十月
+
+- [13-2 uniapp 整体配置与 API 介绍——麓一](formal_lessons/cross-platform-app_uniapp_1001_2.md)
+
+- [13-3 uniapp 实战——麓一](formal_lessons/cross-platform-app_uniapp_1002_3.md)
 
 ## 突击课
 
