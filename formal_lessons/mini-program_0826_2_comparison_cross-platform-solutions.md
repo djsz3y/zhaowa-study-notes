@@ -266,6 +266,10 @@ Page({ tapName(event) { console.log(event); }, });
 
 # 三、kbone
 
+KBONE 是什么？
+
+> Kbone 是一个致力于微信小程序和 Web 端同构的解决方案，在适配层里模拟出浏览器环境，让 Web 端的代码可以不做什么改动便可运行在小程序里。
+
 ## 3.1 项目创建
 
 ```js
@@ -279,23 +283,44 @@ Page({ tapName(event) { console.log(event); }, });
     npm run mp
     // 4. 开发调试web端
     npm run web
+    // 5. 单独构建web端
+    npm run build
+    // 6. 单独构建小程序端
+    npm run build:mp
 ```
+
+### webpack 配置
+
+webpack.dev.config.js：web 端 webpack 配置
+
+webpack.mp.config.js：小程序 webpack 配置。
+
+注意 MpPlugin。
+
+```js
+const MpPlugin = require('mp-webpack-plugin') // 用于构建小程序代码的 webpack 插件
+```
+
+miniprogram.config.js：
+小程序所有的配置都集约在一起 miniprogram.config.js 里；在打包小程序的时候，变为一段配置传入到小程序插件里。
 
 ## 3.2 核心 —— 运行时兼容，静态复制配置
 
-miniprogram-render - 构造元素树
+【1】miniprogram-render - 构造元素树
+
 custom-dom: div >> input >> label
 
-a. 转化树结构
-view - dom-div
-\>\> view - input
-\>\> view - label
-b. 结合自定义组件、自定义指令
+1. 转化树结构  
+   view - dom-div  
+   \>\> view - input  
+   \>\> view - label
 
-b.1 合并创建 ： 静态节点复用 + 控制更新节点数量
+2. 结合自定义组件、自定义指令  
+   2.1 合并创建 ： 静态节点复用 + 控制更新节点数量
 
-miniprogram-element - 监听桥梁作用  
-c. 事件监听： 无缝对接
+【2】miniprogram-element - 监听桥梁作用
+
+事件监听： 无缝对接
 
 ## 3.3 优势
 
@@ -306,4 +331,95 @@ d. 可以提供小程序本身的特性
 
 # 四、实战
 
-【1】创建 kbone-demo 项目。
+## 【1】创建 kbone-demo 项目。
+
+```bash
+# 全局安装 kbone-cli
+npm install -g kbone-cli
+# 切换工作区间
+cd practice_is_the_sole_criterion_for_testing_truth
+# 创建项目（通过脚手架）
+kbone init mini-programs-study-vue-kbone
+# 安装依赖
+npm install
+```
+
+```bash
+cd practice_is_the_sole_criterion_for_testing_truth/mini-programs-study-vue-kbone
+npm init
+  # "kbone": "^0.0.1",
+  # "kbone-cli": "^0.3.5",
+# 安装依赖
+npm install
+
+npm run mp
+```
+
+## 【2】知识点
+
+a 标签对于小程序来说就是 redirectTo：
+
+```html
+<a href="/test/list/321">当前页跳转</a>
+```
+
+新开页对于小程序来说相当于 navigationTo：
+
+```html
+<a href="/test/detail/321" target="_blank">新开页跳转</a>
+```
+
+脚本跳转：
+
+```js
+      <button @click="onClickJump">当前页脚本跳转</button>
+      <button @click="onClickOpen">新开页脚本跳转</button>
+methods: {
+    onClickJump() {
+      window.location.href = '/test/list/123'
+    },
+    onClickOpen() {
+      window.open('/test/detail/123')
+    }
+  },
+```
+
+小程序生命周期监听：
+
+```js
+  created() {
+    // web侧无感知
+    window.addEventListener('wxload', (query) => {
+      console.log('page1 wxload', query)
+    })
+    window.addEventListener('wxshow', () => {
+      console.log('page1 wxshow')
+    })
+    window.addEventListener('wxready', () => {
+      console.log('page1 wxready')
+    })
+    window.addEventListener('wxhide', () => {
+      console.log('page1 wxhide')
+    })
+    window.addEventListener('wxunload', () => {
+      console.log('page1 wxunload')
+    })
+    if (process.env.isMiniprogram) {
+      console.log('i am in miniprogram')
+    } else {
+      console.log('i am in web')
+    }
+  },
+```
+
+三种不会出现在小程序里的方式：
+
+1. vue-improve-loader
+2. reduce-loader
+3. 样式隐藏
+
+# 重点
+
+1. 多种不同小程序之间的区别？
+
+2. 跨平台工具如何选择？选择静态编译、动态处理？
