@@ -176,6 +176,8 @@ return dp[n]
   dp[i][w] = dp[i - 1]w - weights[i - 1]] + values[i - 1]
   )
 
+> §14 算法设计与技巧 - P268 14.2.2 背包问题
+
 ```js
 function knapsack(values, weights, W) {
   let n = values.length
