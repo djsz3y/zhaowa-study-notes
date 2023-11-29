@@ -140,6 +140,12 @@
 
 - [13-3 uniapp 实战——麓一](formal_lessons/cross-platform-app_uniapp_1002_3.md)
 
+- [14-1 微前端（上）——麓一](formal_lessons/micro-front-end_1022_base.md)
+
+- [14-2 微前端（下） - 麓一](formal_lessons/micro-front-end_1028_qiankun2.md)
+
+- [15 结业课 - 麓一](formal_lessons)
+
 ## 突击课
 
 ## 公开课
