@@ -1,4 +1,4 @@
-react.js 路由及状态同构
+二十四、react.js 路由及状态同构
 
 # 目标
 
@@ -9,6 +9,8 @@ react.js 路由及状态同构
 - 如何监听 url 的变化
 - 如何匹配 path，按什么规则
 - 如何渲染对应的组件
+
+# react-router 
 
 ```js
 function Engine(opt) {
@@ -62,11 +64,21 @@ const useFormState = (initState, key) => {
 
 ## router
 
-### 路由这个概念，跟着 SPA 出现的。
+## 路由的介绍
+
+### 什么是 Router，以及 Router 发展的历史。
+
+路由这个概念，跟着 SPA 出现的。
+
+- 路由的概念，是伴随 SPA 出现的。在此之前，页面的跳转是通过服务器端进行控制的；
 
 服务端跳转。
 
 ### 路由分类
+● history 路由
+● hash 路由
+● memory 路由 *
+
 
 #### history 路由
 
@@ -74,7 +86,7 @@ history./\(go|back|replace|push|forward)/
 
 #### hash 路由
 
-window.location.hash
+window.location.hash = "xxx"
 
 #### memory 路由
 
@@ -87,6 +99,7 @@ window.location.hash
 - history 路由，在部署的时候，nginx，需要自己去处理页面跳转。
 
 ```sh
+# 单个的服务器部署
 
 ```
 
@@ -96,6 +109,12 @@ V6
 #### react-router
 提供核心的API 如：Router，Route，Switch这些，但是没有提供有关DOM跳转的API
 
-#### react-router
+#### react-router-dom
 
 提供 BrowserRouter，HistoryRouter
+
+## 路由的基本用法
+
+## 传统路由的原理讲解与实现
+
+## 实现一个简单的 react-router 
