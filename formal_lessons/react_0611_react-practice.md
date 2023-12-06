@@ -854,25 +854,26 @@ pnpm i react-router-dom --filter @proj/react-x
 
 ## 7.1 什么是 状态管理？
 
-状态管理的核心：  
+### 7.1.1 状态管理的核心：
+
 就是我有一个**统一的数据储存**，完了**修改**的时候，可以**触发更新**。
 
-react VS vue 区别？
+### 7.1.2 react VS vue 区别？
 
-vue: 我在修改了数据的时候，让界面更新了。
+1）vue: 我在修改了数据的时候，让界面更新了。
 
 - document.createElement()
 - 我在什么时候，为什么能触发界面更新
 - data.x -> set -> get -> observers -> notifyAll
 
-react: 我在 setState 的时候，让界面更新了。
+2）react: 我在 setState 的时候，让界面更新了。
 
 - render -> 对比 -> effects -> 界面更新。
 
-修改一个数据
+### 7.1.3 修改一个数据
 
 - 数据的改变，触发某些函数的执行
-- 这些函数，能够调用 setState
+- 这些函数触发界面更新，能够调用 setState
 
 ## 7.2 写一个简单的状态管理 & 怎么用状态管理
 
@@ -941,7 +942,7 @@ setName('yunyin2')
 
 - zustand ?
 - solid.js
-- @reduxjs/toolkit
+- **@reduxjs/toolkit**
 - redux ?
 - mobx ?
 
@@ -977,48 +978,11 @@ setName('yunyin2')
 - 如果是我，我会从里到外这样的挨个的去回答。
 - 大概是这样。
 
-# 第三讲 组件库
+## 到此为止，都讲了什么？
 
-src/button/index.tsx
-src/input/index.tsx
-src/image/index.tsx
+简单写了一个 状态管理，
 
-构建成要给大的 bundle 。
+简单说了一个组件库如何构造
 
-组件库要按需引入，没有用到就不要引用，所以构建出的产物，应该和上面这个目录一致的。
-
-按照一定的规则，对 src 下的东西分开打包，我可以用 typescript tsc 。但 tsc 不支持 css ，所以可以用 gulp 。
-
-比如 antd 的构建：
-
-## 如何选择合理的组件库？
-
-## 如何构建一个组件库？
-
-gulp 是一个很好的选择
-rollup 分文件夹，一起构建。
-antd 的构建：
-
-### 组件库打包的方案有哪些？
-
-一般情况下，我们需要“三证齐全”
-
-#### umd
-
-方便 script 标签直接引用 cdn 。
-
-`<script src="xxxx.xxx.xxx.cdn.xxx.js"></script>`
-
-#### cjs
-
-require 引入
-`const xxx = require('xxxx')`
-
-#### esm
-
-import 引入
-`import { Button } from '@proj/c'`
-
-### 组件库和前端项目，到底有什么区别？
-
-### 使用 rollup 构建组件库。
+现在基本脚手架已经完成；
+之后直接可以写 react-x ，把东西慢慢往 react-components 组件库里移动，最后把组件库共享。这是下面 2-3 节课的内容。
