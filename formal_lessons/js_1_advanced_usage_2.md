@@ -197,32 +197,474 @@ Array.prototype.concat.apply([], arrayLike)
 
 ## 5.2 Arguments 对象
 
-1. 定义在函数体中
-2. 函数参数  
-   其他属性
-3. 指代 Arguments 对象
+### 5.2.1 描述 Arguments 对象：
+
+1. 只定义在：函数体中
+2. 包括：函数参数 & 其他属性
+3. 函数体中，指代该函数的 Arguments 对象
+
+```js
+function foo(name, age, sex) {
+  // 1.函数体中
+  console.log(arguments) // 3.指代Arguments对象：函数参数、其他属性（2.）
+}
+
+foo('name', 'age', 'sex')
+```
+
+### 5.2.2 打印后，查看各属性具体用法：
+
+    Arguments(3) ['name', 'age', 'sex', callee: ƒ, Symbol(Symbol.iterator): ƒ]
+      0:"name" // 类数组的索引属性。
+      1:"age" // 类数组的索引属性。
+      2:"sex" // 类数组的索引属性。
+      callee:ƒ foo(name, age, sex) // 类数组的callee属性。
+      length:3 // 类数组的length属性
+      Symbol(Symbol.iterator):ƒ values() // 可迭代对象都有这个属性。
+      [[Prototype]]:Object // 隐式原型。
+
+### 5.2.3 length 属性
+
+1. arguments.length - **实参**（函数真实执行时传进来的参数）的长度
+
+2. foo.length - **形参**（函数本来可以传几个参数）的长度
+
+```js
+function foo(b, c, d) {
+  console.log('实参的长度为：' + arguments.length)
+}
+
+console.log('形参的长度为：' + foo.length) // 3
+foo(1) // 1
+
+// 形参的长度为：3
+// 实参的长度为：1
+```
+
+### 5.2.4 callee 属性
+
+- Arguments 对象的 callee 属性，可以**调用函数自身**。
+- **闭包**经典面试题：使用 callee 的解决方法：
+
+```js
+var data = []
+for (var i = 0; i < 3; i++) {
+  ;(data[i] = function () {
+    console.log(arguments.callee.i)
+  }).i = i
+}
+
+data[0]()
+data[1]()
+data[2]()
+
+// 0
+// 1
+// 2
+```
+
+### 5.2.5 arguments 和传入的对应参数（形参）的绑定
+
+【总结】：
+
+一个方法执行时，传入部分参数，
+
+- 传入的参数：  
+  改形参，arguments，任意一个，另一个也改变。
+
+- 未传入的参数：  
+  改形参，arguments，任意一个，另一个不变。
+
+比如，下面的例 1&2：
+
+```js
+function foo(name, age, sex, hobbit) {
+  // 例 1.传入的参数，互相绑定：
+  // 改变形参、改变arguments，互相都变为新值。
+
+  console.log(name, arguments[0]) // name name
+  name = 'name2' // 更改
+  console.log(name, arguments[0]) // name2 name2
+  arguments[1] = 'age2' // 更改
+  console.log(age, arguments[1]) // age2 age2
+
+  // 例 2.未传入的参数，没有互相绑定：
+  // 改变形参、arguments其中的一个，另一个不改变。
+
+  console.log(sex) // undefined
+  sex = 'sex2' // 改
+  console.log(sex, arguments[2]) // sex2 undefined
+  arguments[3] = 'hobbit2' // 改
+  console.log(hobbit, arguments[3]) // undefined hobbit2
+}
+
+foo('name', 'age')
+```
+
+### 5.2.6 函数间传参数用 apply
+
+【总结】：
+
+- foo 参数传给 bar 用 apply：
+
+```js
+function foo() {
+  bar.apply(this, arguments) // foo参数传给bar用apply
+}
+function bar(a, b, c) {
+  console.log(a, b, c)
+}
+
+foo(1, 2, 3)
+```
+
+### 5.2.7 ES6 中，使用`...arguments`转为数组：
+
+```js
+function func(...arguments) {
+  console.log(arguments) // [1, 2, 3]
+}
+func(1, 2, 3)
+```
+
+### 5.2.8 arguments 应用
+
+很多，参数不定长、函数柯里化等。
 
 # 六、创建对象的多种方式&优缺点
 
 ## 6.1 工厂模式
 
+【1】优点：
+
+- 简单；
+
+【2】缺点：
+
+- 无法识别对象——因为**所有实例**都指向**同一个原型**；
+
+```js
+function createPerson(name) {
+  // 工厂模式
+  const o = new Object()
+  o.name = name
+  o.getName = function () {
+    console.log(name)
+  }
+  return o
+}
+var person1 = createPerson('zhangsan')
+```
+
 ## 6.2 构造函数模式
+
+【1】优点：
+
+- **实例**可**识别**为**特定类型**（同下）；
+
+【2】缺点：
+
+- 创建实例，就要再次创建每个方法 getName。
+
+```js
+function Person(name) {
+  // 构造函数模式
+  this.name = name
+  this.getName = function () {
+    console.log(name)
+  }
+}
+var person1 = new Person('zhangsan')
+```
+
+### 6.2.1 构造函数优化
+
+【1】优点：
+
+- **实例**可**识别**为**特定类型**（同上）；
+- **解决**了**重复创建**每个方法 getName 的问题（解决了上述缺点）。
+
+```js
+function Person(name) {
+  this.name = name
+  this.getName = getName
+}
+function getName() {
+  console.log(this.name)
+}
+var person1 = new Person('zhangsan')
+```
 
 ## 6.3 原型模式
 
+【1】优点：
+
+- 方法不会重复创建（同上）；
+
+【2】缺点：
+
+- 所有属性、方法共享
+- 不能初始化参数。
+
+```js
+function Person(name) {}
+
+Person.prototype.name = 'zhang3'
+Person.prototype.getName = function () {
+  console.log(this.name)
+}
+
+var person1 = new Person()
+```
+
+### 6.3.1 原型模式优化
+
+【1】优点：
+
+- 封装清晰；
+
+【2】缺点：
+
+- 重写原型，丢失 constructor 属性。
+
+```js
+function Person(name) {}
+
+Person.prototype = {
+  name: 'zhang3',
+  getName = function () {
+    console.log(this.name)
+  }
+}
+
+var person1 = new Person()
+```
+
+### 6.3.2 原型模式优化 2
+
+【1】优点：
+
+- 实例可以通过 constructor 属性找到所属构造函数；
+
+【2】缺点：
+
+- 所有属性、方法共享；
+- 不能初始化参数。
+
+```js
+function Person(name) {}
+
+Person.prototype = {
+  constructor: Person, //
+  name: 'zhang3',
+  getName: function () {
+    console.log(this.name)
+  }
+}
+
+var person1 = new Person()
+```
+
 ## 6.4 组合模式
+
+【1】优点：
+
+- 使用最广泛的方式，该私有私有，该共享共享；
+
+【2】缺点：
+
+- 期望更好的封装性（写在一个地方）；
+
+```js
+function Person(name) {
+  this.name = name // 私有
+}
+
+Person.prototype = {
+  constructor: Person, // 共享
+  getName: function () {
+    console.log(this.name)
+  }
+}
+
+var person1 = new Person('zhang3')
+```
+
+### 6.4.1 组合模式总结<span style="color:red;">（以上除工厂的所有重要总结）</span>：
+
+**组合模式 = ① + ②**，也就是：
+
+**①** 构造函数优化 + 构造函数优化 2
+=（属性写入 this 而非 0）+（不重复创建方法）
+=（识别特定类型的实例）+（...）
+
+**加上**
+
+**②** 原型模式 + 原型模式优化 + 原型模式优化 2
+=（写原型上）+（重写原型）+（加 constructor）
+
+### 6.4.2 动态原型模式
+
+【1】动态原型模式：
+
+```js
+function Person(name) {
+  this.name = name
+  if (typeof this.getName !== 'function') {
+    // 使用动态原型模式
+    Person.prototype.getName = function () {
+      console.log(this.name)
+    }
+  }
+}
+var person1 = new Person('zhang3')
+```
+
+【2】注意：动态原型模式，不能用对象字面量`{}`，重写原型：
+
+```js
+function Person(name) {
+  this.name = name
+  if (typeof this.getName !== 'function') {
+    // 使用动态原型模式
+    Person.prototype = {
+      // 不能重写原型（以`{}`形式）【注意】
+      constructor: Person,
+      getName: function () {
+        console.log(this.name)
+      }
+    }
+  }
+}
+
+var person1 = new Person('zhang3')
+var person2 = new Person('li4')
+
+// 【注意以下】：
+// 报错，没有该方法：
+// person1.getName()
+// Uncaught TypeError: person1.getName is not a function
+//     at <anonymous>:1:9
+
+// 这句可以执行：
+person2.getName() // li4
+```
+
+【2.1】以上代码，person1.getName()报错，但 person2.getName()可执行，为什么？
+
+【2.2】回顾 new 的实现步骤：
+
+1. 创建对象；
+2. 对象的原型指向 Person.prototype；
+3. Person.apply(obj)；
+4. 返回这个对象；
+
+```js
+function objectFactory() {
+  var obj = new Object()// 1
+  var Constructor = [].shift.call(arguments)
+  obj.__proto__ = Constructor.prototype // 2
+  var ret = Constructor.apply(obj, arguments) // 3
+  reutrn typeof ret === 'object' ? ret : obj // 4
+}
+```
+
+【2.3】回顾 apply 的实现步骤：
+
+fn.apply(context, args) 执行了。
+
+【2.4】所以`Constructor.apply(obj, arguments)`是什么意思？
+
+- 执行 Constructor(arguments)方法，this 变为 obj，arguments 传入这个方法里。
+
+也就是：**`obj.Constructor(arguments)`**.
+
+【2.5】所以，第一个 new Person()：`var person1 = new Person('zhang3')`进行了哪些操作？
+
+自然明白了：
+
+- **执行了 `obj.Person()` 方法。**
+
+也就是**执行 if** 语句里的内容：
+
+```js
+if (typeof this.getName !== 'function') {
+  // 使用动态原型模式
+  Person.prototype = {
+    // 不能重写原型（以`{}`形式）【注意】
+    constructor: Person,
+    getName: function () {
+      console.log(this.name)
+    }
+  }
+}
+```
+
+自然：
+
+- **`Person.prototype.getName`** 也就**存在**了；
+
+同理：
+
+- **实例的 getName 方法`person2.getName`**，也就**存在**了。
+
+【2.6】注意：
+
+## todo
+
+【3】想用对象字面量`{}`方式重写动态原型模式，可尝试：
+
+```js
+function Person(name) {
+  this.name = name
+  if (typeof this.getName !== 'function') {
+    Person.prototype = {
+      constructor: Person,
+      getName: function () {
+        console.log(this.name)
+      }
+    } // 1.动态重写原型
+
+    return new Person(name) // 2. new 执行 Person() 方法，使得 实例拥有 getName 属性。
+  }
+}
+
+var person1 = new Person('zhang3')
+```
+
+就很好~
 
 # 七、继承的多种方式&优缺点
 
 ## 7.1 原型链继承
 
+```js
+
+```
+
 ## 7.2 借用构造函数
+
+```js
+
+```
 
 ## 7.3 组合继承
 
+```js
+
+```
+
 ## 7.4 原型继承
 
+```js
+
+```
+
 ## 7.5 寄生式继承
+
+```js
+
+```
 
 # 友情链接
 
