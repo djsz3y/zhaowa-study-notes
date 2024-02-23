@@ -639,32 +639,154 @@ var person1 = new Person('zhang3')
 ## 7.1 原型链继承
 
 ```js
+function Parent() {
+  this.name = 'xianzao'
+}
+Parent.prototype.getName = function () {
+  console.log(this.name)
+}
+function Child() {}
+Child.prototype = new Parent()
+var child1 = new Child()
+console.log(child1.getName()) // xianzao
+```
 
+问题：引⽤类型的属性被所有实例共享，举个例⼦：
+
+```js
+function Parent() {
+  this.names = ['xianzao', 'zaoxian']
+}
+function Child() {}
+Child.prototype = new Parent()
+var child1 = new Child()
+child1.names.push('test')
+console.log(child1.names) // ["xianzao", "zaoxian", "test"]
+var child2 = new Child()
+console.log(child2.names) // ["xianzao", "zaoxian", "test"]
 ```
 
 ## 7.2 借用构造函数
 
 ```js
-
+function Parent() {
+  this.names = ['xianzao', 'zaoxian']
+}
+function Child() {
+  Parent.call(this)
+}
+var child1 = new Child()
+child1.names.push('test')
+console.log(child1.names) // ["xianzao", "zaoxian", "test"]
+var child2 = new Child()
+console.log(child2.names) // ["xianzao", "zaoxian"]
 ```
 
-## 7.3 组合继承
+优点：
+
+1. 避免了引⽤类型的属性被所有实例共享；
+2. 可以在 Child 中向 Parent 传参；
 
 ```js
-
+function Parent(name) {
+  this.name = name
+}
+function Child(name) {
+  Parent.call(this, name)
+}
+var child1 = new Child('xianzao')
+console.log(child1.name) // xianzao
+var child2 = new Child('zaoxian')
+console.log(child2.name) // zaoxian
 ```
+
+缺点：
+
+- ⽅法都在构造函数中定义，每次创建实例都会创建⼀遍⽅法。
+
+<img src="./imgs/1_advanced_usage(2)/lesson1_advanced_usage(2)-7.1原型链继承&7.2借用构造函数.jpg" />
+
+## 7.3 组合继承（最常用）
+
+```js
+function Parent(name) {
+  this.name = name
+  this.colors = ['red', 'blue', 'green']
+}
+Parent.prototype.getName = function () {
+  console.log(this.name)
+}
+function Child(name, age) {
+  Parent.call(this, name)
+
+  this.age = age
+}
+Child.prototype = new Parent()
+Child.prototype.constructor = Child
+var child1 = new Child('kevin', '18')
+child1.colors.push('black')
+console.log(child1.name) // kevin
+console.log(child1.age) // 18
+console.log(child1.colors) // ["red", "blue", "green", "black"]
+var child2 = new Child('daisy', '20')
+console.log(child2.name) // daisy
+console.log(child2.age) // 20
+console.log(child2.colors) // ["red", "blue", "green"]
+```
+
+优点：
+
+- 融合原型链继承和构造函数的优点，
+- 是 JavaScript 最常⽤的继承模式。
 
 ## 7.4 原型继承
 
 ```js
-
+function createObj(o) {
+  function F() {}
+  F.prototype = o
+  return new F()
+}
 ```
+
+缺点：
+
+- 包含**引⽤类型的属性值**，始终都会**共享相应的值**（同 7.1 原型链继承）
+
+```js
+var person = {
+  name: 'kevin',
+  friends: ['daisy', 'kelly']
+}
+var person1 = createObj(person)
+var person2 = createObj(person)
+person1.name = 'person1'
+console.log(person2.name) // kevin
+person1.friends.push('taylor')
+console.log(person2.friends) // ["daisy", "kelly", "taylor"]
+```
+
+<img src="./imgs/1_advanced_usage(2)/lesson1_advanced_usage(2)-7.3组合继承（最常用）&7.4原型继承.jpg" />
 
 ## 7.5 寄生式继承
 
-```js
+描述：
 
+① 创建⼀个仅⽤于封装继承过程的函数，  
+② 该函数在内部以某种形式来做增强对象，  
+③ 最后返回对象。
+
+```js
+function createObj(o) {
+  var clone = Object.create(o) // ②该函数在内部以某种形式来做增强对象，
+  clone.sayName = function () {
+    console.log('hi')
+  }
+  return clone // ③最后返回对象。
+} // ①创建⼀个仅⽤于封装继承过程的函数，
 ```
+
+<img src="./imgs/1_advanced_usage(2)/lesson1_advanced_usage(2)-7.5寄生式继承.png" />
 
 # 友情链接
 
