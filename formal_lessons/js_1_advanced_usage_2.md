@@ -70,6 +70,7 @@ this 指针/闭包/作用域
 ```js
 Function.prototype.call2 = function (context, ...args) {
   if (typeof context === 'undefined' || context === null) {
+    // 【注意】：值类型会报错，而不是赋值 window！注意 typeof！
     context = window
   } //判
   let fnSymbol = Symbol() //Symbol
@@ -88,6 +89,7 @@ Function.prototype.call2 = function (context, ...args) {
 ```js
 Function.prototype.apply2 = function (context, args) {
   if (typeof context === 'undefined' || context === null) {
+    // 【注意】：值类型会报错，而不是赋值 window！注意 typeof！
     context = window
   } //判
   let fnSymbol = Symbol() //Symbol
@@ -99,6 +101,8 @@ Function.prototype.apply2 = function (context, args) {
 ```
 
 # 三、手写 bind
+
+## 复杂版
 
 bind 有如下功能：  
 用 bind 绑定函数 x 为新函数 y:  
@@ -128,6 +132,21 @@ Function.prototype.bind2 = function (context) {
   fNOP.prototype = this.prototype // 绑定函数原型给空函数原型
   fBound.prototype = new fNOP() // 空函数创建实例给返回函数的原型
   return fBound
+}
+```
+
+## 手写最简版 bind
+
+```js
+Function.prototype.myBind = function (context) {
+  if (typeof context === 'undefined' || context === null) {
+    // 【注意】：值类型会报错，而不是赋值 window！注意 typeof！
+    context = window
+  }
+  var self = this
+  return function (...args) {
+    return self.apply(context, args)
+  }
 }
 ```
 
