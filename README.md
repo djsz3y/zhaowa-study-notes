@@ -4,7 +4,7 @@
 
 ## 正式课
 
-三月
+### 三月
 
 - [一、JavaScript 高级用法（1）](formal_lessons/js_1_advanced_usage_1.md)
 
@@ -22,49 +22,53 @@
 
 - [七、函数式编程](formal_lessons/js_7_functional_programming.md)
 
-- [八、TS](formal_lessons/js_8_ts.md)
+- [八、TypeScript 详解（上）](formal_lessons/js_8_ts.md)
+
+- [八、TypeScript 详解（下）](formal_lessons/js_8_ts_2.md)
 
 - [九、编译器](formal_lessons/js_9_compiler.md)
 
-- [十、ES6](formal_lessons/js_10_es6.md)
+- [十、ES6 规范详解](formal_lessons/js_10_es6.md)
 
-四月
+- [十一、ES6 项目实战](formal_lessons)
 
-- [Vue 基础用法](formal_lessons/vue_0408_vue-basic-usage.md)
+### 四月
 
-- [Vue 高级用法](formal_lessons/vue_0409_vue-advanced-usage.md)
+- [十二、Vue 基础用法](formal_lessons/vue_0408_vue-basic-usage.md)
 
-- [Vue CLI 脚手架](formal_lessons/vue_0415_vue-cli.md)
+- [十三、Vue 高级用法](formal_lessons/vue_0409_vue-advanced-usage.md)
 
-- [Vuex 状态管理 SSR 路由及状态同构](formal_lessons/vue_0416_vuex_ssr.md)
+- [十四、Vue CLI 脚手架](formal_lessons/vue_0415_vue-cli.md)
 
-- [Vue 核心模块源码解析（上）](<formal_lessons/vue_0422_sourcecode(myCourseNotes).md>)
+- [十五、Vuex 状态管理 SSR 路由及状态同构](formal_lessons/vue_0416_vuex_ssr.md)
 
-- [Vue 核心模块源码解析（下）](formal_lessons/vue_0430_sourcecode_2.md)
+- [十六、Vue 核心模块源码解析（上）](<formal_lessons/vue_0422_sourcecode(myCourseNotes).md>)
 
-五月
+- [十六、Vue 核心模块源码解析（下）](formal_lessons/vue_0430_sourcecode_2.md)
 
-- [Vue Router 前端路由及异步组件](formal_lessons/vue_0501_vue-router.md)
+### 五月
 
-- [Vue 实战](formal_lessons/vue_0507_vue-in-action.md)
+- [十七、Vue Router 前端路由及异步组件](formal_lessons/vue_0501_vue-router.md)
 
-- [react.js 基础用法](formal_lessons/react_0513_react-basic-usage.md)
+- [十八、Vue 实战](formal_lessons/vue_0507_vue-in-action.md)
 
-- [react.js 高级用法](formal_lessons/react_0514_react-advanced-usage.md)
+- [十九、react.js 基础用法](formal_lessons/react_0513_react-basic-usage.md)
 
-- [redux & mobx](formal_lessons/react_0520_redux_mobx.md)
+- [二十、react.js 高级用法](formal_lessons/react_0514_react-advanced-usage.md)
 
-- [react.js 核心源码解析（上）](formal_lessons/react_0521_sourcecode_1.md)
+- [二十一、redux & mobx](formal_lessons/react_0520_redux_mobx.md)
 
-- [react.js 核心源码解析（下）](formal_lessons/react_0527_sourcecode_2.md)
+- [二十二、react.js 核心源码解析（上）](formal_lessons/react_0521_sourcecode_1.md)
 
-- [react.js 路由及状态同构](formal_lessons/react_0528_react-router_ssr.md)
+- [二十二、react.js 核心源码解析（下）](formal_lessons/react_0527_sourcecode_2.md)
 
-六月
+- [二十三、react.js 路由及状态同构](formal_lessons/react_0528_react-router_ssr.md)
 
-- [RN 入门与实战（上）](formal_lessons/react-native_0603_introduction_practice.md)
+### 六月
 
-- [RN 入门与实战（下）](formal_lessons/react-native_0604_introduction_practice.md)
+- [二十五、RN 入门与实战（上）](formal_lessons/react-native_0603_introduction_practice.md)
+
+- [二十五、RN 入门与实战（下）](formal_lessons/react-native_0604_introduction_practice.md)
 
 - [react 实战-现代 web 开发的工程搭建](formal_lessons/react_0610_react-practice.md)
 
@@ -76,7 +80,7 @@
 
 - [react 实战 - 工程化开发](formal_lessons)
 
-七月
+### 七月
 
 - [react 实战 - 接口封装与对接](formal_lessons)
 
@@ -100,7 +104,7 @@
 
 - [7-4 低代码平台深度进阶 —— 进一步提升 Rico](formal_lessons)
 
-八月
+### 八月
 
 - [8-1 前端 AST——Rico](formal_lessons)
 
@@ -118,7 +122,7 @@
 
 - [10-2 小程序开发框架解析——云隐](formal_lessons/mini-program_0826_2_comparison_cross-platform-solutions.md)
 
-九月
+### 九月
 
 - [10-3 小程序项目实战——云隐](formal_lessons/mini-program_0902_3_project-practice.md)
 
@@ -134,7 +138,7 @@
 
 - [13-1 uniapp 基础——麓一](formal_lessons/cross-platform-app_uniapp_0930_1.md)
 
-十月
+### 十月
 
 - [13-2 uniapp 整体配置与 API 介绍——麓一](formal_lessons/cross-platform-app_uniapp_1001_2.md)
 
@@ -153,6 +157,12 @@
 - [笔记：阿里 P8 带你解析 2023 前端程序员跳槽地图-先早](public_course/阿里P8带你解析2023前端程序员跳槽地图-先早.md)
 
 - [笔记：前端面试官带你深度模拟面试](public_course/前端面试官带你深度模拟面试.md)
+
+## 其他知识点课程
+
+- [设计模式 - CI/CD（上）](other_courses/Design-Pattern-CICD_Part1.md)
+
+- [设计模式 - CI/CD（下）](other_courses)
 
 ## 练习
 
