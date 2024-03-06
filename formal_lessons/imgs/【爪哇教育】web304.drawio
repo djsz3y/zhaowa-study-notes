@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-06T08:27:50.231Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="i5RR20f0f28EDlO_if9x" version="24.0.2" type="github" pages="23">
+<mxfile host="app.diagrams.net" modified="2024-03-06T08:31:56.093Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="cqdK7zhsh-MYIh4eoB6h" version="24.0.2" type="github" pages="23">
   <diagram name="lesson1_advanced_usage(1)" id="BX2rdM4rP1arOYqP6WTK">
     <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -6675,6 +6675,15 @@
           <mxGeometry x="0.0157" y="-1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="mxGGWkhJ23Eq425lNaMV-5" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;flipH=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="560" y="200" width="20" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="mxGGWkhJ23Eq425lNaMV-6" value="这是提供跑模型的能力" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="590" y="225" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mxGGWkhJ23Eq425lNaMV-7" value="可以学习开源模型，就可以做业务了。" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="520" y="375" width="230" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
