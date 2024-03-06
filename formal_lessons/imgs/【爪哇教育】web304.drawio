@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-06T08:31:56.093Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="cqdK7zhsh-MYIh4eoB6h" version="24.0.2" type="github" pages="23">
+<mxfile host="app.diagrams.net" modified="2024-03-06T08:42:19.570Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="trZAMzGET12ND27CPsHX" version="24.0.2" type="github" pages="23">
   <diagram name="lesson1_advanced_usage(1)" id="BX2rdM4rP1arOYqP6WTK">
     <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -6684,6 +6684,12 @@
         </mxCell>
         <mxCell id="mxGGWkhJ23Eq425lNaMV-7" value="可以学习开源模型，就可以做业务了。" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="520" y="375" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mxGGWkhJ23Eq425lNaMV-8" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-310" y="225" width="20" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mxGGWkhJ23Eq425lNaMV-9" value="&lt;div style=&quot;text-wrap: nowrap;&quot;&gt;高端的会特征工程；&lt;/div&gt;&lt;div style=&quot;text-wrap: nowrap;&quot;&gt;普通点的会使用模型，知道模型参数代表什么；&lt;/div&gt;&lt;div style=&quot;text-wrap: nowrap;&quot;&gt;前提都得会点通用语言Python；&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-480" y="195" width="235" height="235" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
