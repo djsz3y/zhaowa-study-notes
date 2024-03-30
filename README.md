@@ -152,6 +152,28 @@
 
 ## 突击课
 
+- [css](assault_course/css.md)
+
+- [js](assault_course/js.md)
+
+- [hand](assault_course/hand.md)
+
+- [http](assault_course/http.md)
+
+- [vue](assault_course/vue.md)
+
+- [10.project-yunyin](assault_course/10.project-yunyin.md)
+
+- [algorithm-1](assault_course/algorithm-luyi/algorithm-1.md)
+
+- [algorithm-2](assault_course/algorithm-luyi/algorithm-2.md)
+
+- [algorithm-3](assault_course/algorithm-luyi/algorithm-3.md)
+
+- [algorithm-4](assault_course/algorithm-luyi/algorithm-4.md)
+
+- 【爪哇教育】前端突击训练营.drawio
+
 ## 公开课
 
 - [笔记：阿里 P8 带你解析 2023 前端程序员跳槽地图-先早](public_course/阿里P8带你解析2023前端程序员跳槽地图-先早.md)
@@ -162,7 +184,7 @@
 
 - [设计模式 - CI/CD（上）](other_courses/Design-Pattern-CICD_Part1.md)
 
-- [设计模式 - CI/CD（下）](other_courses)
+- [设计模式 - CI/CD（下）](other_courses/Design-Pattern-CICD_Part2.md)
 
 ## 练习
 
