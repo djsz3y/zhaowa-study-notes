@@ -183,24 +183,509 @@ pnpm 优点就是依赖扁平化：
 - 所以它抽取公共组件特别快，只需根据`pnpm-lock.yaml`，至少在包依赖上会快很多；还会节省空间，不需解析抽取公共包了，在这一步就做完了；还有其他工具就不深入探讨了；
 - 只是一个包加载工具：就是项目初始化`pnpm install`，还有引入第三方新包的时候`pnpm add 一个包`；剩下该用 yarn 跑命令就用 yarn 他们命令行上没有本质区别，就是结构上按照自己的做的；
 
-另外，我希望你们...
+另外，我希望你们多用 pnpm 代替 npm；
 
-### 48:42
+考题：至于请你分析一下，几个打包工具用过几种？
 
-### 工程工具
+- 背诵一下上面题即可。
+
+## 工程工具
 
 CI/CD 具体内容看下面
 
 **总结：没有最好的项目，持续优化才是王道。目前最佳实践 pnpm+vite 打包，建议使用 vue3（或者 svelte），利用 gitlab 的 CI/CD，主要是跟项目结合的比较好。Nginx 反向代理，如果有能力还是建议 nodejs 做渲染(ssr)和网关。业务层需要按照业务分好仓库，尽量不要把所有代码塞到一个项目。组件库的建设方案很多，<span style="color:red;">个人还是建议，直接使用 gitlab,方便又跟 CI/CD 无缝衔接。组件需要按需引入，打包速度和体积提升很大。</span>关于 CSS 多尺寸适配的问题，端尽量分开，利用 dns 重定向机制，pc 和移动，分开 2 个域名，独立代码建设。移动端使用 vw/vh 的解决方案，pc 端固定好骨架，尺寸依然使用 px。**
 
-## Nginx 配置解读，最实用
+github 要花钱，我们的代码基本在 gitlab 上，公司自己都会自己买机器，搭建一个；
+只需要在 gitlab 上做 CI/CD 就可以了
+
+不需要建立账号了
+gitlab 在代码上了，执行也在上面，
+
+### Nginx 配置解读，最实用
 
 1.`http`块
 
-这是 Ngix 配置文件中最常见的块，用于定义所有与 HTTP 服务器相关的配置。
+这是 Nginx 配置文件中最常见的块，用于定义所有与 HTTP 服务器相关的配置。
 
-```nginx
+```bash
 http {
   # ...
 }
 ```
+
+2. `server` 块
+
+`server` 块定义了一个虚拟服务器。一个 `http` 块可以包含多个 `server` 块。
+
+```bash
+  server {
+  listen 80; # 监听端口
+  server_name example.com; # 服务器名称
+  # ...
+}
+```
+
+3. `location` 块
+
+location 块用于定义处理特定请求类型的规则。例如，它可以根据 URI 的不同部分来处理不同的请求。
+
+```bash
+nginxCopy code
+location / {
+  root /data/www; # 定义服务器上的文件路径
+  index index.html index.htm; # 默认提供的文件
+}
+```
+
+4. `listen`
+
+指定 Nginx 监听的端口（和可选的 IP 地址）。
+
+```bash
+listen 80; # 监听80端口
+```
+
+5. `server_name`
+
+定义服务器的名称，用于基于名称的虚拟主机。
+
+```bash
+server_name example.com www.example.com;
+```
+
+6. `root`
+
+设置服务器请求的根路径。
+
+```bash
+root /var/www/html;
+```
+
+7. `index`
+
+定义请求目录时默认返回的文件。
+
+```bash
+index index.html index.htm;
+```
+
+8. `access_log` 和 `error_log`
+
+定义访问日志和错误日志的位置。
+
+```bash
+access_log /var/log/nginx/access.log;
+error_log /var/log/nginx/error.log;
+```
+
+9. **`proxy_pass`**
+
+用于设置反向代理。
+
+```bash
+location /some/path/ {
+    proxy_pass http://localhost:3000;
+}
+```
+
+10. **`ssl_certificate` 和 `ssl_certificate_key`**
+
+当使用 HTTPS 时，这些指令指定 SSL 证书和密钥的位置。
+
+```bash
+ssl_certificate /etc/ssl/certs/nginx.crt;
+ssl_certificate_key /etc/ssl/private/nginx.key;
+```
+
+这些配置项是 Nginx 配置的基础，理解这些可以帮助你开始配置和优化你的 Nginx 服务器。Nginx 的配置非常灵活，可以根据需要进行详细的定制。记得在修改配置后，需要重启 Nginx 服务来使改动生效。
+
+### Nginx 配置案例
+
+#### http 基础配置
+
+```bash
+server {
+  listen 80;
+  server_name izelas.run git.izelas.run;
+  return 301 https://$server_name$request_uri;
+}
+```
+
+#### https 基础配置
+
+```bash
+server {
+  listen 443 ssl;
+  server_name izelas.run; # 你的域名
+
+  ssl_certificate /root/ssl/izelas.run.pem; # 你的 SSL 证书
+  ssl_certificate_key /root/ssl/izelas.run.key; # 你的 SSL 私钥
+
+  location / {
+    root /root/izelas; #静态文件的目录
+    index index.html index.htm; # 默认页面
+    try_files $uri $uri/ =404; # 尝试提供请求的文件，如果不存在则返回404
+  }
+
+  # 反向代理，解决跨域问题（单独代理请求到服务器）
+  location /prod-api/ {
+    proxy_pass https://api.admin.com/;
+    # $host 变量, Host变量名
+    proxy_set_header Host $host; #域名转发
+    proxy_set_header X-Peal-IP $remote_addr; #IP转发
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Cookie  $http_cookie; #cookie配置
+  }
+}
+
+```
+
+#### 老师的配置举例：
+
+- ubuntu 的操作系统。
+
+> etc/nginx/conf.d/git.izelas.run.conf
+
+```shell
+# ...
+```
+
+> etc/nginx/conf.d/izelas.run.conf
+
+```shell
+server {
+  listen 443 ssl;
+  server_name izelas.run; # 你的域名
+
+  ssl_certificate /root/ssl/izelas.run.pem; # 你的 SSL 证书
+  ssl_certificate_key /root/ssl/izelas.run.key; # 你的 SSL 私钥
+
+  location / {
+    root /root/izelas; # 静态文件的目录
+    index index.html index.htm; # 默认页面
+    try_files $uri $uri/ =404; # 尝试提供请求的文件，如果不存在则返回 404
+  }
+}
+```
+
+[负载均衡]()
+
+### 阿里云实战
+
+【1】购买一个：阿里云的 ECS（Elastic Compute Service），是一种简单高效、安全可靠的云端计算服务。它提供了弹性的计算能力，支持自定义配置 CPU、内存、网络、磁盘等资源。这里我们将 ECS 作为我们的服务器环境。
+
+购买的域名：阿里云的云解析 DNS，是一种域名解析服务。它可以将域名解析为 IP 地址，使域名可以被访问。这里我们将云解析 DNS 作为我们的域名解析服务。
+
+购买的 SSL 证书：阿里云的 SSL 证书服务，是一种数字证书服务。它可以为网站提供 HTTPS 加密传输，并提供 HTTPS 安全访问。这里我们将 SSL 证书服务作为我们的证书申请服务。
+
+购买的防火墙：阿里云的安全组，是一种网络安全防护服务。它可以为云服务器提供网络访问控制，保障云服务器的安全。这里我们将安全组作为我们的网络安全服务。
+
+### 阿里云实战操作步骤
+
+阿里云控制台：https://home.console.aliyun.com/
+
+购买的云服务器 ECS：阿里云服务器
+
+- 选一个操作系统：ubuntu，fidolr
+
+云服务器 ECS -> 实例与镜像 -> 实例：看购买的云服务器。
+
+云服务器 ECS -> 网络与安全 -> 安全组：点击管理规则（你的防火墙能透出哪几个端口）：
+
+- `目的：443/443`（HTTPS，从右到左：机器上的 443 映射到外网的 443）
+- `目的：80/80`（HTTP，从右到左：机器上的 80 映射到外网的 80）
+- `目的：22/22`（SSH 登录方式，从右到左：机器上的 22 映射到外网的 22）
+
+【2】购买一个域名
+
+【3】云解析 DNS -> 域名解析
+
+【4】购买的 SSL 证书：证书申请
+
+### Docker 实战
+
+```shell
+# 阶段1：构建
+# 使用Node.js 21.0.0 镜像
+FROM node:21.0.0 AS build
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制 package.json 和 pnpm-lock.yaml 到工作目录
+COPY ./package.json ./pnpm-lock.yaml ./
+
+# 安装pnpm
+RUN npm install -g pnpm
+
+
+# 安装项目依赖
+RUN pnpm install
+
+# 复制项目文件到工作目录
+COPY /root/test/ .
+
+# 构建应用
+RUN pnpm run build
+
+# 阶段2：运行
+# 使用更小的 nginx 镜像来提供静态文件服务
+FROM nginx:alpine
+
+# 从构建阶段复制构建的文件到 nginx 目录
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# 暴露 80 端口
+EXPOSE 80
+
+# 运行 nginx
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+#### 使用方法
+
+1. 将上述 Dockerfile 保存在您的项目根目录中。
+2. 在包含 Dockerfile 的目录中运行以下命令来构建 Docker 镜像：
+
+```shell
+docker build -t your-name /www/home/
+```
+
+1. 运行容器：
+
+```shell
+docker run -d -p 12345:80 vite-app
+```
+
+这将在端口 12345 上启动一个 nginx 服务器，提供您的 Vite 应用。您可以通过访问 http:/localhost:8080
+来查看您的应用。
+
+```nginx
+Nginx
+Ssl
+server_name:git.izelas.com
+proxy localhost:12345
+```
+
+### Git 命令解读
+
+#### 基本配置
+
+- 配置用户名和邮箱（首次使用 Git 时必须配置）：
+
+```bash
+git config-global user.name"你的名字"
+git config--global user.email"你的邮箱"
+```
+
+#### 仓库操作
+
+- 克隆现有仓库：
+
+```bash
+git clone <仓库地址>
+```
+
+#### 初始化新仓库：
+
+```bash
+git init
+```
+
+#### 文件操作
+
+- 添加文件到暂存区：
+
+```bash
+git add.
+
+git add -u
+```
+
+- 提交暂存区的文件到仓库：
+
+```bash
+git commit-m"提交信息"
+```
+
+- 查看状态：
+
+```bash
+git status
+```
+
+- 查看提交历史：
+
+```bash
+git log
+```
+
+#### 分支操作
+
+- 创建分支：
+
+```bash
+git branch <分支名>
+```
+
+- 切换分支：
+
+```bash
+git checkout <分支名>
+```
+
+- 创建并切换到新分支：
+
+```bash
+git checkout -b <分支名>
+```
+
+- 合并分支：
+
+```bash
+git merge <分支名>
+```
+
+- 删除分支：
+
+```bash
+git branch -d <分支名>
+```
+
+#### 远程仓库操作
+
+- 查看远程仓库：
+
+```bash
+git remote -v
+```
+
+- 添加远程仓库：
+
+```bash
+git remote add <远程仓库名> <远程仓库地址>
+```
+
+- 拉取远程仓库的数据：
+
+```bash
+git pull <远程仓库名> <分支名>
+```
+
+- 推送到远程仓库：
+
+```bash
+git push <远程仓库名> <分支名>
+```
+
+#### 其他常用操作
+
+- 查看更改：
+
+```bash
+git diff
+```
+
+- 撒销更改（撤销工作目录中的更改）：
+
+```bash
+git checkout -- <文件名>
+```
+
+- 重置暂存区（但保留工作目录不变）：
+
+```bash
+git reset HEAD <文件名>
+```
+
+- 撒销提交（创建一个新的提交来撤销之前的提交）：
+
+```bash
+git revert <提交ID>
+```
+
+- 更改最后一次提交：
+
+```bash
+git commit --amend
+```
+
+#### 总结：
+
+```sql
+// git 创建账号
+// 设置ssh-key
+git clone branch-name
+
+git checkout -b my-branch
+git push
+
+git push --set-upstream origin my-branch
+
+// or
+git push -u origin my-branch
+
+git add .
+git add -u // 删除东西了，就用这个暂存
+git commit -m ''
+git push
+
+git checkout master
+git pull origin master I
+
+git checkout my-branch
+git merge master
+
+git checkout master
+git merge my-branch
+git push
+
+# 注意：要在自己分支上解决master和自己分支的冲突，然后再合并到master。（所以先拉去master最新内容，合并到自己分支上解决冲突，最后把解决好冲突的自己的无冲突的dev合并到master里。我平时工作是这么做的。）
+
+// 回滚
+git log
+git reset --hard <commit-hash>
+git push origin <branch-name> --force
+git push origin <branch-name> --force-with-lease
+
+// 放弃本地更改
+git checkout -f
+
+// 切回上一个分支
+git checkout -
+```
+
+### CI/CD 实战
+
+GitLab CI/CD(持续集成和持续部署)是一个强大的自动化工具，它集成在 GitLab 中，用于自动化软件开发的各个阶段，包括测试、构建和部署。以下是 GitLab CI/CD 的基本概念和组件，以及如何设置和使用它的简要概述：
+
+#### 基本概念
+
+1. 持续集成(CI)：自动化地将代码更改从多个贡献者集成到单个软件项目中。通常涉及自动化测试，以确保这些更不会破坏应用程序。
+
+2. 持续部署(CD)：自动化的软件发布过程，允许开发团队快速、安全地部器代码到生产环境。
+
+#### GitLab CI/CD 关键组件
+
+1. `.gitlab-ci.yml`：这是 GitLab CI/CD 的配首文件，位于项目的根目录。它定义了 CI/CD 流程中的作业、脚本和阶段。
+
+2. Runner：GitLab Runner 是一个开源项目，用于运行你的作业并将结果发送回 GitLab。Runner 可以是特定于项目的，也可以是全局的或共享的。
+
+3. Pipeline：Pipeline 是你定义在`.gitlab-ci.yml`文件中的一系列作业，这些作业可以被分组为不同的阶段，如`build`、`test`和`deploy`。
+
+4. Job：Job 是 pipeline 中的单个任务，例如运行测试或部署代码。
+5. Artifact：Artifact 是作业执行过程中创建的文件，可以在作业之间传递或存档供以后使用。
+
+#### 设置 GitLab CI/CD
+
+1. 创建 `.gitlab-ci.yml`文件：在你的 GitLab 仓库中创建 `.gitlab-ci.yml`文件，并定义你的 pipeline。例如：
+
+```yml
+yamlCopy code
+stages:- test- deploytest:stage: testscript:- echo "Running tests"- ./run-tests.shdeploy
+```
+
+1. 配置 GitLab Runner：你需要安装并注册 GitLab Runner,这是实际执行 CI/CD 作业的服务器。你可以在自己的服
+   务器上安装 Runner,或者使用 GitLab 提供的共享 Runner。.
+2. 运行 Pipeline:当你推送代码更改到仓库时，GitLab 会自动触发 CI/CD pipeline。你也可以手动触发 pipeline。
+3. 查看 Pipeline 结果：在 GitLab Ul 中，你可以查看每个 pipeline 的状态、作业日志和 artifact。
