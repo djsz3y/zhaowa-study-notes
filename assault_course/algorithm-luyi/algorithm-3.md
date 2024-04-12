@@ -8,7 +8,8 @@
   搜索算法有：顺序搜索、二分搜索、内插搜索。
 
 - 二分搜索方法论：  
-  [二分搜索算法总结](https://zhuanlan.zhihu.com/p/633311891)
+  [二分搜索算法总结](https://zhuanlan.zhihu.com/p/633311891)  
+  [Day08.二分查找算法详解（我的所有二分搜索方法论）](https://github.com/djsz3y/algorithm-labuladong/blob/master/Day08.二分查找算法详解（我的所有二分搜索方法论）.md)
 
 ## 1.1 典型二分（基本二分）
 
