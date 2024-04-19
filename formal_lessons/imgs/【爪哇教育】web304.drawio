@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-04-19T04:24:11.630Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="K57RxYQD8hLIt11hz5qI" version="24.2.5" type="github" pages="23">
+<mxfile host="app.diagrams.net" modified="2024-04-19T04:32:08.788Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="2Rt7KA4TFngysNzCzxMb" version="24.2.5" type="github" pages="23">
   <diagram name="lesson1_advanced_usage(1)" id="BX2rdM4rP1arOYqP6WTK">
     <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -5870,8 +5870,8 @@
         <mxCell id="Fp9DAnSb8AibcDKqCe5O-40" value="view，text，button，input ..." style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="590" y="753" width="199.54" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-41" value="&lt;div&gt;我们如果想要实现编译多端的时候，&lt;/div&gt;&lt;div&gt;些特定的P1,根据条件和规则，放在不同的工程目录下。&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="840" y="745" width="320" height="40" as="geometry" />
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-41" value="&lt;div&gt;我们如果想要实现编译多端的时候，&lt;/div&gt;&lt;div&gt;些特定的API，根据条件和规则，放在不同的工程目录下。&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="835" y="745" width="330" height="40" as="geometry" />
         </mxCell>
         <mxCell id="Fp9DAnSb8AibcDKqCe5O-47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Fp9DAnSb8AibcDKqCe5O-44" target="Fp9DAnSb8AibcDKqCe5O-46" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -5879,10 +5879,10 @@
         <mxCell id="Fp9DAnSb8AibcDKqCe5O-44" value="microapp SDK" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="380" y="880" width="419.68" height="180" as="geometry" />
         </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-46" value="各种厂商的自定义组件与专用AP" style="whiteSpace=wrap;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-46" value="各种厂商的自定义组件与专用API" style="whiteSpace=wrap;html=1;rounded=0;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="852.82" y="949.5" width="307.18" height="41" as="geometry" />
         </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-48" value="H5 API" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-48" value="H5 API&lt;div&gt;(DOM BOM)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="280" y="880" width="76.87" height="180" as="geometry" />
         </mxCell>
         <mxCell id="Fp9DAnSb8AibcDKqCe5O-49" value="vue.runtime.js" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
@@ -5962,11 +5962,17 @@
         <mxCell id="tp8rV5Ny21NZp0n_Xkor-2" value="双线程模型是什么样的？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="-60" y="190" width="160" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="tp8rV5Ny21NZp0n_Xkor-3" value="第二节课讲。" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="748" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tp8rV5Ny21NZp0n_Xkor-4" value="运行时" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="870" y="1138" width="60" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="bfNEE2lgEM8NhrTdX5AK" name="第 21 页">
-    <mxGraphModel dx="2261" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1299" dy="745" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -6006,11 +6012,14 @@
         <mxCell id="XM9pwIVINkGz56xo3xbp-10" value="this.data = xxx" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="170" y="198" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="XM9pwIVINkGz56xo3xbp-11" value="div - view || span -》 text" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
+        <mxCell id="XM9pwIVINkGz56xo3xbp-11" value="div -&amp;gt; view || span -》 text" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="301.56" y="262" width="236.87" height="35" as="geometry" />
         </mxCell>
         <mxCell id="XM9pwIVINkGz56xo3xbp-13" value="-" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="560" y="267" width="240" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="sXsPEKqVUqyhPm5aGKWa-1" value="AST" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-120" y="200" width="50" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
