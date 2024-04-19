@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-04-19T04:51:33.974Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="xNB02pfRLFEYmeyuGCLZ" version="24.2.5" type="github" pages="23">
+<mxfile host="app.diagrams.net" modified="2024-04-19T07:53:22.515Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="mmQX9OKbfDGbK2hI_Z1T" version="24.2.5" type="github" pages="23">
   <diagram name="lesson1_advanced_usage(1)" id="BX2rdM4rP1arOYqP6WTK">
     <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -5789,7 +5789,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="6F4x1Xodqj1WP5JVg5U2" name="uniapp">
-    <mxGraphModel dx="2022" dy="623" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2261" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -5938,30 +5938,6 @@
         <mxCell id="TzRK0vgLjTE2uxVWyXiZ-16" value="Kotlin" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" parent="1" vertex="1">
           <mxGeometry x="-110" y="747" width="110" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-1" value="js 线程" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="159.06" y="120" width="120" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-2" value="render 线程" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="320" y="120" width="120" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-4" value="JSCore" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="120" y="240" width="159.06" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-5" value="webview" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="320" y="240" width="160" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-7" value="wxml + wxss + js" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="246.87" y="170" width="110" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-8" value="JSCore" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="80" y="320" width="420" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="Fp9DAnSb8AibcDKqCe5O-9" value="1." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="60" y="50" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="tp8rV5Ny21NZp0n_Xkor-2" value="双线程模型是什么样的？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="-60" y="190" width="160" height="30" as="geometry" />
-        </mxCell>
         <mxCell id="tp8rV5Ny21NZp0n_Xkor-3" value="第二节课讲。" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="1200" y="748" width="100" height="30" as="geometry" />
         </mxCell>
@@ -6006,6 +5982,36 @@
         </mxCell>
         <mxCell id="LvC8GJkLk2aHazM663XR-13" value="dart2&lt;div&gt;&lt;br&gt;&lt;div&gt;runtime&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="1">
           <mxGeometry x="-590" y="980" width="100" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="LvC8GJkLk2aHazM663XR-15" value="代码转换" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-345" y="718" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="LvC8GJkLk2aHazM663XR-16" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="80" y="120" width="420" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-1" value="js 线程" style="rounded=0;whiteSpace=wrap;html=1;" parent="LvC8GJkLk2aHazM663XR-16" vertex="1">
+          <mxGeometry x="79.06" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-2" value="render 线程" style="rounded=0;whiteSpace=wrap;html=1;" parent="LvC8GJkLk2aHazM663XR-16" vertex="1">
+          <mxGeometry x="240" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-4" value="JSCore" style="rounded=0;whiteSpace=wrap;html=1;" parent="LvC8GJkLk2aHazM663XR-16" vertex="1">
+          <mxGeometry x="40" y="120" width="159.06" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-5" value="webview" style="rounded=0;whiteSpace=wrap;html=1;" parent="LvC8GJkLk2aHazM663XR-16" vertex="1">
+          <mxGeometry x="240" y="120" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-7" value="wxml + wxss + js" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="LvC8GJkLk2aHazM663XR-16" vertex="1">
+          <mxGeometry x="166.87" y="50" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-8" value="JSCore" style="rounded=0;whiteSpace=wrap;html=1;" parent="LvC8GJkLk2aHazM663XR-16" vertex="1">
+          <mxGeometry y="200" width="420" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Fp9DAnSb8AibcDKqCe5O-9" value="1." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="LvC8GJkLk2aHazM663XR-16" vertex="1">
+          <mxGeometry width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tp8rV5Ny21NZp0n_Xkor-2" value="双线程模型是什么样的？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="LvC8GJkLk2aHazM663XR-16">
+          <mxGeometry y="80" width="160" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
