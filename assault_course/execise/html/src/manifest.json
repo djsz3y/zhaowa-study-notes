@@ -1,0 +1,14 @@
+{
+  "name": "PWA Manifest",
+  "short_name": "Manifest",
+  "start_url": "./index.html",
+  "theme_color": "#4374A5",
+  "background_color": "#4374A5",
+  "display": "standalone",
+  "orientation": "natural",
+  "icons": [{
+    "src": "images/launcher-icon.png",
+    "sizes": "32x32",
+    "type": "image/png"
+  }]
+}

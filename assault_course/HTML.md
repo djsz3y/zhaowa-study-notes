@@ -414,19 +414,19 @@ document.onkeydown = function(e) {
 
 所以 html 的题，大家有一些比较基本的理解，就可以了。
 
-## href="javascript:void(0)" 和 href="#" 的区别是什么？
+## `href="javascript:void(0)"` 和 `href="#"` 的区别是什么？
 
-href="#" 锚点，默认 #top，会让你的网页网上走。
+`href="#"` 锚点，默认 #top，会让你的网页网上走。
 
-href="javascript:void(0)" 阻止事件，什么都不干，死链接。
+`href="javascript:void(0)"` 阻止事件，什么都不干，死链接。
 
-## 对 target="\_blank"的理解？有什么安全性问题？如何防范？
+## 对 `target="_blank"` 的理解？有什么安全性问题？如何防范？
 
-target="\_blank"，类似于 window.open，你的子页面，会拿到你当前的句柄（句柄就是当前 window 对象）。
+`target="_blank"`，类似于 `window.open`，你的子页面，会拿到你当前的句柄（句柄就是当前 window 对象）。
 
 window.opener
 
-> target="\_blank" 会新开一个页面，在新开的窗口里打印 window.opener 可以拿到上个窗口的一些东西。
+> `target="_blank"` 会新开一个页面，在新开的窗口里打印 `window.opener` 可以拿到上个窗口的一些东西。
 
 ```js
 if (window.opener) {
@@ -445,23 +445,382 @@ otherWindow.opener = null
 
 ## 简述页面的存储区别？什么是本地存储？怎么做离线存储？
 
-1. cookie
+> 【todo】
+>
+> - 第 25 章 　 客户端存储  
+>   [美] 马特 • 弗里斯比. JavaScript 高级程序设计（第 4 版） (Kindle 位置 26098). 人民邮电出版社.
 
-2. web storage  
-   localStorage  
-   sessionStorage  
-   5MB
+一般问到浏览器存储的区别，分为以下几类：
 
-3. indexDB [webSQL]
+### 【1】`cookie`
 
-web sql 相当于浏览器端的一个数据库
+- 可能会在 cookie 存一些东西，比如 JWT 相关的操作，比如为了安全考虑，设置成 HTTPOnly、Expires、Secure 等，在特定的情况下才能拿到这个东西
+- cookie 特点：每个 cookie 不能超过 4kb
+- 每个域 20 个
+- 构成：有其自己的 [Name 名称, Value 值, Domain 域, Expires 过期时间, HttpOnly, Secure 安全标志, ss?]
 
-4. application cache
-   pwa
+#### 扩展：
 
-service worker
+[1]cookie 耗费性能，
 
-# 1:27:39
+[2]不安全，安全是一个相对的概念：
+
+首先自己登录的用户肯定要信任浏览器自己，在这个过程中，它的不安全因素就会有很多，比如：
+
+- 其他的网站 已经登录了 比如 `baidu.com`，现在输入域名进入 `bad.com`，这个 bad 能否拿到 cookie，如果 bad 能读取，说明这个网站不安全，这就是典型的 **CSRF**，利用登录态拿取到我的东西；所以就需要对`cookie`做一些限制，防止其他能拿到；
+- 比如打开某个论坛，论坛没有做保护的前提下，别人写了一段代码去获取我们的 cookie，发送到其他环境上，这里就是典型的**XSS**攻击；此时，cookie 必须设置成 HTTPOnly，设置只有 HTTP 访问，才能拿到 cookie，不能让 js 读取到我的 cookie。
+
+### 【2】web storage
+
+[1]localStorage
+
+- 浏览器端的缓存
+- 永久存储，只要不清空页面内存，都会一直会有
+- 可以是离线缓存
+- `window.localStorage.getItem/setItem`
+
+[2]sessionStorage
+
+- 会话存储，
+- `window.sessionStorage.getItem/setItem`
+
+> 两个 API 很像：
+>
+> - 虽然是个同步阻塞的方式，但是依然有不安全的时候，拿到一些值 比如存了一个 json，要把它反序列化时，做 try catch，防止出现一些问题。
+> - 还可以**监听 storage 发生变化**：`window.addEventListener('storage', ...)`
+> - 大小一般限制 5MB
+> - 如果 localStorage 比较大，可以用 iframe，做无限缓存
+
+### 【3】indexDB [webSQL]
+
+> 除此之外，还有 indexDB：
+
+- web sql 相当于浏览器端的一个数据库
+- 再往前一个版本，叫 webSQL
+
+### 【4】application cache 真正做离线缓存的
+
+[1]pwa
+
+[2]service worker：
+
+- 浏览器端和客户端之间相当于构建一个服务器、一个中间件，本身也是 web Worker 的一种；
+- 如果做离线缓存，标准的来说就是 service worker，
+- 它是一个独立的 js 主线程，访问时要用 postMessage 去访问，
+- 其实就是用来实现 离线的 web app 的，用浏览器缓存。
+- 知道、了解即可，没必要研究，没有接触过，可以找个很简单的例子怎么玩。
+- 通过 manifest 设置 web worker 相关的一些东西
+
+## 什么是 canvas？什么时候需要使用 canvas？
+
+浏览器端的一个绘图工具
+
+[1]canvas 中文：画布。
+
+[2]一般常见的动画方案：
+
+- css div css 动画；
+- svg；
+- canvas；
+
+[3]它们各有优缺点。
+
+- 普通的动画，左右移动，使用 css，普通的网页。html 简单的 animation transform
+
+- svg 和传统的 html 差别不大，html 处理矢量绘图的能力不足。
+
+- canvas 分为 canvas 2d 和 canvas webgl：  
+  -拿到上下文 getContext()，画圆、画方、写字都可以，相当于在界面上就是一个画布，比较方便的绘制一些几何图形，此时我们用 canvas 比较多，相当于 渲染引擎会做一些优化 canvas 用起来比较难，但性能比较好。  
+  -获取 webGL 上下文，相当于 3D，相当于浏览器提供的另外一种上下文，是 OpenGL 的 ES 规范 在 web 端的实现。相对复杂很多。利用 GPU 去渲染一些尤其是 3d，或 2d 的图形。webGL 的应用 Three.js。
+
+[4]什么时候适合使用 canvas？
+
+- 当数据量大，同时动画渲染比较复杂的时候，用 canvas 是比较合适的。
+
+## 什么是 PWA？
+
+> - 渐进式 Web 应用程序（ PWA， Progressive Web Application）  
+>   [美] 马特 • 弗里斯比. JavaScript 高级程序设计（第 4 版） (Kindle 位置 28969-28970). 人民邮电出版社.
+
+> - [前端 PWA 应用的相关知识和基础 Demo](https://blog.csdn.net/weixin_45092437/article/details/132385204)
+
+Demo 报错：
+
+> Demo 来源：
+>
+> ./execise/html/src  
+>  ├─ images
+> ├ └─launcher-icon.png  
+>  ├─ index.html  
+>  ├─ manifest.json  
+>  └─ sw.js
+
+```js
+Error while trying to use the following icon from the Manifest: http://127.0.0.1:5500/assault_course/html/src/images/launcher-icon.png (Resource size is not correct - typo in the Manifest?)
+```
+
+渐进式网页应用
+
+核心技术：
+
+- app manifest
+- service worker 客户端代理的工作
+- web push
+
+国内用的较少，
+
+- 豆瓣
+- 饿了么
+
+国外用的较多：
+
+- twitter
+
+## 什么是 Shadow DOM？
+
+[1]新的浏览器标准，**web component**，框架里做到**真正的组件化**
+
+- 原生规范，无需框架
+- 原生使用，无需编译
+- 真正意义上的 css scope
+
+[1.1]**示例**：
+
+> execise/html/current/src/index.html  
+> 右键 -> Open with Live Server
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      customElements.define(
+        'shadow-test',
+        class extends HTMLElement {
+          connectedCallback() {
+            const shadow = this.attachShadow({ mode: 'open' })
+            shadow.innerHTML = 'this is a shadow dom'
+          }
+        }
+      )
+    </script>
+    <shadow-test></shadow-test>
+  </body>
+</html>
+```
+
+[1.2]构建可以模块化，并不是模块化要依赖构建。
+
+[2]不管在代码里怎么用 css 隔离 js 隔离，但最好的沙箱隔离依然是 web component，它是原生的东西，比如：
+
+- `stencil` 框架 真正意义上的组件化
+
+[3]整个 video 标签其实就是一个 shadow dom：
+
+[3.1]搜索“好看视频”，点开某个 video  
+ -> Ctrl + Alt + C 选中 video 标签  
+ -> 设置  
+ -> 偏好设置  
+ -> 元素  
+ -> 勾选“显示用户代理 Shadow DOM”
+
+[3.2]再看 video 标签里，有个 #shadow-root(user-agent) 可以点开，有缓冲、选项等，对用户隔离了，是天然的沙盒，真正意义上的 scope。
+
+## iframe 有哪些应用？
+
+- 最常见的一种微前端手段
+- ajax 上传文件
+- 广告
+- 跨域
+
+## 如何处理 iframe 通信？
+
+- 同域下面
+
+```js
+document.domain = 'baidu.com'
+frame.contentWindow.xxx // iframe 作为子域，可以直接拿父级窗口的东西，直接拿数据
+```
+
+- post message
+
+### iframe 实战
+
+#### 【1】搭建基本的环境
+
+[1]current/src 右键，在集成终端中打开：
+
+```bash
+npm init -y
+npm install -g yarn # 全局安装 yarn
+yarn add express
+```
+
+[2]新建 3 个文件：
+
+- `current/src/iframe/a/index.html`
+- `current/src/iframe/b/index.html`
+- `server.js`
+
+```html
+<body>
+  A
+</body>
+```
+
+```html
+<body>
+  B
+</body>
+```
+
+> `server.js`
+
+```js
+const path = require('path')
+const express = require('express')
+
+const app1 = express()
+const app2 = express()
+
+app1.use(express.static(path.resolve(__dirname, './iframe/a')))
+app2.use(express.static(path.resolve(__dirname, './iframe/b')))
+
+app1.listen(8101)
+app2.listen(8102)
+```
+
+[3]运行 `server.js` & 启动服务
+
+- 点右上角的 `Run Code`
+- 之后浏览器输入`localhost:8101` 和 `8102`
+- 分别显示页面 A 和页面 B。
+
+【2】编写 iframe 框架代码，以测试 iframe 间的通信：
+
+[1]A 页面 发送消息
+
+> a.html
+
+```html
+<body>
+  <h1>A页面</h1>
+  <button id="btn">post</button>
+  <iframe src="http://localhost:8102" id="iframe"></iframe>
+  <script>
+    window.onload = function () {
+      document.getElementById('btn').addEventListener('click', function () {
+        var iframe = document.getElementById('iframe')
+        iframe.contentWindow.postMessage('xxxxx', '*')
+      })
+    }
+  </script>
+</body>
+```
+
+[2]B 页面 接收消息
+
+> b.html
+
+```html
+<body>
+  B
+  <script>
+    window.addEventListener('message', function (event) {
+      console.log(event)
+    })
+  </script>
+</body>
+```
+
+[3]`localhost:8101` 点击 post 按钮，接收到 event，点击索引，定位到 B 页面的打印位置代码，说明已经进行通信了
+
+[4]消息怎么回去呢？
+
+[4.1]B 页面添加代码：
+
+> b.html
+
+```diff
+window.addEventListener('message', function (event) {
+  console.log(event)
++   event.source.postMessage('i am b', '*')
+})
+```
+
+[4.2]A 页面添加代码（以防止死循环？）：
+
+> a.html
+
+```diff
+<script>
++   window.addEventListener('message', function (event) {
++     console.log(event)
++   })
+</script>
+```
+
+[5]点击 post 按钮，控制台打印：
+
+```bash
+MessageEvent {isTrusted: true, data: 'xxxxx', origin: 'http://localhost:8101', lastEventId: '', source: Window, …}
+
+MessageEvent {isTrusted: true, data: 'i am b', origin: 'http://localhost:8102', lastEventId: '', source: Window, …}
+```
+
+## 什么是 web worker？为什么要使用 web worker？
+
+> 这里先不讲
+
+## 什么是 SSO 打通？怎么做前端沙盒模式？
+
+> （SSO 跟后端关系大，这里先不讲）
+> 令牌，后端有个持久的会话
+
+## 浏览器的渲染和布局逻辑是什么？
+
+[1]DOM 树 和 CSS 树的构建，是两种不同的解析器
+
+- DOM 树构建
+- CSS 树构建
+- 渲染树构建
+- 页面布局
+- 页面绘制
+
+DOM 和 CSS ，边解析，边渲染。
+
+[2]这个流程有两个东西，一个是 html 的 parser，一个是 css parser
+
+[3]当然这个过程，并不是完全同步的过程：
+
+- 因为构建 DOM 树时，同时也会做一些渲染，所以 CSS 的位置要放到前面去；
+
+- 因为最后还要构建渲染树，去进行页面渲染，所以 DOM 已经构建完了，CSS 还没下载，
+
+- 等到 CSS 下载完，还要重新再次构建渲染树，再次进行布局
+
+## 页面的重绘回流是什么？【todo】
+
+【1】什么是重绘？
+
+100 \* 200
+
+由 A 图片加载成了 B 图片，
+
+理论上，它不会回流，它只会重绘。
+
+【2】什么是回流？
+
+## 怎样计算首屏和白屏的时间？常统计的页面性能数据指标包括？
+
+## 页面上有哪些领域可以做进一步的性能优化？
+
+## 浏览器之间的线程调度是怎么做的？
 
 # 参考链接
 
