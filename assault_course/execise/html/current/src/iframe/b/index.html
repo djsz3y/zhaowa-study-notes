@@ -7,11 +7,29 @@
   </head>
   <body>
     B
-    <script>
+    <!-- <script>
       window.addEventListener('message', function (event) {
         console.log(event)
         event.source.postMessage('i am b', '*')
       })
-    </script>
+    </script> -->
   </body>
+  <script>
+    // 2
+    console.log(window.performance.timing)
+
+    // 1
+    new PerformanceObserver((entryList, observer) => {
+      let entries = entryList.getEntries()
+      for (let i = 0; i < entries.length; i++) {
+        if (entries[i].name === 'first-paint') {
+          console.log('FP', entries[i].startTime)
+        }
+        if (entries[i].name === 'first-contentful-paint') {
+          console.log('FCP', entries[i].startTime)
+        }
+      }
+      observer.disconnect()
+    }).observe({ entryTypes: ['paint'] })
+  </script>
 </html>
