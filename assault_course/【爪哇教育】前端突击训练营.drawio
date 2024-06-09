@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-03T10:14:42.883Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="35WY1-KW7xmDbuH1kz6X" version="22.1.16" type="github" pages="11">
+<mxfile host="app.diagrams.net" modified="2024-06-09T01:55:49.014Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="EnUADK48bkdOy4-82zSx" version="24.5.1" type="github" pages="12">
   <diagram id="44qQX4IVHCC8jqcmglR7" name="1.知识体系-面试前的准别-云隐">
     <mxGraphModel dx="1434" dy="1928" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -553,6 +553,62 @@
         </mxCell>
         <mxCell id="XVUzTsWBh04fLj-I60or-133" value="了解面试官什么角色，他的目标是什么，&lt;br&gt;针对他的目标我们准备一些自己的方案。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];;autosize=1;fontColor=#FF0000;" parent="XVUzTsWBh04fLj-I60or-135" vertex="1">
           <mxGeometry x="10" y="41" width="230" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="W2p_tbclO6bT2k1vw2BI" name="2.HTML">
+    <mxGraphModel dx="1687" dy="879" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-18" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="40" y="40" width="640" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-15" value="" style="group" vertex="1" connectable="0" parent="sRkEcJS6i-Wj1QBqsMOD-18">
+          <mxGeometry y="50" width="640" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-1" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;任务队列&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;verticalAlign=top;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry width="120" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-2" value="宏任务" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="10" y="100" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-3" value="宏任务" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="10" y="160" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-4" value="宏任务" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="10" y="220" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-5" value="微任务" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="160" y="70" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="sRkEcJS6i-Wj1QBqsMOD-15" source="sRkEcJS6i-Wj1QBqsMOD-6" target="sRkEcJS6i-Wj1QBqsMOD-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-6" value="UI主线程" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="320" y="40" width="120" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-7" value="宏任务" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="330" y="50" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="sRkEcJS6i-Wj1QBqsMOD-15" source="sRkEcJS6i-Wj1QBqsMOD-8" target="sRkEcJS6i-Wj1QBqsMOD-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-8" value="I/O&lt;div&gt;network&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="520" y="90" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="sRkEcJS6i-Wj1QBqsMOD-15" source="sRkEcJS6i-Wj1QBqsMOD-10" target="sRkEcJS6i-Wj1QBqsMOD-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-10" value="" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;sketch=1;curveFitting=1;jiggle=2;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="520" y="290" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-12" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-15">
+          <mxGeometry x="10" y="300" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sRkEcJS6i-Wj1QBqsMOD-16" value="&lt;div style=&quot;color: rgb(101, 123, 131); background-color: rgb(253, 246, 227); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 18px; line-height: 24px; white-space-collapse: preserve;&quot;&gt;&lt;span style=&quot;color: #2aa198;&quot;&gt;线程调度&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="sRkEcJS6i-Wj1QBqsMOD-18">
+          <mxGeometry width="100" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
