@@ -312,73 +312,112 @@ EventUtil.addHandler(list, 'click', function (event) {
 > - 2）fetch；
 > - 3）axios；
 
-## 3.1.ajax
+## 3.1.ajax【面试题：介绍一下 Ajax】
 
-> Asynchronous JavaScript And XML，翻译过来就是“异步的 JavaScript 和 XML”。  
-> ajax 是 js 异步技术的术语，早期相关的 api 是 XHR。
+### [1]是什么？
 
-[1]Ajax 是一个技术统称，是一个概念模型，它囊括了很多技术，并不特指某一技术，它很重要的特征之一就是让页面实现局部刷新。
+1. `Asynchronous JavaScript And XML` 翻译：异步的 JavaScript 和 XML；ajax —— js 异步 术语；
+2. 早期相关 api 是 XHR。
+3. Ajax —— 技术统称，概念模型，很多技术，不特指某一技术；
 
-[2]特点：
+### [2]特点（重要特性之一）：
 
 - 局部刷新页面，无需重载整个页面。
 
-[3]简单来说，
+### [3]简述：
 
-- Ajax 是一种思想，XMLHttpRequest 只是实现 Ajax 的一种方式。
-- 其中 XMLHttpRequest 模块就是实现 Ajax 的一种很好的方式。
+- `Ajax` —— 一种思想；
+- `XMLHttpRequest` 模块 —— 只是实现 Ajax 的一种很好的方式。
 
-### 3.1.1.手写 ajax
+### 3.1.1.手写 ajax【面试题：手写 ajax】
 
 > 1. 建议先阅读[MDN - AJAX](https://developer.mozilla.org/zh-CN/docs/Glossary/AJAX)
-> 2. 利用 XMLHttpRequest 模拟实现 Ajax。
+> 2. 利用 XMLHttpRequest 模块实现 Ajax。
 
-#### 1）创建异步对象
+#### 【1】创建异步对象
+
+##### 【1.1】代码：
+
+- **①** 通过 XMLHttpRequest 构造函数创建一个异步对象 xmlhttp，
+- **②** IE6、IE5 使用 ActiveXObject 创建，
 
 ```js
 let xmlHttp
 if (window.XMLHttpRequest) {
   // code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlHttp = new XMLHttpRequest()
+  xmlHttp = new XMLHttpRequest() // ①
 } else {
   // code for IE6, IE5
-  xmlHttp = new ActiveXObject('Microsoft.XMLHTTP')
+  xmlHttp = new ActiveXObject('Microsoft.XMLHTTP') // ②
 }
 ```
 
-通过 XMLHttpRequest 构造函数创建一个异步对象 xmlhttp，IE6、IE5 使用 ActiveXObject 创建，创建的这个异步对象上有很多属性和方法，常用的有：
+##### 【1.2】分析之 **创建异步对象** 的常用属性&方法：
 
-【1】`onreadystatechange`：监听异步对象请求状态码 `readyState` 的改变，每当 `readyState` 改变时，就会触发 `onreadystatechange` 事件；
+###### [1]`onreadystatechange`：
 
-【2】`readyState`：请求状态码【todo】
+- ① **监听异步对象请求状态码** `readyState` 是否改变；
+- ② `readyState` **改变，触发** `onreadystatechange` **事件**；
 
-`readyState` 表示异步对象目前的状态，状态码从 0 到 4：
+###### [2]`readyState`：
 
-- 0：
-- 1：
-- 2：
-- 3：
-- 4：
+① 表示：异步对象请求状态码
 
-【3】status：http 状态码
+② 包括：
 
-http 状态码表示成功的 http 状态码有：
+> 状态码从 0 到 4：
+
+- `0` **未初始化**：请求未初始化，还没有调用 `open()`
+- `1` **载入**：服务器连接已建立，还没有调用 `send()`
+- `2` **载入完成**：请求已接收，正在处理中（通常现在可以从响应中获取内容头）【`send()` 执行完成，已接收到全部响应内容】
+- `3` **交互**：请求处理中，通常响应中已有部分数据可用了，没有全部完成；【正在解析 响应内容】
+- `4` **完成**：请求已完成，响应内容全部数据已经解析完毕，可以通过异步对象的属性获取对应数据【客户端可以调用】
+
+###### [3]`status`：
+
+① 表示：**http 状态码**
+
+② 包括：
+
+- `1xx` **服务器收到请求**
+- `2xx` **请求成功**：成功处理请求，如 200
+- `3xx` **重定向**：需要重定向，浏览器直接跳转，如 301（永久重定向） 302（临时重定向） 304（资源未修改，缓存/性能优化 相关）
+- `4xx` **客户端错误**：客户端请求错误，如 404（请求地址有误） 403（客户端没有权限，没权限没 login 就返 403，内部管理系统应用多）
+- `5xx` **服务端错误**：如 500 501 502（与服务端沟通）
+
+③ **表示成功**的：
 
 - `xmlHttp.status >= 200 && xmlHttp.status < 300 || xmlHttp.status == 304`
 
-【4】responseText：后台返回的字符串形式的响应数据；
+④ 常见状态码【todo】
 
-【5】responseXML：后台返回的 XML 形式的响应数据；
+- 见 []()
 
-#### 2）设置请求方式和请求地址
+###### [4]`responseText`：
 
-#### 3）发送请求
+- 后台返回的**字符串形式**的响应数据；
 
-#### 4）通过 `onreadystatechange` 监听状态变化
+###### [5]`responseXML`：
 
-#### 5）处理返回的结果
+- 后台返回的 **XML 形式**的响应数据；
 
-#### 6）其他
+#### 【2】设置请求方式和请求地址
+
+[1]代码：
+
+[2]分析：
+
+[3]注意问题：
+
+[4]解决方案：
+
+#### 【3】发送请求
+
+#### 【4】通过 `onreadystatechange` 监听状态变化
+
+#### 【5】处理返回的结果
+
+#### 【6】其他
 
 ### 3.1.2.测试
 
