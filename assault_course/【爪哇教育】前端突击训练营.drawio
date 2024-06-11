@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-06-11T07:43:50.768Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="DEry1RpSFYEK2OR_kfX0" version="24.5.2" type="github" pages="13">
+<mxfile host="app.diagrams.net" modified="2024-06-11T07:58:29.902Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="Xo66YsCkxbAc1ybD6SiZ" version="24.5.2" type="github" pages="13">
   <diagram id="44qQX4IVHCC8jqcmglR7" name="1.知识体系-面试前的准别-云隐">
     <mxGraphModel dx="1434" dy="1928" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -614,10 +614,88 @@
     </mxGraphModel>
   </diagram>
   <diagram id="m-hngOGf3VrVPbzjVNOt" name="3.CSS">
-    <mxGraphModel dx="1434" dy="747" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="472" dy="739" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-8" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="40" y="1000" width="280" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-2" value="手撕案例" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-8">
+          <mxGeometry y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-3" value="三角形与梯形" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-8">
+          <mxGeometry x="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-4" value="扇形" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-8">
+          <mxGeometry x="160" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-5" value="0.5px的线&lt;div&gt;小于12px 的文字&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-8">
+          <mxGeometry x="160" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-6" value="1px问题" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-8">
+          <mxGeometry x="160" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-7" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-8">
+          <mxGeometry x="120" width="20" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-13" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="40" y="760" width="280" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-1" value="定位浮动" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-13">
+          <mxGeometry y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-9" value="清除浮动的&lt;div&gt;原因与方式&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-13">
+          <mxGeometry x="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-10" value="BFC创建&lt;div&gt;与margin问题&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-13">
+          <mxGeometry x="160" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-11" value="position属性&lt;div&gt;以及相关布局&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-13">
+          <mxGeometry x="160" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-12" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-13">
+          <mxGeometry x="120" width="20" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-21" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="40" y="360" width="280" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-14" value="布局场景" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-21">
+          <mxGeometry y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-15" value="px、em、rem" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-21">
+          <mxGeometry x="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-16" value="两列布局" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-21">
+          <mxGeometry x="160" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-17" value="三列布局" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-21">
+          <mxGeometry x="160" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-18" value="水平垂直居中" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-21">
+          <mxGeometry x="160" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-19" value="弹性布局相关" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-21">
+          <mxGeometry x="160" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-20" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;" vertex="1" parent="AJWkj7iygFmRjkBS1dyi-21">
+          <mxGeometry x="120" width="20" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-22" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="140" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-23" value="像素密度与图片应用" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-24" value="css工程化与预处理" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-25" value="单行多行&lt;div&gt;文本溢出问题&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AJWkj7iygFmRjkBS1dyi-26" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="160" width="20" height="340" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
