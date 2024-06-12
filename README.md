@@ -160,31 +160,31 @@
 >
 > - [【爪哇教育】前端突击训练营.drawio](assault_course/【爪哇教育】前端突击训练营.drawio)
 
-- [2.HTML](assault_course/2.HTML.md)【done】
+- [x] [2.HTML](assault_course/2.HTML.md)【done】
 
-- [3.CSS](assault_course/3.CSS.md)
+- [ ] [3.CSS](assault_course/3.CSS.md)
 
-- [4.JavaScript](assault_course/4.JavaScript.md)
+- [ ] [4.JavaScript](assault_course/4.JavaScript.md)
 
-- [5.hand](assault_course/5.hand.md)【done】
+- [x] [5.hand](assault_course/5.hand.md)【done】
 
-- [6.HTTP](assault_course/6.HTTP.md)【done】
+- [x] [6.HTTP](assault_course/6.HTTP.md)【done】
 
-- [7.Vue](assault_course/7.Vue.md)
+- [ ] [7.Vue](assault_course/7.Vue.md)
 
-- [8.React](assault_course/8.React.md)
+- [ ] [8.React](assault_course/8.React.md)
 
-- [9.Node](assault_course/9.Node.md)
+- [ ] [9.Node](assault_course/9.Node.md)
 
-- [10.project-yunyin](assault_course/10.project-yunyin.md)【done】
+- [x] [10.project-yunyin](assault_course/10.project-yunyin.md)【done】
 
-- [algorithm-1](assault_course/algorithm-luyi/algorithm-1.md)【done】
+- [x] [algorithm-1](assault_course/algorithm-luyi/algorithm-1.md)【done】
 
-- [algorithm-2](assault_course/algorithm-luyi/algorithm-2.md)【done】
+- [x] [algorithm-2](assault_course/algorithm-luyi/algorithm-2.md)【done】
 
-- [algorithm-3](assault_course/algorithm-luyi/algorithm-3.md)【done】
+- [x] [algorithm-3](assault_course/algorithm-luyi/algorithm-3.md)【done】
 
-- [algorithm-4](assault_course/algorithm-luyi/algorithm-4.md)【done】
+- [x] [algorithm-4](assault_course/algorithm-luyi/algorithm-4.md)【done】
 
 ## 公开课
 
